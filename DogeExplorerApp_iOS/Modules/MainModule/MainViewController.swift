@@ -50,6 +50,11 @@ final class MainViewController: UIViewController {
         configureSearchBar()
         configureTableView()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.viewWillAppear()
+    }
 }
 
 @objc private extension MainViewController {

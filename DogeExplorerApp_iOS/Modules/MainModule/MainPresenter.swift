@@ -18,6 +18,8 @@ protocol MainPresenter {
     
     func deleteTrackingForAddress(at indexPath: IndexPath)
     func renameAddress(at indexPath: IndexPath, newName: String?)
+    
+    func viewWillAppear()
 }
 
 final class MainPresenterImp: MainPresenter {
@@ -59,6 +61,10 @@ final class MainPresenterImp: MainPresenter {
         guard let newName else { return }
         let addressToRename = trackingService.getAllTrackedAddresses()[indexPath.row].address
         trackingService.renameAddress(addressToRename, to: newName)
+        view?.reloadData()
+    }
+    
+    func viewWillAppear() {
         view?.reloadData()
     }
 }
