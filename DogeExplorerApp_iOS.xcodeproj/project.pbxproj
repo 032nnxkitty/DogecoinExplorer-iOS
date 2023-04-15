@@ -22,6 +22,7 @@
 		10A42D7029EAE1E200BE04B9 /* AddressTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D6F29EAE1E200BE04B9 /* AddressTrackingService.swift */; };
 		10A42D7229EB1D5300BE04B9 /* String+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7129EB1D5300BE04B9 /* String+Formatting.swift */; };
 		10A42D7429EB36C700BE04B9 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7329EB36C700BE04B9 /* SettingsModel.swift */; };
+		10A42D7629EB483E00BE04B9 /* ThemeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7529EB483E00BE04B9 /* ThemeService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		10A42D6F29EAE1E200BE04B9 /* AddressTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTrackingService.swift; sourceTree = "<group>"; };
 		10A42D7129EB1D5300BE04B9 /* String+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Formatting.swift"; sourceTree = "<group>"; };
 		10A42D7329EB36C700BE04B9 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
+		10A42D7529EB483E00BE04B9 /* ThemeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				10A42D6F29EAE1E200BE04B9 /* AddressTrackingService.swift */,
+				10A42D7529EB483E00BE04B9 /* ThemeService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				10A42D6529E9B2D400BE04B9 /* AddressInfoPresenter.swift in Sources */,
 				10A42D6C29E9B9E400BE04B9 /* ModuleBuilder.swift in Sources */,
 				10A42D6929E9B76700BE04B9 /* R.swift in Sources */,
+				10A42D7629EB483E00BE04B9 /* ThemeService.swift in Sources */,
 				10A42D7029EAE1E200BE04B9 /* AddressTrackingService.swift in Sources */,
 				10A42D6729E9B2E800BE04B9 /* AddressInfoViewController.swift in Sources */,
 				10A42D7229EB1D5300BE04B9 /* String+Formatting.swift in Sources */,
