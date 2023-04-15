@@ -12,7 +12,7 @@ protocol MainView: AnyObject {
 }
 
 final class MainViewController: UIViewController {
-    public var presenter: MainPresenter?
+    public var presenter: MainPresenter!
     
     private let addressSearchBar: UISearchBar = {
         let bar = UISearchBar()
@@ -109,7 +109,7 @@ extension MainViewController: UISearchBarDelegate {
 // MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return presenter.getNumberOfTrackedAddresses()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
