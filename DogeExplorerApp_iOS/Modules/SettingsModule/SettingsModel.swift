@@ -37,7 +37,7 @@ struct SettingsModel {
                 SettingsCell(title: "Source code",                  style: .github),
                 SettingsCell(title: "Feedback",                     style: .feedback),
                 SettingsCell(title: "Rate App in the App Store",    style: .rateApp),
-                SettingsCell(title: "My dogecoin address :)",       style: .language),
+                SettingsCell(title: "My dogecoin address :)",       style: .supportMe),
             ]
         ]
     }
