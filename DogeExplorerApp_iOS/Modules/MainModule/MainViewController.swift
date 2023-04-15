@@ -103,7 +103,24 @@ extension MainViewController: MainView {
 
 // MARK: -
 extension MainViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        presenter.searchButtonDidTap(with: searchBar.text)
+        searchBar.resignFirstResponder()
+        searchBar.text = nil
+    }
     
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        searchBar.text = nil
+    }
 }
 
 // MARK: - UITableViewDataSource

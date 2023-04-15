@@ -13,6 +13,8 @@ protocol MainPresenter {
     
     func getNumberOfTrackedAddresses() -> Int
     func configureCell(at indexPath: IndexPath, completion: @escaping (_ name: String, _ address: String) -> Void)
+    
+    func searchButtonDidTap(with text: String?)
 }
 
 final class MainPresenterImp: MainPresenter {
@@ -39,5 +41,9 @@ final class MainPresenterImp: MainPresenter {
         let currentAddress = trackingService.getAllTrackedAddresses()[indexPath.row]
         let shortenAddress = currentAddress.address.shortenAddress()
         completion(currentAddress.name, shortenAddress)
+    }
+    
+    func searchButtonDidTap(with text: String?) {
+        
     }
 }
