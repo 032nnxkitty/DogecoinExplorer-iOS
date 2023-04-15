@@ -8,7 +8,7 @@
 import UIKit
 
 protocol MainView: AnyObject {
-    
+    func showSettingsViewController()
 }
 
 final class MainViewController: UIViewController {
@@ -34,12 +34,26 @@ final class MainViewController: UIViewController {
         return tableView
     }()
     
+    private lazy var settingsButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "ellipsis"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(settingsButtonDidTap))
+        return button
+    }()
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureAppearance()
         configureSearchBar()
         configureTableView()
+    }
+}
+
+@objc private extension MainViewController {
+    func settingsButtonDidTap() {
+        presenter?.settingsButtonDidTap()
     }
 }
 
@@ -50,6 +64,7 @@ private extension MainViewController {
         view.backgroundColor = .systemBackground
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.backButtonDisplayMode = .minimal
+        navigationItem.rightBarButtonItem = settingsButton
     }
     
     func configureSearchBar() {
@@ -80,7 +95,10 @@ private extension MainViewController {
 
 // MARK: - MainView Protocol
 extension MainViewController: MainView {
-    
+    func showSettingsViewController() {
+        let settingsVC = ModuleBuilder.createSettingsModule()
+        navigationController?.pushViewController(settingsVC, animated: true)
+    }
 }
 
 // MARK: -

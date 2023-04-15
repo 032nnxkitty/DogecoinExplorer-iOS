@@ -9,6 +9,7 @@ import Foundation
 
 protocol MainPresenter {
     init(view: MainView)
+    func settingsButtonDidTap()
 }
 
 final class MainPresenterImp: MainPresenter {
@@ -16,5 +17,10 @@ final class MainPresenterImp: MainPresenter {
     
     init(view: MainView) {
         self.view = view
+    }
+    
+    // MARK: - Public Methods
+    func settingsButtonDidTap() {
+        view?.showSettingsViewController()
     }
 }
