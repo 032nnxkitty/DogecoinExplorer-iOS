@@ -114,11 +114,30 @@ extension MainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "trackedIdentifier", for: indexPath)
+        var cellContent = cell.defaultContentConfiguration()
+        presenter.configureCell(at: indexPath) { name, address in
+            cellContent.text = name
+            cellContent.secondaryText = address
+        }
+        cellContent.image = UIImage(systemName: "eyes")
+        cellContent.imageProperties.maximumSize = CGSize(width: 40, height: 40)
+        
+        cellContent.textProperties.adjustsFontForContentSizeCategory = true
+        cellContent.textProperties.numberOfLines = 1
+        
+        cellContent.secondaryTextProperties.adjustsFontForContentSizeCategory = true
+        cellContent.secondaryTextProperties.color = .darkGray
+        
+        cell.contentConfiguration = cellContent
+        cell.backgroundColor = .clear
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
 }
 
 // MARK: - UITableViewDelegate
 extension MainViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }

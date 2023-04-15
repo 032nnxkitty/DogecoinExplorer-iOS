@@ -12,6 +12,7 @@ protocol MainPresenter {
     func settingsButtonDidTap()
     
     func getNumberOfTrackedAddresses() -> Int
+    func configureCell(at indexPath: IndexPath, completion: @escaping (_ name: String, _ address: String) -> Void)
 }
 
 final class MainPresenterImp: MainPresenter {
@@ -32,5 +33,11 @@ final class MainPresenterImp: MainPresenter {
     
     func getNumberOfTrackedAddresses() -> Int {
         return trackingService.getAllTrackedAddresses().count
+    }
+    
+    func configureCell(at indexPath: IndexPath, completion: @escaping (_ name: String, _ address: String) -> Void) {
+        let currentAddress = trackingService.getAllTrackedAddresses()[indexPath.row]
+        let shortenAddress = currentAddress.address.shortenAddress()
+        completion(currentAddress.name, shortenAddress)
     }
 }

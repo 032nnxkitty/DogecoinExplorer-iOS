@@ -20,6 +20,7 @@
 		10A42D6929E9B76700BE04B9 /* R.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D6829E9B76700BE04B9 /* R.swift */; };
 		10A42D6C29E9B9E400BE04B9 /* ModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D6B29E9B9E400BE04B9 /* ModuleBuilder.swift */; };
 		10A42D7029EAE1E200BE04B9 /* AddressTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D6F29EAE1E200BE04B9 /* AddressTrackingService.swift */; };
+		10A42D7229EB1D5300BE04B9 /* String+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7129EB1D5300BE04B9 /* String+Formatting.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		10A42D6829E9B76700BE04B9 /* R.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = R.swift; sourceTree = "<group>"; };
 		10A42D6B29E9B9E400BE04B9 /* ModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBuilder.swift; sourceTree = "<group>"; };
 		10A42D6F29EAE1E200BE04B9 /* AddressTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTrackingService.swift; sourceTree = "<group>"; };
+		10A42D7129EB1D5300BE04B9 /* String+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Formatting.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 		10A42D6A29E9B78900BE04B9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				10A42D7129EB1D5300BE04B9 /* String+Formatting.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 				10A42D6929E9B76700BE04B9 /* R.swift in Sources */,
 				10A42D7029EAE1E200BE04B9 /* AddressTrackingService.swift in Sources */,
 				10A42D6729E9B2E800BE04B9 /* AddressInfoViewController.swift in Sources */,
+				10A42D7229EB1D5300BE04B9 /* String+Formatting.swift in Sources */,
 				10529EDE29E87CC600E73212 /* SceneDelegate.swift in Sources */,
 				10A42D5C29E9B19F00BE04B9 /* MainViewController.swift in Sources */,
 				10A42D6029E9B26E00BE04B9 /* SettingsPresenter.swift in Sources */,
