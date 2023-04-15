@@ -8,7 +8,9 @@
 import UIKit
 
 protocol SettingsView: AnyObject {
-    
+    func openLink(url: URL)
+    func showConfirmationActionSheet()
+    func showOkActionSheet(title: String, message: String)
 }
 
 final class SettingsViewController: UIViewController {
@@ -67,7 +69,27 @@ private extension SettingsViewController {
 
 // MARK: - SettingsView Protocol
 extension SettingsViewController: SettingsView {
+    func openLink(url: URL)  {
+        UIApplication.shared.open(url)
+    }
     
+    func showConfirmationActionSheet() {
+        let deleteAlert = UIAlertController(title: "Are u sure?", message: "Delete all tracked addresses", preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+            self.presenter.deleteAllTrackedAddresses()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        deleteAlert.addAction(deleteAction)
+        deleteAlert.addAction(cancelAction)
+        present(deleteAlert, animated: true)
+    }
+    
+    func showOkActionSheet(title: String, message: String) {
+        let deleteAlert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        let okAction = UIAlertAction(title: "Ok", style: .cancel)
+        deleteAlert.addAction(okAction)
+        present(deleteAlert, animated: true)
+    }
 }
 // MARK: - UITableViewDataSource
 extension SettingsViewController: UITableViewDataSource {

@@ -14,6 +14,7 @@ protocol SettingsPresenter {
     func configureCell(at indexPath: IndexPath, completion: @escaping (_ title: String, _ iconName: String, _ isThemeCell: Bool) -> Void)
     func getTitleForFooter(in section: Int) -> String?
     func didSelectRow(at indexPath: IndexPath)
+    func deleteAllTrackedAddresses()
 }
 
 final class SettingsPresenterImp: SettingsPresenter {
@@ -45,7 +46,27 @@ final class SettingsPresenterImp: SettingsPresenter {
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-      
+        let currentCell = cell(at: indexPath)
+        switch currentCell.style {
+        case .language:
+            print("language cell")
+        case .theme:
+            break
+        case .deleteAddresses:
+            didTapDeleteTrackingCell()
+        case .github:
+            openLink("https://github.com/032nnxkitty/DogeExplorerApp_iOS")
+        case .feedback:
+            break
+        case .rateApp:
+            break
+        case .supportMe:
+            break
+        }
+    }
+    
+    func deleteAllTrackedAddresses() {
+        trackingService.deleteAllTrackedAddresses()
     }
 }
 
@@ -53,5 +74,18 @@ final class SettingsPresenterImp: SettingsPresenter {
 private extension SettingsPresenterImp {
     func cell(at indexPath: IndexPath) -> SettingsCell {
         return settingsModel[indexPath.section][indexPath.row]
+    }
+    
+    func openLink(_ stringUrl: String) {
+        guard let url = URL(string: stringUrl) else { return }
+        view?.openLink(url: url)
+    }
+    
+    func didTapDeleteTrackingCell() {
+        if trackingService.getAllTrackedAddresses().isEmpty {
+            view?.showOkActionSheet(title: "No tracked addresses", message: ":/")
+        } else {
+            view?.showConfirmationActionSheet()
+        }
     }
 }
