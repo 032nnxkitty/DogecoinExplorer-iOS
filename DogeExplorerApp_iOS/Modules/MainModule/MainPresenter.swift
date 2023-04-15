@@ -20,6 +20,8 @@ protocol MainPresenter {
     func renameAddress(at indexPath: IndexPath, newName: String?)
     
     func viewWillAppear()
+    func getTitleFoHeader(in section: Int) -> String?
+    func refresh()
 }
 
 final class MainPresenterImp: MainPresenter {
@@ -55,6 +57,7 @@ final class MainPresenterImp: MainPresenter {
     func deleteTrackingForAddress(at indexPath: IndexPath) {
         let addressToDelete = trackingService.getAllTrackedAddresses()[indexPath.row].address
         trackingService.deleteTracking(addressToDelete)
+        //view?.reloadData()
     }
     
     func renameAddress(at indexPath: IndexPath, newName: String?) {
@@ -66,5 +69,13 @@ final class MainPresenterImp: MainPresenter {
     
     func viewWillAppear() {
         view?.reloadData()
+    }
+    
+    func getTitleFoHeader(in section: Int) -> String? {
+        return section == 0 ? "Tracked addresses:" : nil
+    }
+    
+    func refresh() {
+        
     }
 }

@@ -35,6 +35,12 @@ final class MainViewController: UIViewController {
         return tableView
     }()
     
+    private lazy var tableViewRefreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        return refreshControl
+    }()
+    
     private lazy var settingsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "ellipsis"),
                                      style: .plain,
@@ -61,6 +67,13 @@ final class MainViewController: UIViewController {
     func settingsButtonDidTap() {
         presenter?.settingsButtonDidTap()
     }
+    
+    func refresh() {
+        presenter.refresh()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.tableViewRefreshControl.endRefreshing()
+        }
+    }
 }
 
 // MARK: - Private Methods
@@ -85,6 +98,8 @@ private extension MainViewController {
     }
     
     func configureTableView() {
+        trackedAddressesTableView.refreshControl = tableViewRefreshControl
+        
         trackedAddressesTableView.dataSource = self
         trackedAddressesTableView.delegate = self
         
@@ -196,5 +211,9 @@ extension MainViewController: UITableViewDelegate {
         }
         rename.backgroundColor = .systemPurple
         return UISwipeActionsConfiguration(actions: [delete, rename])
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        presenter.getTitleFoHeader(in: section)
     }
 }
