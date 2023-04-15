@@ -13,6 +13,7 @@ protocol SettingsPresenter {
     func getNumberOfRows(in section: Int) -> Int
     func configureCell(at indexPath: IndexPath, completion: @escaping (_ title: String, _ iconName: String, _ isThemeCell: Bool) -> Void)
     func getTitleForFooter(in section: Int) -> String?
+    func didSelectRow(at indexPath: IndexPath)
 }
 
 final class SettingsPresenterImp: SettingsPresenter {
@@ -36,11 +37,15 @@ final class SettingsPresenterImp: SettingsPresenter {
     
     func configureCell(at indexPath: IndexPath, completion: @escaping (_ title: String, _ iconName: String, _ isThemeCell: Bool) -> Void) {
         let currentCell = cell(at: indexPath)
-        completion(currentCell.title, currentCell.iconName, currentCell.title == "Theme")
+        completion(currentCell.title, currentCell.style.rawValue, currentCell.title == "Theme")
     }
     
     func getTitleForFooter(in section: Int) -> String? {
         return section == settingsModel.count - 1 ? "Developed by Arseniy Zolotarev\nPowered by Dogechain.info" : nil
+    }
+    
+    func didSelectRow(at indexPath: IndexPath) {
+      
     }
 }
 

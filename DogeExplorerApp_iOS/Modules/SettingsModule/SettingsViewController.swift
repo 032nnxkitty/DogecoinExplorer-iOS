@@ -100,6 +100,7 @@ extension SettingsViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension SettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.didSelectRow(at: indexPath)
         tableView.deselectRow(at: indexPath, animated: false)
     }
     
