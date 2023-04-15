@@ -63,7 +63,7 @@ private extension MainViewController {
     func configureAppearance() {
         title = "Doge explorer"
         view.backgroundColor = .systemBackground
-        navigationItem.largeTitleDisplayMode = .never
+        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.backButtonDisplayMode = .minimal
         navigationItem.rightBarButtonItem = settingsButton
     }
