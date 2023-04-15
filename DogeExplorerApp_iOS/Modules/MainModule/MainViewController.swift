@@ -9,6 +9,7 @@ import UIKit
 
 protocol MainView: AnyObject {
     func showSettingsViewController()
+    func reloadData()
 }
 
 final class MainViewController: UIViewController {
@@ -91,6 +92,20 @@ private extension MainViewController {
         ])
     }
 
+    func showRenameAlertForAddress(at indexPath: IndexPath) {
+        let renameAlert = UIAlertController(title: "Enter new name", message: "If field will be empty..", preferredStyle: .alert)
+        renameAlert.addTextField { textField in
+            textField.placeholder = "Enter new name"
+        }
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { action in
+            let name = renameAlert.textFields?[0].text
+            self.presenter.renameAddress(at: indexPath, newName: name)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        renameAlert.addAction(confirmAction)
+        renameAlert.addAction(cancelAction)
+        present(renameAlert, animated: true)
+    }
 }
 
 // MARK: - MainView Protocol
@@ -98,6 +113,10 @@ extension MainViewController: MainView {
     func showSettingsViewController() {
         let settingsVC = ModuleBuilder.createSettingsModule()
         navigationController?.pushViewController(settingsVC, animated: true)
+    }
+    
+    func reloadData() {
+        trackedAddressesTableView.reloadData()
     }
 }
 
@@ -156,5 +175,21 @@ extension MainViewController: UITableViewDataSource {
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .destructive, title: "Delete") { _, _, completion in
+            self.presenter.deleteTrackingForAddress(at: indexPath)
+            tableView.deleteRows(at: [indexPath], with: .right)
+            completion(true)
+        }
+        delete.backgroundColor = .systemRed
+        
+        let rename = UIContextualAction(style: .normal, title: "Rename") { _, _, completion in
+            self.showRenameAlertForAddress(at: indexPath)
+            completion(true)
+        }
+        rename.backgroundColor = .systemPurple
+        return UISwipeActionsConfiguration(actions: [delete, rename])
     }
 }

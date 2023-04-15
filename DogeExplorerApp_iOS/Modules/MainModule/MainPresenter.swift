@@ -15,6 +15,9 @@ protocol MainPresenter {
     func configureCell(at indexPath: IndexPath, completion: @escaping (_ name: String, _ address: String) -> Void)
     
     func searchButtonDidTap(with text: String?)
+    
+    func deleteTrackingForAddress(at indexPath: IndexPath)
+    func renameAddress(at indexPath: IndexPath, newName: String?)
 }
 
 final class MainPresenterImp: MainPresenter {
@@ -45,5 +48,17 @@ final class MainPresenterImp: MainPresenter {
     
     func searchButtonDidTap(with text: String?) {
         
+    }
+    
+    func deleteTrackingForAddress(at indexPath: IndexPath) {
+        let addressToDelete = trackingService.getAllTrackedAddresses()[indexPath.row].address
+        trackingService.deleteTracking(addressToDelete)
+    }
+    
+    func renameAddress(at indexPath: IndexPath, newName: String?) {
+        guard let newName else { return }
+        let addressToRename = trackingService.getAllTrackedAddresses()[indexPath.row].address
+        trackingService.renameAddress(addressToRename, to: newName)
+        view?.reloadData()
     }
 }
