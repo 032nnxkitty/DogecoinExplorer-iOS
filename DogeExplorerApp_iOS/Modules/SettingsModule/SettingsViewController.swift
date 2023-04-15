@@ -81,11 +81,29 @@ extension SettingsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath)
+        var cellContent = cell.defaultContentConfiguration()
+        presenter.configureCell(at: indexPath) { title, iconName, isThemeCell in
+            cellContent.image = UIImage(systemName: "star")
+            cellContent.text = title
+            
+            guard isThemeCell else { return }
+            cell.accessoryView = self.themeSegmentedControl
+            cell.selectionStyle = .none
+        }
+        cellContent.imageProperties.maximumSize = CGSize(width: 25, height: 25)
+        cell.contentConfiguration = cellContent
+        cell.backgroundColor = .systemGray6
         return cell
     }
 }
 
 // MARK: - UITableViewDelegate
 extension SettingsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+    }
     
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        presenter.getTitleForFooter(in: section)
+    }
 }
