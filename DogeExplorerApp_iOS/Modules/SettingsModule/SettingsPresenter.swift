@@ -15,6 +15,7 @@ protocol SettingsPresenter {
     func getTitleForFooter(in section: Int) -> String?
     func didSelectRow(at indexPath: IndexPath)
     func deleteAllTrackedAddresses()
+    func themeIndexDidChange(to index: Int)
 }
 
 final class SettingsPresenterImp: SettingsPresenter {
@@ -26,6 +27,7 @@ final class SettingsPresenterImp: SettingsPresenter {
         self.view = view
         self.settingsModel = SettingsModel().model
         self.trackingService = UserDefaults.standard
+        initialize()
     }
     
     func getNumberOfSection() -> Int {
@@ -68,10 +70,20 @@ final class SettingsPresenterImp: SettingsPresenter {
     func deleteAllTrackedAddresses() {
         trackingService.deleteAllTrackedAddresses()
     }
+    
+    func themeIndexDidChange(to index: Int) {
+        UserDefaults.standard.theme = Theme(rawValue: index) ?? .device
+        view?.changeTheme()
+    }
 }
 
 // MARK: - Private Methods
 private extension SettingsPresenterImp {
+    func initialize() {
+        let selectedThemeIndex = UserDefaults.standard.theme.rawValue
+        view?.setThemeIndex(selectedThemeIndex)
+    }
+    
     func cell(at indexPath: IndexPath) -> SettingsCell {
         return settingsModel[indexPath.section][indexPath.row]
     }

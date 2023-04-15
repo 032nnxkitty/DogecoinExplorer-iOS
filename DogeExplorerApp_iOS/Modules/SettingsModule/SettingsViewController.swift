@@ -11,6 +11,8 @@ protocol SettingsView: AnyObject {
     func openLink(url: URL)
     func showConfirmationActionSheet()
     func showOkActionSheet(title: String, message: String)
+    func setThemeIndex(_ index: Int)
+    func changeTheme()
 }
 
 final class SettingsViewController: UIViewController {
@@ -26,7 +28,7 @@ final class SettingsViewController: UIViewController {
     }()
     
     private lazy var themeSegmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl(items: ["Dark", "Light", "Device"])
+        let segmentedControl = UISegmentedControl(items: ["Device", "Dark", "Light"])
         segmentedControl.addTarget(self, action: #selector(themeChanged), for: .valueChanged)
         return segmentedControl
     }()
@@ -63,7 +65,7 @@ private extension SettingsViewController {
 // MARK: - Actions
 @objc private extension SettingsViewController {
     func themeChanged(_ sender: UISegmentedControl) {
-       
+        presenter.themeIndexDidChange(to: sender.selectedSegmentIndex)
     }
 }
 
@@ -89,6 +91,14 @@ extension SettingsViewController: SettingsView {
         let okAction = UIAlertAction(title: "Ok", style: .cancel)
         deleteAlert.addAction(okAction)
         present(deleteAlert, animated: true)
+    }
+    
+    func setThemeIndex(_ index: Int) {
+        themeSegmentedControl.selectedSegmentIndex = index
+    }
+    
+    func changeTheme() {
+        view.window?.overrideUserInterfaceStyle = UserDefaults.standard.theme.userInterfaceStyle
     }
 }
 // MARK: - UITableViewDataSource

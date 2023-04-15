@@ -8,20 +8,20 @@
 import UIKit
 
 enum Theme: Int {
+    case device
     case dark
     case light
-    case device
 }
 
 extension Theme {
     var userInterfaceStyle: UIUserInterfaceStyle {
         switch self {
+        case .device:
+            return .unspecified
         case .dark:
             return .dark
         case .light:
             return .light
-        case .device:
-            return .unspecified
         }
     }
 }
