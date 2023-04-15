@@ -14,12 +14,93 @@ protocol MainView: AnyObject {
 final class MainViewController: UIViewController {
     public var presenter: MainPresenter?
     
+    private let addressSearchBar: UISearchBar = {
+        let bar = UISearchBar()
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.placeholder = "Enter the address to search"
+        bar.searchTextField.layer.masksToBounds = true
+        bar.searchTextField.layer.cornerRadius = 18
+        bar.backgroundImage = UIImage()
+        return bar
+    }()
+    
+    private let trackedAddressesTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "trackedIdentifier")
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.showsVerticalScrollIndicator = false
+        tableView.keyboardDismissMode = .onDrag
+        tableView.backgroundColor = .clear
+        return tableView
+    }()
+    
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        configureAppearance()
+        configureSearchBar()
+        configureTableView()
     }
 }
 
+// MARK: - Private Methods
+private extension MainViewController {
+    func configureAppearance() {
+        title = "Doge explorer"
+        view.backgroundColor = .systemBackground
+        navigationItem.largeTitleDisplayMode = .never
+        navigationItem.backButtonDisplayMode = .minimal
+    }
+    
+    func configureSearchBar() {
+        addressSearchBar.delegate = self
+        
+        view.addSubview(addressSearchBar)
+        NSLayoutConstraint.activate([
+            addressSearchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            addressSearchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            addressSearchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+    }
+    
+    func configureTableView() {
+        trackedAddressesTableView.dataSource = self
+        trackedAddressesTableView.delegate = self
+        
+        view.addSubview(trackedAddressesTableView)
+        NSLayoutConstraint.activate([
+            trackedAddressesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            trackedAddressesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            trackedAddressesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            trackedAddressesTableView.topAnchor.constraint(equalTo: addressSearchBar.bottomAnchor)
+        ])
+    }
+
+}
+
+// MARK: - MainView Protocol
 extension MainViewController: MainView {
+    
+}
+
+// MARK: -
+extension MainViewController: UISearchBarDelegate {
+    
+}
+
+// MARK: - UITableViewDataSource
+extension MainViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "trackedIdentifier", for: indexPath)
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension MainViewController: UITableViewDelegate {
     
 }
