@@ -15,7 +15,7 @@ enum NetworkError: Error {
 }
 
 protocol NetworkManager {
-    
+    func getAddressInfo(_ address: String) async throws -> (BalanceModel, SentModel, ReceivedModel, TransactionsCountModel)
 }
 
 class NetworkManagerImp: NetworkManager {

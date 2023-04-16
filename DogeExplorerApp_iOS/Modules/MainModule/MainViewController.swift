@@ -9,6 +9,7 @@ import UIKit
 
 protocol MainView: AnyObject {
     func showSettingsViewController()
+    func showInfoViewController(for address: String)
     func reloadData()
 }
 
@@ -135,6 +136,11 @@ extension MainViewController: MainView {
         navigationController?.pushViewController(settingsVC, animated: true)
     }
     
+    func showInfoViewController(for address: String) {
+        let addressInfoVC = ModuleBuilder.createAddressInfoModule(address)
+        navigationController?.pushViewController(addressInfoVC, animated: true)
+    }
+    
     func reloadData() {
         trackedAddressesTableView.reloadData()
     }
@@ -195,6 +201,7 @@ extension MainViewController: UITableViewDataSource {
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        presenter.didSelectAddress(at: indexPath)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

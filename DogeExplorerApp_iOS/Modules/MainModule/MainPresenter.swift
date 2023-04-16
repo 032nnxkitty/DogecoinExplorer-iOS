@@ -22,6 +22,8 @@ protocol MainPresenter {
     func viewWillAppear()
     func getTitleFoHeader(in section: Int) -> String?
     func refresh()
+    
+    func didSelectAddress(at indexPath: IndexPath)
 }
 
 final class MainPresenterImp: MainPresenter {
@@ -77,5 +79,10 @@ final class MainPresenterImp: MainPresenter {
     
     func refresh() {
         
+    }
+    
+    func didSelectAddress(at indexPath: IndexPath) {
+        let selectedAddress = trackingService.getAllTrackedAddresses()[indexPath.row].address
+        view?.showInfoViewController(for: selectedAddress)
     }
 }

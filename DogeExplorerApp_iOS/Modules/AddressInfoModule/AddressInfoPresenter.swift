@@ -8,13 +8,22 @@
 import Foundation
 
 protocol AddressInfoPresenter {
-    init(view: AddressInfoView)
+    init(address: String, view: AddressInfoView, networkManager: NetworkManager)
 }
 
 final class AddressInfoPresenterImp: AddressInfoPresenter {
     private weak var view: AddressInfoView?
+    private let networkManager: NetworkManager
+    private let trackingService: AddressTrackingService
     
-    required init(view: AddressInfoView) {
+    private var balanceModel: BalanceModel?
+    private var sentModel: SentModel?
+    private var receivedModel: ReceivedModel?
+    private var transactionsCountModel: TransactionsCountModel?
+    
+    required init(address: String, view: AddressInfoView, networkManager: NetworkManager) {
         self.view = view
+        self.networkManager = networkManager
+        self.trackingService = UserDefaults.standard
     }
 }

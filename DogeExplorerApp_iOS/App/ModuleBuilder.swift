@@ -22,9 +22,10 @@ final class ModuleBuilder {
         return view
     }
     
-    static func createAddressInfoModule() -> UIViewController {
+    static func createAddressInfoModule(_ address: String) -> UIViewController {
         let view = AddressInfoViewController()
-        let presenter = AddressInfoPresenterImp(view: view)
+        let networkManager = NetworkManagerImp()
+        let presenter = AddressInfoPresenterImp(address: address, view: view, networkManager: networkManager)
         view.presenter = presenter
         return view
     }
