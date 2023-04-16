@@ -43,7 +43,6 @@ private extension InternetConnectionObserverImp {
     
     private func stopMonitoring() {
         monitor.cancel()
-        print("deinit observer")
     }
 }
 

@@ -30,11 +30,13 @@ final class MainPresenterImp: MainPresenter {
     private weak var view: MainView?
     private let trackingService: AddressTrackingService
     private let networkManager: NetworkManager
+    private let internetConnectionObserver: InternetConnectionObserver
     
     init(view: MainView, networkManager: NetworkManager) {
         self.view = view
         self.networkManager = networkManager
         self.trackingService = UserDefaults.standard
+        self.internetConnectionObserver = InternetConnectionObserverImp()
         
         trackingService.addMockData()
     }
@@ -55,10 +57,16 @@ final class MainPresenterImp: MainPresenter {
     }
     
     func searchButtonDidTap(with text: String?) {
+        guard internetConnectionObserver.isReachable else {
+            view?.showOkActionSheet(title: "No internet connection", message: ":/")
+            return
+        }
+        
         guard let text else {
             view?.showOkActionSheet(title: "Title", message: "Something went wrong")
             return
         }
+        
         let address = text.trimmingCharacters(in: .whitespaces)
         guard address.count == 34 else {
             view?.showOkActionSheet(title: "Title", message: "Address should contains 34 symbols")
@@ -76,7 +84,6 @@ final class MainPresenterImp: MainPresenter {
     func deleteTrackingForAddress(at indexPath: IndexPath) {
         let addressToDelete = trackingService.getAllTrackedAddresses()[indexPath.row].address
         trackingService.deleteTracking(addressToDelete)
-        //view?.reloadData()
     }
     
     func renameAddress(at indexPath: IndexPath, newName: String?) {
@@ -99,6 +106,11 @@ final class MainPresenterImp: MainPresenter {
     }
     
     func didSelectAddress(at indexPath: IndexPath) {
+        guard internetConnectionObserver.isReachable else {
+            view?.showOkActionSheet(title: "No internet connection", message: ":/")
+            return
+        }
+        
         let selectedAddress = trackingService.getAllTrackedAddresses()[indexPath.row].address
         view?.showInfoViewController(for: selectedAddress)
     }

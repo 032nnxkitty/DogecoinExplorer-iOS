@@ -115,11 +115,11 @@
 		10529EF729E8A64700E73212 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */,
 				10A42D6F29EAE1E200BE04B9 /* AddressTrackingService.swift */,
 				10A42D7529EB483E00BE04B9 /* ThemeService.swift */,
 				10A42D7729EB532A00BE04B9 /* NetworkManager.swift */,
 				109FB83D29EC27D900D5929F /* URLBuilder.swift */,
+				10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
