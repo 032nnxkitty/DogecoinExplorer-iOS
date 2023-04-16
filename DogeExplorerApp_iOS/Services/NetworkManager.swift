@@ -16,9 +16,19 @@ enum NetworkError: Error {
 
 protocol NetworkManager {
     func getAddressInfo(_ address: String) async throws -> (BalanceModel, SentModel, ReceivedModel, TransactionsCountModel)
+    func checkAddressExistence(_ address: String) async throws -> Bool 
 }
 
 class NetworkManagerImp: NetworkManager {
+    func checkAddressExistence(_ address: String) async throws -> Bool {
+        do {
+            let _ = try await request(url: URLBuilder.balanceURL(for: address), decodeTo: BalanceModel.self)
+            return true
+        } catch {
+            return false
+        }
+    }
+    
     func getAddressInfo(_ address: String) async throws -> (BalanceModel, SentModel, ReceivedModel, TransactionsCountModel) {
         async let balance           = request(url: URLBuilder.balanceURL(for: address), decodeTo: BalanceModel.self)
         async let sent              = request(url: URLBuilder.sentURL(for: address), decodeTo: SentModel.self)
