@@ -17,6 +17,7 @@ protocol MainView: AnyObject {
 final class MainViewController: UIViewController {
     public var presenter: MainPresenter!
     
+    // MARK: - UI Elements
     private let addressSearchBar: UISearchBar = {
         let bar = UISearchBar()
         bar.translatesAutoresizingMaskIntoConstraints = false
@@ -70,6 +71,7 @@ final class MainViewController: UIViewController {
     }
 }
 
+// MARK: - Actions
 @objc private extension MainViewController {
     func settingsButtonDidTap() {
         presenter?.settingsButtonDidTap()
@@ -219,19 +221,21 @@ extension MainViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let delete = UIContextualAction(style: .destructive, title: "Delete") { _, _, completion in
+        let deleteAction = UIContextualAction(style: .destructive, title: "") { _, _, completion in
             self.presenter.deleteTrackingForAddress(at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .right)
             completion(true)
         }
-        delete.backgroundColor = .systemRed
+        deleteAction.image = UIImage(systemName: "trash")
+        deleteAction.backgroundColor = .systemRed
         
-        let rename = UIContextualAction(style: .normal, title: "Rename") { _, _, completion in
+        let renameAction = UIContextualAction(style: .normal, title: "") { _, _, completion in
             self.showRenameAlertForAddress(at: indexPath)
             completion(true)
         }
-        rename.backgroundColor = .systemPurple
-        return UISwipeActionsConfiguration(actions: [delete, rename])
+        renameAction.image = UIImage(systemName: "pencil")
+        renameAction.backgroundColor = .systemPurple
+        return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
