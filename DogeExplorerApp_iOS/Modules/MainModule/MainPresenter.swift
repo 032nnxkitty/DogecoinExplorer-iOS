@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MainPresenter {
-    init(view: MainView)
+    init(view: MainView, networkManager: NetworkManager)
     func settingsButtonDidTap()
     
     func getNumberOfTrackedAddresses() -> Int
@@ -29,9 +29,11 @@ protocol MainPresenter {
 final class MainPresenterImp: MainPresenter {
     private weak var view: MainView?
     private let trackingService: AddressTrackingService
+    private let networkManager: NetworkManager
     
-    init(view: MainView) {
+    init(view: MainView, networkManager: NetworkManager) {
         self.view = view
+        self.networkManager = networkManager
         self.trackingService = UserDefaults.standard
         
         trackingService.addMockData()
@@ -53,7 +55,22 @@ final class MainPresenterImp: MainPresenter {
     }
     
     func searchButtonDidTap(with text: String?) {
-        
+        guard let text else {
+            view?.showOkActionSheet(title: "Title", message: "Something went wrong")
+            return
+        }
+        let address = text.trimmingCharacters(in: .whitespaces)
+        guard address.count == 34 else {
+            view?.showOkActionSheet(title: "Title", message: "Address should contains 34 symbols")
+            return
+        }
+        Task { @MainActor in
+            guard try await networkManager.checkAddressExistence(address) else {
+                view?.showOkActionSheet(title: "Address not found", message: ":(")
+                return
+            }
+            view?.showInfoViewController(for: address)
+        }
     }
     
     func deleteTrackingForAddress(at indexPath: IndexPath) {

@@ -10,7 +10,8 @@ import UIKit
 final class ModuleBuilder {
     static func createMainModule() -> UIViewController {
         let view = MainViewController()
-        let presenter = MainPresenterImp(view: view)
+        let networkManager = NetworkManagerImp()
+        let presenter = MainPresenterImp(view: view, networkManager: networkManager)
         view.presenter = presenter
         return view
     }

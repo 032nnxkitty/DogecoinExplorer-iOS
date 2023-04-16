@@ -11,6 +11,7 @@ protocol MainView: AnyObject {
     func showSettingsViewController()
     func showInfoViewController(for address: String)
     func reloadData()
+    func showOkActionSheet(title: String, message: String)
 }
 
 final class MainViewController: UIViewController {
@@ -34,6 +35,11 @@ final class MainViewController: UIViewController {
         tableView.keyboardDismissMode = .onDrag
         tableView.backgroundColor = .clear
         return tableView
+    }()
+    
+    private let searchLoader: UIActivityIndicatorView = {
+        let loader = UIActivityIndicatorView(style: .medium)
+        return loader
     }()
     
     private lazy var tableViewRefreshControl: UIRefreshControl = {
@@ -144,9 +150,17 @@ extension MainViewController: MainView {
     func reloadData() {
         trackedAddressesTableView.reloadData()
     }
+    
+    func showOkActionSheet(title: String, message: String) {
+        addressSearchBar.resignFirstResponder()
+        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: "Ok", style: .cancel)
+        actionSheet.addAction(action)
+        present(actionSheet, animated: true)
+    }
 }
 
-// MARK: -
+// MARK: - UISearchBarDelegate
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         presenter.searchButtonDidTap(with: searchBar.text)
