@@ -9,23 +9,29 @@ import Network
 
 protocol InternetConnectionObserver {
     var isReachable: Bool { get }
-    func startMonitoring()
-    func stopMonitoring()
 }
 
 final class InternetConnectionObserverImp: InternetConnectionObserver {
     private let monitor: NWPathMonitor
     private var status: NWPath.Status
     
-    init() {
-        self.monitor = NWPathMonitor()
-        self.status = .requiresConnection
-    }
-    
     var isReachable: Bool {
         return status == .satisfied
     }
     
+    init() {
+        self.monitor = NWPathMonitor()
+        self.status = .requiresConnection
+        
+        startMonitoring()
+    }
+    
+    deinit {
+        stopMonitoring()
+    }
+}
+
+private extension InternetConnectionObserverImp {
     func startMonitoring() {
         monitor.pathUpdateHandler = { [weak self] path in
             self?.status = path.status
@@ -35,8 +41,9 @@ final class InternetConnectionObserverImp: InternetConnectionObserver {
         monitor.start(queue: queue)
     }
     
-    func stopMonitoring() {
+    private func stopMonitoring() {
         monitor.cancel()
+        print("deinit observer")
     }
 }
 
