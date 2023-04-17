@@ -52,7 +52,7 @@ final class MainPresenterImp: MainPresenter {
     
     func configureCell(at indexPath: IndexPath, completion: @escaping (_ name: String, _ address: String) -> Void) {
         let currentAddress = trackingService.getAllTrackedAddresses()[indexPath.row]
-        let shortenAddress = currentAddress.address.shortenAddress()
+        let shortenAddress = currentAddress.address.shortenAddress(prefix: 8, suffix: 5)
         completion(currentAddress.name, shortenAddress)
     }
     

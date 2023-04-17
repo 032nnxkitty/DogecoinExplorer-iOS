@@ -8,8 +8,8 @@
 import UIKit
 
 extension String {
-    func shortenAddress() -> String {
-        return "\(prefix(8))...\(suffix(5))"
+    func shortenAddress(prefix: Int, suffix: Int) -> String {
+        return "\(self.prefix(prefix))...\(self.suffix(suffix))"
     }
     
     func formatNumberString() -> String {
