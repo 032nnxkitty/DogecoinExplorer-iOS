@@ -20,6 +20,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     private let trackingService: AddressTrackingService
     
     private let address: String
+    private var isAddressTracking: Bool!
     private var addressInfo: (BalanceModel, SentModel, ReceivedModel, TransactionsCountModel)?
     
     private var infoSectionModule: [[String]] {
@@ -37,7 +38,9 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         self.networkManager = networkManager
         self.address = address
         self.trackingService = UserDefaults.standard
-        initialize()
+        
+        configureTrackingState()
+        getBaseAddressInfo()
     }
     
     // MARK: - Public Methods
@@ -60,7 +63,17 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
 
 // MARK: - Private Methods
 private extension AddressInfoPresenterImp {
-    func initialize() {
+    func configureTrackingState() {
+        if let trackedAddress = trackingService.getTrackedAddressModel(for: address) {
+            isAddressTracking = true
+            view?.configureIfAddressTracked(name: trackedAddress.name)
+        } else {
+            isAddressTracking = false
+            view?.configureIfAddressNotTracked(shortenAddress: address.shortenAddress(prefix: 5, suffix: 4))
+        }
+    }
+    
+    func getBaseAddressInfo() {
         Task { @MainActor in
             do {
                 addressInfo = try await networkManager.getAddressInfo(address)

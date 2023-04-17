@@ -12,6 +12,9 @@ protocol AddressInfoView: AnyObject {
     
     func configureInfoSection()
     func configureTransactionsSection()
+    
+    func configureIfAddressTracked(name: String)
+    func configureIfAddressNotTracked(shortenAddress: String)
 }
 
 final class AddressInfoViewController: UIViewController {
@@ -19,7 +22,7 @@ final class AddressInfoViewController: UIViewController {
     
     // MARK: - UI Elements
     private let sectionSegmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl(items: ["Address info", "Transactions"])
+        let segmentedControl = UISegmentedControl(items: ["Info", "Transactions"])
         segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
     }()
@@ -46,7 +49,6 @@ private extension AddressInfoViewController {
     func configureViewAppearance() {
         navigationItem.titleView = sectionSegmentedControl
         view.backgroundColor = .systemBackground
-        title = "Address info"
         
         sectionSegmentedControl.addTarget(self, action: #selector(sectionDidChange), for: .valueChanged)
     }
@@ -79,11 +81,19 @@ extension AddressInfoViewController: AddressInfoView {
     }
     
     func configureInfoSection() {
-        title = "Address info"
+        
     }
     
     func configureTransactionsSection() {
-        title = "Transactions"
+        
+    }
+    
+    func configureIfAddressTracked(name: String) {
+        title = name
+    }
+    
+    func configureIfAddressNotTracked(shortenAddress: String) {
+        title = shortenAddress
     }
 }
 
