@@ -21,8 +21,9 @@ final class AddressInfoViewController: UIViewController {
     public var presenter: AddressInfoPresenter!
     
     // MARK: - UI Elements
-    private let sectionSegmentedControl: UISegmentedControl = {
+    private lazy var sectionSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["Info", "Transactions"])
+        segmentedControl.addTarget(self, action: #selector(sectionDidChange), for: .valueChanged)
         segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
     }()
@@ -50,7 +51,6 @@ private extension AddressInfoViewController {
         navigationItem.titleView = sectionSegmentedControl
         view.backgroundColor = .systemBackground
         
-        sectionSegmentedControl.addTarget(self, action: #selector(sectionDidChange), for: .valueChanged)
     }
     
     func configureInfoTableView() {
@@ -100,24 +100,11 @@ extension AddressInfoViewController: AddressInfoView {
 // MARK: - UITableViewDataSource
 extension AddressInfoViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        switch sectionSegmentedControl.selectedSegmentIndex {
-        case 0:
-            return 1
-        case 1:
-            return 30
-        default:
-            return 0
-        }
+        presenter.getNumberOfSections()
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch sectionSegmentedControl.selectedSegmentIndex {
-        case 0:
-            return presenter.getNumberOfInfoRows()
-        case 1:
-            return 1
-        default:
-            return 0
-        }
+        return presenter.getNumberOfRows()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -125,21 +112,19 @@ extension AddressInfoViewController: UITableViewDataSource {
         var cellContent = cell.defaultContentConfiguration()
         switch sectionSegmentedControl.selectedSegmentIndex {
         case 0:
-            
-            cell.prepareForReuse()
-            presenter.configureCell(at: indexPath) { title, value in
+            presenter.configureInfoCell(at: indexPath) { title, value in
                 cellContent.text = title
                 cellContent.secondaryText = value
             }
             cellContent.textProperties.font = .preferredFont(forTextStyle: .subheadline)
             cellContent.textProperties.color = .gray
             cellContent.secondaryTextProperties.font = .preferredFont(forTextStyle: .body)
-            cell.backgroundColor = .systemGray6
             cell.selectionStyle = .none
         case 1:
-            cell.prepareForReuse()
-            cellContent.text = "Send / Received \(indexPath.section)"
-            cellContent.secondaryText = "Address_imitation"
+            presenter.configureTransactionCell(at: indexPath) { title, value in
+                cellContent.text = title
+                cellContent.secondaryText = value
+            }
             cellContent.image =  UIImage(systemName: "arrow.up.to.line.alt")
             cell.selectionStyle = .default
         default:
@@ -169,5 +154,4 @@ extension AddressInfoViewController: UITableViewDelegate {
             present(controller, animated: true)
         }
     }
-    
 }

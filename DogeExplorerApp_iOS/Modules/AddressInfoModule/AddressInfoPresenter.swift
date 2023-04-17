@@ -7,11 +7,20 @@
 
 import Foundation
 
+enum ShowingSection: Int {
+    case info
+    case transactions
+}
+
 protocol AddressInfoPresenter {
     init(address: String, view: AddressInfoView, networkManager: NetworkManager)
-    func getNumberOfInfoRows() -> Int
-    func configureCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void)
+    
     func sectionDidChange(to section: Int)
+    
+    func getNumberOfSections() -> Int
+    func getNumberOfRows() -> Int
+    func configureInfoCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void)
+    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void)
 }
 
 final class AddressInfoPresenterImp: AddressInfoPresenter {
@@ -22,8 +31,10 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     private let address: String
     private var isAddressTracking: Bool!
     private var addressInfo: (BalanceModel, SentModel, ReceivedModel, TransactionsCountModel)?
+    private var loadedTransactions: [DetailedTransactionModel]
+    private var showingSection: ShowingSection
     
-    private var infoSectionModule: [[String]] {
+    private var infoSectionModel: [[String]] {
         guard let addressInfo else { return [] }
         return [["Address:",              address],
                 ["Balance:",            "\(addressInfo.0.balance.formatNumberString()) DOGE"],
@@ -36,27 +47,60 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     required init(address: String, view: AddressInfoView, networkManager: NetworkManager) {
         self.view = view
         self.networkManager = networkManager
-        self.address = address
         self.trackingService = UserDefaults.standard
+        
+        self.address = address
+        self.loadedTransactions = [DetailedTransactionModel(success: nil, transaction: nil),
+                                   DetailedTransactionModel(success: nil, transaction: nil),
+                                   DetailedTransactionModel(success: nil, transaction: nil),
+                                   DetailedTransactionModel(success: nil, transaction: nil)]
+        self.showingSection = .info
         
         configureTrackingState()
         getBaseAddressInfo()
     }
     
     // MARK: - Public Methods
-    func getNumberOfInfoRows() -> Int {
-        return infoSectionModule.count
+    func getNumberOfSections() -> Int {
+        switch showingSection {
+        case .info:
+            return 1
+        case .transactions:
+            return loadedTransactions.count
+        }
     }
     
-    func configureCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void) {
-        guard indexPath.row <= infoSectionModule.count else { return }
-        let title = infoSectionModule[indexPath.row][0]
-        let value = infoSectionModule[indexPath.row][1]
+    func getNumberOfRows() -> Int {
+        switch showingSection {
+        case .info:
+            return infoSectionModel.count
+        case .transactions:
+            return 1
+        }
+    }
+    
+    func configureInfoCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void) {
+        guard indexPath.row <= infoSectionModel.count else { return }
+        let title = infoSectionModel[indexPath.row][0]
+        let value = infoSectionModel[indexPath.row][1]
+        completion(title, value)
+    }
+    
+    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void) {
+        // guard transactions count
+        let title = "Send / Received #\(indexPath.section + 1)"
+        let value = "other_info_imitation"
         completion(title, value)
     }
     
     func sectionDidChange(to section: Int) {
-        section == 0 ? view?.configureInfoSection() : view?.configureTransactionsSection()
+        showingSection = ShowingSection(rawValue: section)!
+        switch showingSection {
+        case .info:
+            view?.configureInfoSection()
+        case .transactions:
+            view?.configureTransactionsSection()
+        }
         view?.reloadData()
     }
 }

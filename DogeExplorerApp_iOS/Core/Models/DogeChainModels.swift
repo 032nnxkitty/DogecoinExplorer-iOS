@@ -60,7 +60,7 @@ struct TransactionBaseInfo: Codable {
 }
 
 // MARK: - Detail Transaction Info Model
-struct DetailTransactionInfoModel: Codable {
+struct DetailedTransactionModel: Codable {
     let success: Int?
     let transaction: Transaction?
 }
