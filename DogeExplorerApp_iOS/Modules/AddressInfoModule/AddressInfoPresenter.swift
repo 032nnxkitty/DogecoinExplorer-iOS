@@ -27,6 +27,8 @@ protocol AddressInfoPresenter {
     func addTracking(with name: String?)
     func deleteTracking()
     func renameAddress(newName: String?)
+    
+    func loadTransactionsButtonDidTap()
 }
 
 final class AddressInfoPresenterImp: AddressInfoPresenter {
@@ -89,18 +91,14 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         let value = infoSectionModel[indexPath.row][1]
         completion(title, value)
     }
-    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void) {
-        // guard transactions count
-        let title = "Send / Received #\(indexPath.section + 1)"
-        let value = "other_info_imitation"
-    }
     
     func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String?, String?) -> Void) {
         guard indexPath.section < loadedTransactions.count else { return }
-        loadedTransactions.sort { $0.transaction!.time! > $1.transaction!.time! }
-        let title = "Transaction"
-        let value = loadedTransactions[indexPath.section].transaction?.time?.formatUnixTime(style: .short)
-        completion(title, value)
+        //loadedTransactions.sort { $0.transaction!.time! > $1.transaction!.time! }
+        let title = Int.random(in: 0...1) == 0 ? "Received" : "Sent"
+        let date = loadedTransactions[indexPath.section].transaction?.time?.formatUnixTime(style: .short)
+        
+        completion(title, "44.453.594,019 DOGE\nFrom: DRPBG...oHz\n\(date)")
     }
     
     func sectionDidChange(to section: Int) {
@@ -114,6 +112,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         view?.reloadData()
     }
     
+    // MARK: - Tracking Methods
     func trackingStateDidChange() {
         isAddressTracked ? view?.showDeleteAlert() : view?.showAddTrackingAlert()
     }
@@ -142,6 +141,20 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         guard let newName, !newName.isEmpty else { return }
         trackingService.renameAddress(address, to: newName)
         configureTrackingState()
+    }
+    
+    //
+    func loadTransactionsButtonDidTap() {
+        guard let allTransactionsCount = addressInfo?.3.info.total else { return }
+        let difference = allTransactionsCount - loadedTransactions.count
+        guard difference > 0 else {
+            view?.hideLoadTransactionsButton()
+            return
+        }
+        for _ in 0..<10 {
+            loadedTransactions.append(DetailedTransactionModel(success: nil, transaction: nil))
+        }
+        view?.reloadData()
     }
 }
 

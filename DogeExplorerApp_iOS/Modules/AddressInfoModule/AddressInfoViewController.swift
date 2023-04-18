@@ -20,6 +20,8 @@ protocol AddressInfoView: AnyObject {
     func showAddTrackingAlert()
     func showDeleteAlert()
     func showRenameAlert()
+    
+    func hideLoadTransactionsButton()
 }
 
 final class AddressInfoViewController: UIViewController {
@@ -29,6 +31,7 @@ final class AddressInfoViewController: UIViewController {
     private lazy var sectionSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["Info", "Transactions"])
         segmentedControl.addTarget(self, action: #selector(sectionDidChange), for: .valueChanged)
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
     }()
@@ -38,7 +41,7 @@ final class AddressInfoViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "InfoCell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .clear
-        tableView.sectionFooterHeight = 0
+        //tableView.sectionFooterHeight = 0
         return tableView
     }()
     
@@ -62,11 +65,17 @@ final class AddressInfoViewController: UIViewController {
         return button
     }()
     
+    private lazy var loadTransactionsButton: UIButton = {
+        let button = UIButton(configuration: .filled())
+        button.setTitle("button", for: .normal)
+        button.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
+        return button
+    }()
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewAppearance()
-        configureInfoTableView()
         configureInfoTableView()
         configureLoader()
     }
@@ -127,6 +136,11 @@ private extension AddressInfoViewController {
     
     func trackingStateDidChange() {
         presenter.trackingStateDidChange()
+    }
+    
+    func loadTransactionsButtonDidTap() {
+        print("here")
+        presenter.loadTransactionsButtonDidTap()
     }
 }
 
@@ -189,6 +203,10 @@ extension AddressInfoViewController: AddressInfoView {
         }
         present(renameAlert, animated: true)
     }
+    
+    func hideLoadTransactionsButton() {
+        loadTransactionsButton.isHidden = true
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -219,7 +237,10 @@ extension AddressInfoViewController: UITableViewDataSource {
                 cellContent.text = title
                 cellContent.secondaryText = value
             }
-            cellContent.image =  UIImage(systemName: "arrow.up.to.line.alt")
+            cellContent.textProperties.font = .preferredFont(forTextStyle: .headline)
+            cellContent.secondaryTextProperties.font = .preferredFont(forTextStyle: .footnote)
+            cellContent.secondaryTextProperties.color = .gray
+            cellContent.image = UIImage(systemName: "arrow.up.to.line.alt")
             cell.selectionStyle = .default
         default:
             break
@@ -236,6 +257,16 @@ extension AddressInfoViewController: UITableViewDataSource {
         stack.isLayoutMarginsRelativeArrangement =  true
         stack.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         stack.addArrangedSubview(sectionSegmentedControl)
+        return stack
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard sectionSegmentedControl.selectedSegmentIndex == 1,
+              section == presenter.getNumberOfSections() - 1 else { return nil }
+        let stack = UIStackView()
+        stack.isLayoutMarginsRelativeArrangement =  true
+        stack.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        stack.addArrangedSubview(loadTransactionsButton)
         return stack
     }
 }
