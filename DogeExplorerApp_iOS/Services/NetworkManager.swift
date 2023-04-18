@@ -15,11 +15,12 @@ enum NetworkError: Error {
 }
 
 protocol NetworkManager {
+    func checkAddressExistence(_ address: String) async throws -> Bool
     func getAddressInfo(_ address: String) async throws -> (BalanceModel, SentModel, ReceivedModel, TransactionsCountModel)
-    func checkAddressExistence(_ address: String) async throws -> Bool 
+    func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel]
 }
 
-class NetworkManagerImp: NetworkManager {
+final class NetworkManagerImp: NetworkManager {
     func checkAddressExistence(_ address: String) async throws -> Bool {
         do {
             let _ = try await request(url: URLBuilder.balanceURL(for: address), decodeTo: BalanceModel.self)
@@ -35,6 +36,26 @@ class NetworkManagerImp: NetworkManager {
         async let received          = request(url: URLBuilder.receivedURL(for: address), decodeTo: ReceivedModel.self)
         async let transactionsCount = request(url: URLBuilder.transactionsCountURL(for: address), decodeTo: TransactionsCountModel.self)
         return try await (balance, sent, received, transactionsCount)
+    }
+    
+    func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel] {
+        let transactionPage = try await request(url: URLBuilder.transactionsPageURL(for: address, page: 1), decodeTo: TransactionsPageModel.self)
+        
+        var detailedTransactionsPage: [DetailedTransactionModel] = []
+        return try await withThrowingTaskGroup(of: DetailedTransactionModel.self, returning: [DetailedTransactionModel].self) { taskGroup in
+            for transaction in transactionPage.transactions {
+                taskGroup.addTask {
+                    let transaction = try await self.request(url: URLBuilder.transactionInfoURL(hash: transaction.hash), decodeTo: DetailedTransactionModel.self)
+                    return transaction
+                    
+                }
+            }
+            for try await transaction in taskGroup {
+                detailedTransactionsPage.append(transaction)
+            }
+            
+            return detailedTransactionsPage
+        }
     }
 }
 
