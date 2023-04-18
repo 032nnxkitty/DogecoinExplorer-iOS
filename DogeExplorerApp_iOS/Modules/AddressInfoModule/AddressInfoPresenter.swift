@@ -20,7 +20,13 @@ protocol AddressInfoPresenter {
     func getNumberOfSections() -> Int
     func getNumberOfRows() -> Int
     func configureInfoCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void)
-    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void)
+    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String?, String?) -> Void)
+    
+    func trackingStateDidChange()
+    func renameButtonDidTap()
+    func addTracking(with name: String?)
+    func deleteTracking()
+    func renameAddress(newName: String?)
 }
 
 final class AddressInfoPresenterImp: AddressInfoPresenter {
@@ -29,9 +35,10 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     private let trackingService: AddressTrackingService
     
     private let address: String
-    private var isAddressTracking: Bool!
+    private var isAddressTracked: Bool!
     private var addressInfo: (BalanceModel, SentModel, ReceivedModel, TransactionsCountModel)?
     private var loadedTransactions: [DetailedTransactionModel]
+    
     private var showingSection: ShowingSection
     
     private var infoSectionModel: [[String]] {
@@ -50,10 +57,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         self.trackingService = UserDefaults.standard
         
         self.address = address
-        self.loadedTransactions = [DetailedTransactionModel(success: nil, transaction: nil),
-                                   DetailedTransactionModel(success: nil, transaction: nil),
-                                   DetailedTransactionModel(success: nil, transaction: nil),
-                                   DetailedTransactionModel(success: nil, transaction: nil)]
+        self.loadedTransactions = []
         self.showingSection = .info
         
         configureTrackingState()
@@ -80,16 +84,22 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     }
     
     func configureInfoCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void) {
-        guard indexPath.row <= infoSectionModel.count else { return }
+        guard indexPath.row < infoSectionModel.count else { return }
         let title = infoSectionModel[indexPath.row][0]
         let value = infoSectionModel[indexPath.row][1]
         completion(title, value)
     }
-    
     func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void) {
         // guard transactions count
         let title = "Send / Received #\(indexPath.section + 1)"
         let value = "other_info_imitation"
+    }
+    
+    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String?, String?) -> Void) {
+        guard indexPath.section < loadedTransactions.count else { return }
+        loadedTransactions.sort { $0.transaction!.time! > $1.transaction!.time! }
+        let title = "Transaction"
+        let value = loadedTransactions[indexPath.section].transaction?.time?.formatUnixTime(style: .short)
         completion(title, value)
     }
     
@@ -103,28 +113,67 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         }
         view?.reloadData()
     }
+    
+    func trackingStateDidChange() {
+        isAddressTracked ? view?.showDeleteAlert() : view?.showAddTrackingAlert()
+    }
+    
+    func renameButtonDidTap() {
+        view?.showRenameAlert()
+    }
+    
+    func addTracking(with name: String?) {
+        guard let name, !name.isEmpty else {
+            trackingService.addNewTrackedAddress(TrackedAddress(name: "No name", address: address))
+            configureTrackingState()
+            return
+        }
+        trackingService.addNewTrackedAddress(TrackedAddress(name: name, address: address))
+        configureTrackingState()
+    }
+    
+    func deleteTracking() {
+        trackingService.deleteTracking(address)
+        configureTrackingState()
+    }
+    
+    
+    func renameAddress(newName: String?) {
+        guard let newName, !newName.isEmpty else { return }
+        trackingService.renameAddress(address, to: newName)
+        configureTrackingState()
+    }
 }
 
 // MARK: - Private Methods
 private extension AddressInfoPresenterImp {
     func configureTrackingState() {
         if let trackedAddress = trackingService.getTrackedAddressModel(for: address) {
-            isAddressTracking = true
+            isAddressTracked = true
             view?.configureIfAddressTracked(name: trackedAddress.name)
         } else {
-            isAddressTracking = false
+            isAddressTracked = false
             view?.configureIfAddressNotTracked(shortenAddress: address.shortenAddress(prefix: 5, suffix: 4))
         }
     }
     
     func getBaseAddressInfo() {
+        view?.animateLoader(true)
         Task { @MainActor in
             do {
-                addressInfo = try await networkManager.getAddressInfo(address)
+                let start = Date()
+                
+                async let info = networkManager.getAddressInfo(address)
+                async let transactions = networkManager.getDetailedTransactionsPage(for: address, page: 1)
+                addressInfo = try await info
+                loadedTransactions.append(contentsOf: try await transactions)
+                
+                print("load content time: \(Date().timeIntervalSince(start))")
                 view?.reloadData()
             } catch {
-                print("failure while loading address information")
+                view?.showOkActionSheet(title: ":/", message: error.localizedDescription)
             }
+            view?.animateLoader(false)
         }
     }
 }

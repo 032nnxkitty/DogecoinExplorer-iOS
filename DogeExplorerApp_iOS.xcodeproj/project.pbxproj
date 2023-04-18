@@ -27,6 +27,7 @@
 		10A42D7629EB483E00BE04B9 /* ThemeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7529EB483E00BE04B9 /* ThemeService.swift */; };
 		10A42D7829EB532A00BE04B9 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7729EB532A00BE04B9 /* NetworkManager.swift */; };
 		10BA60EC29EC63E5005FCE80 /* InternetConnectionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */; };
+		10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		10A42D7529EB483E00BE04B9 /* ThemeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeService.swift; sourceTree = "<group>"; };
 		10A42D7729EB532A00BE04B9 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionObserver.swift; sourceTree = "<group>"; };
+		10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+UnixTime.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				10A42D7129EB1D5300BE04B9 /* String+Formatting.swift */,
+				10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				10A42D6C29E9B9E400BE04B9 /* ModuleBuilder.swift in Sources */,
 				10A42D6929E9B76700BE04B9 /* R.swift in Sources */,
 				10A42D7629EB483E00BE04B9 /* ThemeService.swift in Sources */,
+				10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */,
 				10BA60EC29EC63E5005FCE80 /* InternetConnectionObserver.swift in Sources */,
 				109FB83B29EC271900D5929F /* DogeChainModels.swift in Sources */,
 				10A42D7029EAE1E200BE04B9 /* AddressTrackingService.swift in Sources */,
