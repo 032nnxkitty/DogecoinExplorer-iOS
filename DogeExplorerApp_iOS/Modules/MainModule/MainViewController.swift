@@ -38,11 +38,6 @@ final class MainViewController: UIViewController {
         return tableView
     }()
     
-    private let searchLoader: UIActivityIndicatorView = {
-        let loader = UIActivityIndicatorView(style: .medium)
-        return loader
-    }()
-    
     private lazy var tableViewRefreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
