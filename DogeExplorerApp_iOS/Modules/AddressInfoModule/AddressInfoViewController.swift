@@ -27,21 +27,34 @@ protocol AddressInfoView: AnyObject {
 final class AddressInfoViewController: UIViewController {
     public var presenter: AddressInfoPresenter!
     
+    private let cellIdentifier = "info.cell"
+    
     // MARK: - UI Elements
+    private let containerStack: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        stack.isLayoutMarginsRelativeArrangement = true
+        stack.axis = .vertical
+        stack.spacing = 10
+        return stack
+    }()
+    
     private lazy var sectionSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["Info", "Transactions"])
         segmentedControl.addTarget(self, action: #selector(sectionDidChange), for: .valueChanged)
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
     }()
     
-    private let informationTableView: UITableView = {
+    private lazy var informationTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "InfoCell")
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.layoutMargins = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
         tableView.backgroundColor = .clear
-        //tableView.sectionFooterHeight = 0
+        tableView.sectionHeaderHeight = 0
+        tableView.dataSource = self
+        tableView.delegate = self
         return tableView
     }()
     
@@ -76,39 +89,30 @@ final class AddressInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewAppearance()
-        configureInfoTableView()
         configureLoader()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
     }
 }
 
 // MARK: - Private Methods
 private extension AddressInfoViewController {
     func configureViewAppearance() {
-        //navigationItem.titleView = sectionSegmentedControl
         view.backgroundColor = .systemBackground
+        
+        view.addSubview(containerStack)
+        NSLayoutConstraint.activate([
+            containerStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            containerStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            containerStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            containerStack.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        containerStack.addArrangedSubview(sectionSegmentedControl)
+        containerStack.addArrangedSubview(informationTableView)
     }
     
     func configureLoader() {
         view.addSubview(loader)
         loader.center = view.center
-    }
-    
-    func configureInfoTableView() {
-        informationTableView.dataSource = self
-        informationTableView.delegate = self
-        
-        view.addSubview(informationTableView)
-        NSLayoutConstraint.activate([
-            informationTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            informationTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            informationTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            informationTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
     }
     
     func createTextFieldAlert(title: String, message: String, placeHolder: String, completion: @escaping (String?) -> Void) -> UIAlertController  {
@@ -220,7 +224,7 @@ extension AddressInfoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "InfoCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         var cellContent = cell.defaultContentConfiguration()
         switch sectionSegmentedControl.selectedSegmentIndex {
         case 0:
@@ -252,14 +256,9 @@ extension AddressInfoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section == 0 else { return nil }
-        let stack = UIStackView()
-        stack.isLayoutMarginsRelativeArrangement =  true
-        stack.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
-        stack.addArrangedSubview(sectionSegmentedControl)
-        return stack
+        return UIView()
     }
-    
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard sectionSegmentedControl.selectedSegmentIndex == 1,
               section == presenter.getNumberOfSections() - 1 else { return nil }
