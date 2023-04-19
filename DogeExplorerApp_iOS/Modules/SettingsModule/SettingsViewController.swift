@@ -115,7 +115,7 @@ extension SettingsViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath)
         var cellContent = cell.defaultContentConfiguration()
         presenter.configureCell(at: indexPath) { title, iconName, isThemeCell in
-            cellContent.image = UIImage(systemName: iconName) ?? UIImage(named: iconName)
+            cellContent.image = UIImage(systemName: iconName) 
             cellContent.text = title
             
             guard isThemeCell else { return }

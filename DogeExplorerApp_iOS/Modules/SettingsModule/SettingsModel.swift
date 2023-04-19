@@ -16,12 +16,12 @@ struct SettingsCell {
 // MARK: Raw Value = Image Name
 enum CellStyle: String {
     case language        = "globe"
-    case theme           = "sun.max"
-    case deleteAddresses = "trash"
-    case github          = "github"
-    case feedback        = "paperplane"
-    case rateApp         = "hand.thumbsup"
-    case supportMe       = "heart"
+    case theme           = "lightbulb.fill"
+    case deleteAddresses = "trash.fill"
+    case github          = "swift"
+    case feedback        = "paperplane.fill"
+    case rateApp         = "hand.thumbsup.fill"
+    case supportMe       = "heart.fill"
 }
 
 typealias SettingsSection = [SettingsCell]
