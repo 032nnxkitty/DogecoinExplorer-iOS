@@ -20,7 +20,7 @@ protocol AddressInfoPresenter {
     func getNumberOfSections() -> Int
     func getNumberOfRows() -> Int
     func configureInfoCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void)
-    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String?, String?) -> Void)
+    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String, String, String) -> Void)
     
     func trackingStateDidChange()
     func renameButtonDidTap()
@@ -92,13 +92,27 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         completion(title, value)
     }
     
-    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String?, String?) -> Void) {
+    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String, String, String) -> Void) {
         guard indexPath.section < loadedTransactions.count else { return }
-        //loadedTransactions.sort { $0.transaction!.time! > $1.transaction!.time! }
-        let title = Int.random(in: 0...1) == 0 ? "Received" : "Sent"
-        let date = loadedTransactions[indexPath.section].transaction?.time?.formatUnixTime(style: .short)
+        let currentTransaction = loadedTransactions[indexPath.section].transaction
         
-        completion(title, "44.453.594,019 DOGE\nFrom: DRPBG...oHz\n\(date)")
+        let time = currentTransaction.time.formatUnixTime(style: .short)
+        
+        for input in currentTransaction.inputs {
+            if input.address == self.address {
+                let value = input.value.formatNumberString()
+                completion("Sent", "\(value) DOGE\n\(time)", "arrow.up.to.line.alt")
+                return
+            }
+        }
+        
+        for output in currentTransaction.outputs {
+            if output.address == self.address {
+                let value = output.value.formatNumberString()
+                completion("Received", "\(value) DOGE\n\(time)", "arrow.down.to.line.alt")
+                return
+            }
+        }
     }
     
     func sectionDidChange(to section: Int) {
@@ -159,10 +173,6 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
             view?.hideLoadTransactionsButton()
             return
         }
-        for _ in 0..<10 {
-            loadedTransactions.append(DetailedTransactionModel(success: nil, transaction: nil))
-        }
-        view?.reloadData()
     }
 }
 
