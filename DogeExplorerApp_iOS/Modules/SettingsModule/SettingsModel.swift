@@ -13,14 +13,15 @@ struct SettingsCell {
     let style: CellStyle
 }
 
+// MARK: Raw Value = Image Name
 enum CellStyle: String {
-    case language
-    case theme
-    case deleteAddresses
-    case github
-    case feedback
-    case rateApp
-    case supportMe
+    case language        = "globe"
+    case theme           = "sun.max"
+    case deleteAddresses = "trash"
+    case github          = "github"
+    case feedback        = "paperplane"
+    case rateApp         = "hand.thumbsup"
+    case supportMe       = "heart"
 }
 
 typealias SettingsSection = [SettingsCell]
