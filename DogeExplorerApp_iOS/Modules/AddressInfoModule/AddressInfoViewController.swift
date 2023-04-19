@@ -50,7 +50,8 @@ final class AddressInfoViewController: UIViewController {
     private lazy var informationTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.layoutMargins = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
+        tableView.showsVerticalScrollIndicator = false
+        tableView.layoutMargins = UIEdgeInsets(top: 0.1, left: 0.1, bottom: 0.1, right: 0.1)
         tableView.backgroundColor = .clear
         tableView.sectionHeaderHeight = 0
         tableView.dataSource = self
@@ -63,18 +64,31 @@ final class AddressInfoViewController: UIViewController {
         return loader
     }()
     
+    private lazy var tableViewRefresh: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        return refreshControl
+    }()
+    
     private lazy var addTrackingButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(trackingStateDidChange))
+        let button = UIBarButtonItem(image: UIImage(systemName: "star"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(trackingStateDidChange))
         return button
     }()
     
     private lazy var deleteTrackingButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trackingStateDidChange))
+        let button = UIBarButtonItem(barButtonSystemItem: .trash,
+                                     target: self,
+                                     action: #selector(trackingStateDidChange))
         return button
     }()
     
     private lazy var renameButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(renameButtonDidTap))
+        let button = UIBarButtonItem(barButtonSystemItem: .compose,
+                                     target: self,
+                                     action: #selector(renameButtonDidTap))
         return button
     }()
     
@@ -89,6 +103,7 @@ final class AddressInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewAppearance()
+        configureContainerStack()
         configureLoader()
     }
 }
@@ -97,7 +112,10 @@ final class AddressInfoViewController: UIViewController {
 private extension AddressInfoViewController {
     func configureViewAppearance() {
         view.backgroundColor = .systemBackground
-        
+        informationTableView.refreshControl = tableViewRefresh
+    }
+    
+    func configureContainerStack() {
         view.addSubview(containerStack)
         NSLayoutConstraint.activate([
             containerStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -145,6 +163,12 @@ private extension AddressInfoViewController {
     func loadTransactionsButtonDidTap() {
         print("here")
         presenter.loadTransactionsButtonDidTap()
+    }
+    
+    func refresh() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.tableViewRefresh.endRefreshing()
+        }
     }
 }
 
@@ -237,26 +261,26 @@ extension AddressInfoViewController: UITableViewDataSource {
             cellContent.secondaryTextProperties.font = .preferredFont(forTextStyle: .body)
             cell.selectionStyle = .none
         case 1:
-            presenter.configureTransactionCell(at: indexPath) { title, value in
+            presenter.configureTransactionCell(at: indexPath) { title, value, imageName in
                 cellContent.text = title
                 cellContent.secondaryText = value
+                cellContent.image = UIImage(systemName: imageName)
             }
+            
             cellContent.textProperties.font = .preferredFont(forTextStyle: .headline)
             cellContent.secondaryTextProperties.font = .preferredFont(forTextStyle: .footnote)
             cellContent.secondaryTextProperties.color = .gray
-            cellContent.image = UIImage(systemName: "arrow.up.to.line.alt")
             cell.selectionStyle = .default
         default:
             break
         }
-        
         cell.backgroundColor = .systemGray6
         cell.contentConfiguration = cellContent
         return cell
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return UIView()
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return " "
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
