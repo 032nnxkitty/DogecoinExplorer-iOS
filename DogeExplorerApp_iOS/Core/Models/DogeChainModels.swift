@@ -61,26 +61,28 @@ struct TransactionBaseInfo: Codable {
 
 // MARK: - Detail Transaction Info Model
 struct DetailedTransactionModel: Codable {
-    let success: Int?
-    let transaction: Transaction?
+    let success: Int
+    let transaction: Transaction
 }
 
 struct Transaction: Codable {
-    let hash: String?
+    let hash: String
     let confirmations: Int?
     let size: Int?
     let vsize: Int?
-    let weight: Int?
+    let weight: Int? // weight can be nil
     let version: Int?
     let locktime: Int?
     let blockHash: String?
-    let time, inputsN: Int?
+    let time: Int
+    let inputsN: Int?
     let inputsValue: String?
-    let inputs: [Input]?
+    let inputs: [Input]
     let outputsN: Int?
     let outputsValue: String?
-    let outputs: [Output]?
-    let fee, price: String?
+    let outputs: [Output]
+    let fee: String
+    let price: String?
     
     private enum CodingKeys: String, CodingKey {
         case hash, confirmations, size, vsize, weight, version, locktime
@@ -97,8 +99,8 @@ struct Transaction: Codable {
 
 struct Input: Codable {
     let pos: Int?
-    let value: String?
-    let address: String?
+    let value: String
+    let address: String
     let scriptSig: ScriptSig?
     let previousOutput: PreviousOutput?
     
@@ -119,9 +121,9 @@ struct ScriptSig: Codable {
 
 struct Output: Codable {
     let pos: Int?
-    let value: String?
+    let value: String
     let type: String?
-    let address: String?
+    let address: String
     let script: Script?
     let spent: PreviousOutput?
 }
