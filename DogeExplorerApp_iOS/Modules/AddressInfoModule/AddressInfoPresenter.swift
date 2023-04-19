@@ -114,7 +114,15 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     
     // MARK: - Tracking Methods
     func trackingStateDidChange() {
-        isAddressTracked ? view?.showDeleteAlert() : view?.showAddTrackingAlert()
+        if isAddressTracked {
+            view?.showDeleteAlert()
+        } else {
+            guard trackingService.getAllTrackedAddresses().count < 10 else {
+                view?.showOkActionSheet(title: "Limit", message: "You can track only 10 addresses")
+                return
+            }
+            view?.showAddTrackingAlert()
+        }
     }
     
     func renameButtonDidTap() {
@@ -178,10 +186,18 @@ private extension AddressInfoPresenterImp {
                 
                 async let info = networkManager.getAddressInfo(address)
                 async let transactions = networkManager.getDetailedTransactionsPage(for: address, page: 1)
+                
                 addressInfo = try await info
                 loadedTransactions.append(contentsOf: try await transactions)
                 
+                if let addressInfo, addressInfo.3.info.total <= 10 {
+                    view?.hideLoadTransactionsButton()
+                }
+                
+                loadedTransactions.sort { $0.transaction.time > $1.transaction.time }
+                
                 print("load content time: \(Date().timeIntervalSince(start))")
+                
                 view?.reloadData()
             } catch {
                 view?.showOkActionSheet(title: ":/", message: error.localizedDescription)
