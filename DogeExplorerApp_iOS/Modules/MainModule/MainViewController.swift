@@ -83,7 +83,7 @@ final class MainViewController: UIViewController {
 // MARK: - Private Methods
 private extension MainViewController {
     func configureAppearance() {
-        title = "Doge explorer"
+        title = "Doge explorer🔎👀"
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.backButtonDisplayMode = .minimal
