@@ -93,8 +93,8 @@ final class AddressInfoViewController: UIViewController {
     }()
     
     private lazy var loadTransactionsButton: UIButton = {
-        let button = UIButton(configuration: .filled())
-        button.setTitle("button", for: .normal)
+        let button = UIButton(configuration: .plain())
+        button.setTitle("Load more transactions", for: .normal)
         button.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
         return button
     }()
@@ -161,7 +161,6 @@ private extension AddressInfoViewController {
     }
     
     func loadTransactionsButtonDidTap() {
-        print("here")
         presenter.loadTransactionsButtonDidTap()
     }
     
@@ -284,8 +283,8 @@ extension AddressInfoViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard sectionSegmentedControl.selectedSegmentIndex == 1,
-              section == presenter.getNumberOfSections() - 1 else { return nil }
+        guard presenter.isLoadMoreButtonVisible(section) else { return nil }
+        
         let stack = UIStackView()
         stack.isLayoutMarginsRelativeArrangement =  true
         stack.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)

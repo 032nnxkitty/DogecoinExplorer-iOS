@@ -39,7 +39,7 @@ final class NetworkManagerImp: NetworkManager {
     }
     
     func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel] {
-        let transactionPage = try await request(url: URLBuilder.transactionsPageURL(for: address, page: 1), decodeTo: TransactionsPageModel.self)
+        let transactionPage = try await request(url: URLBuilder.transactionsPageURL(for: address, page: page), decodeTo: TransactionsPageModel.self)
         
         var detailedTransactionsPage: [DetailedTransactionModel] = []
         return try await withThrowingTaskGroup(of: DetailedTransactionModel.self, returning: [DetailedTransactionModel].self) { taskGroup in

@@ -28,6 +28,7 @@ protocol AddressInfoPresenter {
     func deleteTracking()
     func renameAddress(newName: String?)
     
+    func isLoadMoreButtonVisible(_ section: Int) -> Bool
     func loadTransactionsButtonDidTap()
 }
 
@@ -101,7 +102,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         for input in currentTransaction.inputs {
             if input.address == self.address {
                 let value = input.value.formatNumberString()
-                completion("Sent", "\(value) DOGE\n\(time)", "arrow.up.to.line.alt")
+                completion("Sent \(indexPath.section + 1)", "\(value) DOGE\n\(time)", "arrow.up.to.line.alt")
                 return
             }
         }
@@ -109,7 +110,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         for output in currentTransaction.outputs {
             if output.address == self.address {
                 let value = output.value.formatNumberString()
-                completion("Received", "\(value) DOGE\n\(time)", "arrow.down.to.line.alt")
+                completion("Received \(indexPath.section + 1)", "\(value) DOGE\n\(time)", "arrow.down.to.line.alt")
                 return
             }
         }
@@ -165,13 +166,28 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         configureTrackingState()
     }
     
-    //
+    // MARK: - Load Transactions Methods
+    func isLoadMoreButtonVisible(_ section: Int) -> Bool {
+        guard showingSection == .transactions else { return false }
+        guard section == loadedTransactions.count - 1 else { return false }
+        return true
+    }
+    
     func loadTransactionsButtonDidTap() {
         guard let allTransactionsCount = addressInfo?.3.info.total else { return }
         let difference = allTransactionsCount - loadedTransactions.count
-        guard difference > 0 else {
-            view?.hideLoadTransactionsButton()
-            return
+        guard difference > 0 else { return }
+        if difference <= 10 { view?.hideLoadTransactionsButton() }
+        let pageToLoad = (loadedTransactions.count / 10) + 1
+        Task { @MainActor in
+            do {
+                let transactions = try await networkManager.getDetailedTransactionsPage(for: address, page: pageToLoad)
+                loadedTransactions += transactions
+                loadedTransactions.sort { $0.transaction.time > $1.transaction.time }
+                view?.reloadData()
+            } catch {
+                print(error, #function)
+            }
         }
     }
 }
