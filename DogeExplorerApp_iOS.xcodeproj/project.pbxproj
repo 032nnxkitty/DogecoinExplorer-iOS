@@ -28,6 +28,7 @@
 		10A42D7829EB532A00BE04B9 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7729EB532A00BE04B9 /* NetworkManager.swift */; };
 		10BA60EC29EC63E5005FCE80 /* InternetConnectionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */; };
 		10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */; };
+		10ED20AD29F1DFFD008302EA /* LoaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED20AC29F1DFFD008302EA /* LoaderButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		10A42D7729EB532A00BE04B9 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionObserver.swift; sourceTree = "<group>"; };
 		10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+UnixTime.swift"; sourceTree = "<group>"; };
+		10ED20AC29F1DFFD008302EA /* LoaderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 		10529EF829E8A65E00E73212 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				10ED20AC29F1DFFD008302EA /* LoaderButton.swift */,
 				109FB83929EC270900D5929F /* Models */,
 				10A42D6A29E9B78900BE04B9 /* Extensions */,
 				10A42D6829E9B76700BE04B9 /* R.swift */,
@@ -258,6 +261,7 @@
 				10A42D5A29E9B18C00BE04B9 /* MainPresenter.swift in Sources */,
 				10A42D6529E9B2D400BE04B9 /* AddressInfoPresenter.swift in Sources */,
 				10A42D6C29E9B9E400BE04B9 /* ModuleBuilder.swift in Sources */,
+				10ED20AD29F1DFFD008302EA /* LoaderButton.swift in Sources */,
 				10A42D6929E9B76700BE04B9 /* R.swift in Sources */,
 				10A42D7629EB483E00BE04B9 /* ThemeService.swift in Sources */,
 				10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */,

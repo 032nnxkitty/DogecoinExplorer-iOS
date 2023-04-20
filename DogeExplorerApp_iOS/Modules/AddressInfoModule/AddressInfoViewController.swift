@@ -15,7 +15,9 @@ protocol AddressInfoView: AnyObject {
     func configureIfAddressTracked(name: String)
     func configureIfAddressNotTracked(shortenAddress: String)
     func showOkActionSheet(title: String, message: String)
-    func animateLoader(_ isAnimated: Bool)
+    
+    func animateCentralLoader(_ isAnimated: Bool)
+    func animateLoadTransactionLoader(_ isAnimated: Bool)
     
     func showAddTrackingAlert()
     func showDeleteAlert()
@@ -92,8 +94,8 @@ final class AddressInfoViewController: UIViewController {
         return button
     }()
     
-    private lazy var loadTransactionsButton: UIButton = {
-        let button = UIButton(configuration: .plain())
+    private lazy var loadTransactionsButton: LoaderButton = {
+        let button = LoaderButton(configuration: .plain())
         button.setTitle("Load more transactions", for: .normal)
         button.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
         return button
@@ -202,8 +204,12 @@ extension AddressInfoViewController: AddressInfoView {
         present(actionSheet, animated: true)
     }
     
-    func animateLoader(_ isAnimated: Bool) {
+    func animateCentralLoader(_ isAnimated: Bool) {
         isAnimated ? loader.startAnimating() : loader.stopAnimating()
+    }
+    
+    func animateLoadTransactionLoader(_ isAnimated: Bool) {
+        isAnimated ? loadTransactionsButton.startLoading() : loadTransactionsButton.stopLoading()
     }
     
     func showAddTrackingAlert() {
@@ -281,15 +287,15 @@ extension AddressInfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return " "
     }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard presenter.isLoadMoreButtonVisible(section) else { return 10 }
+        return 60
+    }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard presenter.isLoadMoreButtonVisible(section) else { return nil }
-        
-        let stack = UIStackView()
-        stack.isLayoutMarginsRelativeArrangement =  true
-        stack.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
-        stack.addArrangedSubview(loadTransactionsButton)
-        return stack
+        return loadTransactionsButton
     }
 }
 

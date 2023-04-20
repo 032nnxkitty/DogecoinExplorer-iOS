@@ -179,11 +179,18 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         guard difference > 0 else { return }
         if difference <= 10 { view?.hideLoadTransactionsButton() }
         let pageToLoad = (loadedTransactions.count / 10) + 1
+        view?.animateLoadTransactionLoader(true)
         Task { @MainActor in
             do {
+                let start = Date()
+                
                 let transactions = try await networkManager.getDetailedTransactionsPage(for: address, page: pageToLoad)
                 loadedTransactions += transactions
                 loadedTransactions.sort { $0.transaction.time > $1.transaction.time }
+                view?.animateLoadTransactionLoader(false)
+                
+                print("full transaction page loading time: \(Date().timeIntervalSince(start))")
+                
                 view?.reloadData()
             } catch {
                 print(error, #function)
@@ -205,7 +212,7 @@ private extension AddressInfoPresenterImp {
     }
     
     func getBaseAddressInfo() {
-        view?.animateLoader(true)
+        view?.animateCentralLoader(true)
         Task { @MainActor in
             do {
                 let start = Date()
@@ -222,13 +229,13 @@ private extension AddressInfoPresenterImp {
                 
                 loadedTransactions.sort { $0.transaction.time > $1.transaction.time }
                 
-                print("load content time: \(Date().timeIntervalSince(start))")
+                print("base info loading time: \(Date().timeIntervalSince(start))")
                 
                 view?.reloadData()
             } catch {
                 view?.showOkActionSheet(title: ":/", message: error.localizedDescription)
             }
-            view?.animateLoader(false)
+            view?.animateCentralLoader(false)
         }
     }
 }
