@@ -1,65 +1,12 @@
 //
-//  DogeChainModels.swift
+//  DetailedTransactionInfoModel.swift
 //  DogeExplorerApp_iOS
 //
-//  Created by Arseniy Zolotarev on 16.04.2023.
+//  Created by Arseniy Zolotarev on 21.04.2023.
 //
 
 import Foundation
 
-// MARK: - Balance Model
-struct BalanceModel: Decodable {
-    var balance: String
-    var confirmed: String
-    var unconfirmed: String
-    var success: Int
-}
-
-// MARK: - Amount Sent Model
-struct SentModel: Decodable {
-    var sent: String
-    var success: Int
-}
-
-// MARK: - Amount Received Model
-struct ReceivedModel: Decodable {
-    var received: String
-    var success: Int
-}
-
-// MARK: - Transactions Count Model
-struct TransactionsCountModel: Decodable {
-    let info: TransactionCountInfo
-    let success: Int
-    
-    private enum CodingKeys: String, CodingKey {
-        case info = "transaction_count"
-        case success
-    }
-}
-
-struct TransactionCountInfo: Decodable {
-    let sent: Int
-    let received: Int
-    let total: Int
-}
-
-// MARK: - Transactions Page Model
-struct TransactionsPageModel: Codable {
-    let transactions: [TransactionBaseInfo]
-    let success: Int
-    
-}
-
-struct TransactionBaseInfo: Codable {
-    let hash: String
-    let value: String
-    let time: Int
-    let block: Int
-    let price: String
-}
-
-// MARK: - Detail Transaction Info Model
 struct DetailedTransactionModel: Codable {
     let success: Int
     let transaction: Transaction
@@ -132,6 +79,3 @@ struct Script: Codable {
     let hex: String
     let asm: String?
 }
-
-
-

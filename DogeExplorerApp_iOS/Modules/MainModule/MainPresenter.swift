@@ -8,22 +8,22 @@
 import Foundation
 
 protocol MainPresenter {
-    init(view: MainView, networkManager: NetworkManager)
-    func settingsButtonDidTap()
+    init(view: MainView, networkManager: NetworkManager, trackingService: AddressTrackingService)
     
     func getNumberOfTrackedAddresses() -> Int
     func configureCell(at indexPath: IndexPath, completion: @escaping (_ name: String, _ address: String) -> Void)
     
-    func searchButtonDidTap(with text: String?)
     
     func deleteTrackingForAddress(at indexPath: IndexPath)
     func renameAddress(at indexPath: IndexPath, newName: String?)
     
     func viewWillAppear()
     func getTitleFoHeader(in section: Int) -> String?
-    func refresh()
     
+    func refresh()
+    func settingsButtonDidTap()
     func didSelectAddress(at indexPath: IndexPath)
+    func searchButtonDidTap(with text: String?)
 }
 
 final class MainPresenterImp: MainPresenter {
@@ -32,10 +32,10 @@ final class MainPresenterImp: MainPresenter {
     private let networkManager: NetworkManager
     private let internetConnectionObserver: InternetConnectionObserver
     
-    init(view: MainView, networkManager: NetworkManager) {
+    init(view: MainView, networkManager: NetworkManager, trackingService: AddressTrackingService) {
         self.view = view
         self.networkManager = networkManager
-        self.trackingService = UserDefaults.standard
+        self.trackingService = trackingService
         self.internetConnectionObserver = InternetConnectionObserverImp()
         
         trackingService.addMockData()

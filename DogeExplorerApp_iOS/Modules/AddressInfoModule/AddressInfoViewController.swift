@@ -9,16 +9,16 @@ import UIKit
 
 protocol AddressInfoView: AnyObject {
     func reloadData()
+    
     func configureInfoSection()
     func configureTransactionsSection()
-    
     func configureIfAddressTracked(name: String)
     func configureIfAddressNotTracked(shortenAddress: String)
-    func showOkActionSheet(title: String, message: String)
     
     func animateCentralLoader(_ isAnimated: Bool)
     func animateLoadTransactionLoader(_ isAnimated: Bool)
     
+    func showOkActionSheet(title: String, message: String)
     func showAddTrackingAlert()
     func showDeleteAlert()
     func showRenameAlert()

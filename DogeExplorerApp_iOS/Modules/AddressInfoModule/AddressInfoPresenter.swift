@@ -12,24 +12,28 @@ enum ShowingSection: Int {
     case transactions
 }
 
-protocol AddressInfoPresenter {
-    init(address: String, view: AddressInfoView, networkManager: NetworkManager)
-    
-    func sectionDidChange(to section: Int)
+protocol AddressInfoPresenter: AddressInfoEventHandling, AddressInfoActions{
+    init(address: String, view: AddressInfoView, networkManager: NetworkManager, trackingService: AddressTrackingService)
     
     func getNumberOfSections() -> Int
     func getNumberOfRows() -> Int
+    func isLoadMoreButtonVisible(_ section: Int) -> Bool
+}
+
+protocol AddressInfoEventHandling {
+    func sectionDidChange(to section: Int)
+    func trackingStateDidChange()
+    func renameButtonDidTap()
+    func loadTransactionsButtonDidTap()
+}
+
+protocol AddressInfoActions {
     func configureInfoCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void)
     func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String, String, String) -> Void)
     
-    func trackingStateDidChange()
-    func renameButtonDidTap()
     func addTracking(with name: String?)
-    func deleteTracking()
     func renameAddress(newName: String?)
-    
-    func isLoadMoreButtonVisible(_ section: Int) -> Bool
-    func loadTransactionsButtonDidTap()
+    func deleteTracking()
 }
 
 final class AddressInfoPresenterImp: AddressInfoPresenter {
@@ -54,10 +58,10 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     }
     
     // MARK: - Init
-    required init(address: String, view: AddressInfoView, networkManager: NetworkManager) {
+    required init(address: String, view: AddressInfoView, networkManager: NetworkManager, trackingService: AddressTrackingService) {
         self.view = view
         self.networkManager = networkManager
-        self.trackingService = UserDefaults.standard
+        self.trackingService = trackingService
         
         self.address = address
         self.loadedTransactions = []
@@ -176,7 +180,6 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         guard let allTransactionsCount = addressInfo?.3.info.total else { return }
         let difference = allTransactionsCount - loadedTransactions.count
         guard difference > 0 else { return }
-        if difference <= 10 { view?.hideLoadTransactionsButton() }
         let pageToLoad = (loadedTransactions.count / 10) + 1
         view?.animateLoadTransactionLoader(true)
         Task { @MainActor in
@@ -187,7 +190,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
                 loadedTransactions += transactions
                 loadedTransactions.sort { $0.transaction.time > $1.transaction.time }
                 view?.animateLoadTransactionLoader(false)
-                
+                if difference <= 10 { view?.hideLoadTransactionsButton() }
                 print("full transaction page loading time: \(Date().timeIntervalSince(start))")
                 
                 view?.reloadData()

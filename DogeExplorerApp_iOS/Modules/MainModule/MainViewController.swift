@@ -10,8 +10,9 @@ import UIKit
 protocol MainView: AnyObject {
     func showSettingsViewController()
     func showInfoViewController(for address: String)
-    func reloadData()
     func showOkActionSheet(title: String, message: String)
+    
+    func reloadData()
 }
 
 final class MainViewController: UIViewController {

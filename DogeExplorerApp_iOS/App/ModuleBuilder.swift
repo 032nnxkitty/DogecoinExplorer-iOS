@@ -11,14 +11,16 @@ final class ModuleBuilder {
     static func createMainModule() -> UIViewController {
         let view = MainViewController()
         let networkManager = NetworkManagerImp()
-        let presenter = MainPresenterImp(view: view, networkManager: networkManager)
+        let trackingService = UserDefaults.standard
+        let presenter = MainPresenterImp(view: view, networkManager: networkManager, trackingService: trackingService)
         view.presenter = presenter
         return view
     }
     
     static func createSettingsModule() -> UIViewController {
         let view = SettingsViewController()
-        let presenter = SettingsPresenterImp(view: view)
+        let trackingService = UserDefaults.standard
+        let presenter = SettingsPresenterImp(view: view, trackingService: trackingService)
         view.presenter = presenter
         return view
     }
@@ -26,7 +28,8 @@ final class ModuleBuilder {
     static func createAddressInfoModule(_ address: String) -> UIViewController {
         let view = AddressInfoViewController()
         let networkManager = NetworkManagerImp()
-        let presenter = AddressInfoPresenterImp(address: address, view: view, networkManager: networkManager)
+        let trackingService = UserDefaults.standard
+        let presenter = AddressInfoPresenterImp(address: address, view: view, networkManager: networkManager, trackingService: trackingService)
         view.presenter = presenter
         return view
     }

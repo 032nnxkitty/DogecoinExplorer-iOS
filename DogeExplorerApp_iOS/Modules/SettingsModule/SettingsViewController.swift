@@ -8,10 +8,11 @@
 import UIKit
 
 protocol SettingsView: AnyObject {
-    func openLink(url: URL)
     func showConfirmationActionSheet()
     func showOkActionSheet(title: String, message: String)
+    
     func setThemeIndex(_ index: Int)
+    func openLink(url: URL)
     func changeTheme()
 }
 

@@ -21,5 +21,5 @@ enum R {
     enum Keys {
         static let theme = "themeKey"
         static let trackingAddresses = "trackedAddressesKey"
-    }
+    } 
 }

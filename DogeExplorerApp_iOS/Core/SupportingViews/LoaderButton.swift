@@ -24,13 +24,11 @@ class LoaderButton: UIButton {
     func startLoading() {
         loader.startAnimating()
         titleLabel?.alpha = 0
-        imageView?.alpha = 0
     }
     
     func stopLoading() {
         loader.stopAnimating()
         titleLabel?.alpha = 1
-        imageView?.alpha = 1
     }
     
     // MARK: - Private Methods
