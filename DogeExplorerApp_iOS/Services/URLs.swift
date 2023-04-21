@@ -7,32 +7,32 @@
 
 import Foundation
 
-struct URLBuilder {
+enum URLs {
     private static var baseURL: URL? {
         URL(string: "https://dogechain.info/api/v1/")
     }
     
-    static func balanceURL(for address: String) -> URL? {
+    static func getBalance(for address: String) -> URL? {
         return URL(string: "address/balance/\(address)", relativeTo: baseURL)
     }
     
-    static func sentURL(for address: String) -> URL? {
+    static func getAmountSent(for address: String) -> URL? {
         return URL(string: "address/sent/\(address)", relativeTo: baseURL)
     }
     
-    static func receivedURL(for address: String) -> URL? {
+    static func getAmountReceived(for address: String) -> URL? {
         return URL(string: "address/received/\(address)", relativeTo: baseURL)
     }
     
-    static func transactionsCountURL(for address: String) -> URL? {
+    static func getTransactionsCount(for address: String) -> URL? {
         return URL(string: "address/transaction_count/\(address)", relativeTo: baseURL)
     }
     
-    static func transactionsPageURL(for address: String, page: Int) -> URL? {
+    static func getTransactionsPage(for address: String, page: Int) -> URL? {
         return URL(string: "address/transactions/\(address)/\(page)", relativeTo: baseURL)
     }
     
-    static func transactionInfoURL(hash: String) -> URL? {
+    static func getTransactionInfo(hash: String) -> URL? {
         return URL(string: "transaction/\(hash)", relativeTo: baseURL)
     }
 }

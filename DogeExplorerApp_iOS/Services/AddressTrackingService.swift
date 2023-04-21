@@ -29,12 +29,12 @@ protocol AddressTrackingService {
 extension UserDefaults: AddressTrackingService {
     private var trackedAddresses: TrackedAddresses {
         get {
-            guard let data = object(forKey: "trackedAddresses") as? Data else { return [] }
+            guard let data = object(forKey: R.Keys.trackingAddresses) as? Data else { return [] }
             guard let addresses = try? JSONDecoder().decode(TrackedAddresses.self, from: data) else { return [] }
             return addresses
         } set {
             guard let addressesData = try? JSONEncoder().encode(newValue) else { return }
-            set(addressesData, forKey: "trackedAddresses")
+            set(addressesData, forKey: R.Keys.trackingAddresses)
         }
     }
     

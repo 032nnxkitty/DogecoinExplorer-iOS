@@ -30,7 +30,7 @@ final class MainViewController: UIViewController {
     
     private let trackedAddressesTableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "trackedIdentifier")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: R.Identifiers.trackingCell)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.showsVerticalScrollIndicator = false
         tableView.keyboardDismissMode = .onDrag
@@ -186,7 +186,7 @@ extension MainViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "trackedIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.trackingCell, for: indexPath)
         var cellContent = cell.defaultContentConfiguration()
         presenter.configureCell(at: indexPath) { name, address in
             cellContent.text = name
@@ -195,10 +195,7 @@ extension MainViewController: UITableViewDataSource {
         cellContent.image = UIImage(systemName: "eyes")
         cellContent.imageProperties.maximumSize = CGSize(width: 40, height: 40)
         
-        cellContent.textProperties.adjustsFontForContentSizeCategory = true
         cellContent.textProperties.numberOfLines = 1
-        
-        cellContent.secondaryTextProperties.adjustsFontForContentSizeCategory = true
         cellContent.secondaryTextProperties.color = .darkGray
         
         cell.contentConfiguration = cellContent

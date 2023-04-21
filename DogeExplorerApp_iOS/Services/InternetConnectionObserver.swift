@@ -19,6 +19,7 @@ final class InternetConnectionObserverImp: InternetConnectionObserver {
         return status == .satisfied
     }
     
+    // MARK: - Init & Deinit
     init() {
         self.monitor = NWPathMonitor()
         self.status = .requiresConnection
@@ -31,6 +32,7 @@ final class InternetConnectionObserverImp: InternetConnectionObserver {
     }
 }
 
+// MARK: - Private Methods
 private extension InternetConnectionObserverImp {
     func startMonitoring() {
         monitor.pathUpdateHandler = { [weak self] path in

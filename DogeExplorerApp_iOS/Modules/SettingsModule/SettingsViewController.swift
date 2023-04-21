@@ -21,7 +21,7 @@ final class SettingsViewController: UIViewController {
     // MARK: - UI Elements
     private let settingsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "settingsCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: R.Identifiers.settingsCell)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .clear
         return tableView
@@ -112,7 +112,7 @@ extension SettingsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.settingsCell, for: indexPath)
         var cellContent = cell.defaultContentConfiguration()
         presenter.configureCell(at: indexPath) { title, iconName, isThemeCell in
             cellContent.image = UIImage(systemName: iconName) 

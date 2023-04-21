@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct SettingsCell {
     let title: String
     let style: CellStyle

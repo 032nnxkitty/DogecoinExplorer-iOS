@@ -23,7 +23,7 @@ protocol NetworkManager {
 final class NetworkManagerImp: NetworkManager {
     func checkAddressExistence(_ address: String) async throws -> Bool {
         do {
-            let _ = try await request(url: URLBuilder.balanceURL(for: address), decodeTo: BalanceModel.self)
+            let _ = try await request(url: URLs.getBalance(for: address), decodeTo: BalanceModel.self)
             return true
         } catch {
             return false
@@ -31,25 +31,25 @@ final class NetworkManagerImp: NetworkManager {
     }
     
     func getAddressInfo(_ address: String) async throws -> (BalanceModel, SentModel, ReceivedModel, TransactionsCountModel) {
-        async let balance           = request(url: URLBuilder.balanceURL(for: address), decodeTo: BalanceModel.self)
-        async let sent              = request(url: URLBuilder.sentURL(for: address), decodeTo: SentModel.self)
-        async let received          = request(url: URLBuilder.receivedURL(for: address), decodeTo: ReceivedModel.self)
-        async let transactionsCount = request(url: URLBuilder.transactionsCountURL(for: address), decodeTo: TransactionsCountModel.self)
+        async let balance           = request(url: URLs.getBalance(for: address), decodeTo: BalanceModel.self)
+        async let sent              = request(url: URLs.getAmountSent(for: address), decodeTo: SentModel.self)
+        async let received          = request(url: URLs.getAmountReceived(for: address), decodeTo: ReceivedModel.self)
+        async let transactionsCount = request(url: URLs.getTransactionsCount(for: address), decodeTo: TransactionsCountModel.self)
         return try await (balance, sent, received, transactionsCount)
     }
     
     func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel] {
-        let transactionPage = try await request(url: URLBuilder.transactionsPageURL(for: address, page: page), decodeTo: TransactionsPageModel.self)
+        let transactionPage = try await request(url: URLs.getTransactionsPage(for: address, page: page), decodeTo: TransactionsPageModel.self)
         
         var detailedTransactionsPage: [DetailedTransactionModel] = []
         return try await withThrowingTaskGroup(of: DetailedTransactionModel.self, returning: [DetailedTransactionModel].self) { taskGroup in
             for transaction in transactionPage.transactions {
                 taskGroup.addTask {
-                    let transaction = try await self.request(url: URLBuilder.transactionInfoURL(hash: transaction.hash), decodeTo: DetailedTransactionModel.self)
+                    let transaction = try await self.request(url: URLs.getTransactionInfo(hash: transaction.hash), decodeTo: DetailedTransactionModel.self)
                     return transaction
-                    
                 }
             }
+            
             for try await transaction in taskGroup {
                 detailedTransactionsPage.append(transaction)
             }

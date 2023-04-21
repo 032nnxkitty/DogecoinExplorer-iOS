@@ -67,7 +67,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         getBaseAddressInfo()
     }
     
-    // MARK: - Public Methods
+    // MARK: - Table View Configuring Methods
     func getNumberOfSections() -> Int {
         switch showingSection {
         case .info:
@@ -140,10 +140,6 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         }
     }
     
-    func renameButtonDidTap() {
-        view?.showRenameAlert()
-    }
-    
     func addTracking(with name: String?) {
         guard let name, !name.isEmpty else {
             trackingService.addNewTrackedAddress(TrackedAddress(name: "No name", address: address))
@@ -159,6 +155,9 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         configureTrackingState()
     }
     
+    func renameButtonDidTap() {
+        view?.showRenameAlert()
+    }
     
     func renameAddress(newName: String?) {
         guard let newName, !newName.isEmpty else { return }

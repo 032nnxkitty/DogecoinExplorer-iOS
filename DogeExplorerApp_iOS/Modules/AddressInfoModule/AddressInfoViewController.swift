@@ -29,8 +29,6 @@ protocol AddressInfoView: AnyObject {
 final class AddressInfoViewController: UIViewController {
     public var presenter: AddressInfoPresenter!
     
-    private let cellIdentifier = "info.cell"
-    
     // MARK: - UI Elements
     private let containerStack: UIStackView = {
         let stack = UIStackView()
@@ -51,7 +49,7 @@ final class AddressInfoViewController: UIViewController {
     
     private lazy var informationTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: R.Identifiers.addressInfoCell)
         tableView.showsVerticalScrollIndicator = false
         tableView.layoutMargins = UIEdgeInsets(top: 0.1, left: 0.1, bottom: 0.1, right: 0.1)
         tableView.backgroundColor = .clear
@@ -253,7 +251,7 @@ extension AddressInfoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.addressInfoCell, for: indexPath)
         var cellContent = cell.defaultContentConfiguration()
         switch sectionSegmentedControl.selectedSegmentIndex {
         case 0:
