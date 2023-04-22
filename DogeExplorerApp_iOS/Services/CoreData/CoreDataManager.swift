@@ -20,6 +20,9 @@ protocol AddressTrackingService {
 }
 
 final class CoreDataManager {
+    static let shared = CoreDataManager()
+    private init() {}
+    
     private var entityName: String {
         return String(describing: TrackedAddressEntity.self)
     }
@@ -48,9 +51,11 @@ final class CoreDataManager {
         }
     }
 }
+
+// MARK: - Address Tracking Service
 extension CoreDataManager: AddressTrackingService {
     func addNewTrackedAddress(address: String, name: String) {
-        let newAddressEntity = TrackedAddressEntity(context: viewContext)
+        let newAddressEntity = TrackedAddressEntity(context: persistentContainer.viewContext)
         newAddressEntity.address = address
         newAddressEntity.name = name
         saveContext()
@@ -65,7 +70,7 @@ extension CoreDataManager: AddressTrackingService {
                 result.append((address, name))
             }
         }
-        return result
+        return result.reversed()
     }
     
     func deleteAllTrackedAddresses() {

@@ -8,27 +8,29 @@
 import UIKit
 
 final class ModuleBuilder {
-    static func createMainModule() -> UIViewController {
+    private init() {}
+    
+    class func createMainModule() -> UIViewController {
         let view = MainViewController()
         let networkManager = NetworkManagerImp()
-        let trackingService = CoreDataManager()
+        let trackingService = CoreDataManager.shared
         let presenter = MainPresenterImp(view: view, networkManager: networkManager, trackingService: trackingService)
         view.presenter = presenter
         return view
     }
     
-    static func createSettingsModule() -> UIViewController {
+    class func createSettingsModule() -> UIViewController {
         let view = SettingsViewController()
-        let trackingService = CoreDataManager()
+        let trackingService = CoreDataManager.shared
         let presenter = SettingsPresenterImp(view: view, trackingService: trackingService)
         view.presenter = presenter
         return view
     }
     
-    static func createAddressInfoModule(_ address: String) -> UIViewController {
+    class func createAddressInfoModule(_ address: String) -> UIViewController {
         let view = AddressInfoViewController()
         let networkManager = NetworkManagerImp()
-        let trackingService = CoreDataManager()
+        let trackingService = CoreDataManager.shared
         let presenter = AddressInfoPresenterImp(address: address, view: view, networkManager: networkManager, trackingService: trackingService)
         view.presenter = presenter
         return view
