@@ -275,16 +275,20 @@ extension AddressInfoViewController: UITableViewDataSource {
             cellContent.textProperties.color = .gray
             cellContent.secondaryTextProperties.font = .preferredFont(forTextStyle: .body)
             cell.selectionStyle = .none
+            cell.accessoryType = .none
         case 1:
             presenter.configureTransactionCell(at: indexPath) { title, value, imageName in
                 cellContent.text = title
                 cellContent.secondaryText = value
                 cellContent.image = UIImage(systemName: imageName)
-                cellContent.imageProperties.tintColor = title == "Received" ? .green : .red
+                cellContent.textProperties.color = title == "Received" ? .systemGreen : .systemRed
+                cellContent.imageProperties.tintColor = title == "Received" ? .systemGreen : .systemRed
             }
+            
             cellContent.textProperties.font = .preferredFont(forTextStyle: .headline)
             cellContent.secondaryTextProperties.font = .preferredFont(forTextStyle: .footnote)
             cellContent.secondaryTextProperties.color = .gray
+            cell.accessoryType = .disclosureIndicator
             cell.selectionStyle = .default
         default:
             break

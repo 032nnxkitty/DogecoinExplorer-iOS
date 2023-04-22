@@ -103,11 +103,11 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         let currentTransaction = loadedTransactions[indexPath.section].transaction
         
         let time = currentTransaction.time.formatUnixTime(style: .short)
-        
+        let hash = currentTransaction.hash
         for input in currentTransaction.inputs {
             if input.address == self.address {
                 let value = input.value.formatNumberString()
-                completion("Sent", "\(value) DOGE\n\(time)", "arrow.up.to.line.alt")
+                completion("Sent", "\(value) DOGE\n\(time)", "tray.and.arrow.up.fill")
                 return
             }
         }
@@ -115,7 +115,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         for output in currentTransaction.outputs {
             if output.address == self.address {
                 let value = output.value.formatNumberString()
-                completion("Received", "\(value) DOGE\n\(time)", "arrow.down.to.line.alt")
+                completion("Received", "\(value) DOGE\n\(time)", "tray.and.arrow.down.fill")
                 return
             }
         }
@@ -219,7 +219,7 @@ private extension AddressInfoPresenterImp {
             view?.configureIfAddressTracked(name: name)
         } else {
             isAddressTracked = false
-            view?.configureIfAddressNotTracked(shortenAddress: address.shortenAddress(prefix: 5, suffix: 4))
+            view?.configureIfAddressNotTracked(shortenAddress: address.shorten(prefix: 5, suffix: 4))
         }
     }
     
