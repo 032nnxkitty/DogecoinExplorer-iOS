@@ -8,7 +8,7 @@
 import UIKit
 
 extension String {
-    func shortenAddress(prefix: Int, suffix: Int) -> String {
+    func shorten(prefix: Int, suffix: Int) -> String {
         return "\(self.prefix(prefix))...\(self.suffix(suffix))"
     }
     
