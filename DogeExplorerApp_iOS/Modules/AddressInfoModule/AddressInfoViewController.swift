@@ -280,8 +280,8 @@ extension AddressInfoViewController: UITableViewDataSource {
                 cellContent.text = title
                 cellContent.secondaryText = value
                 cellContent.image = UIImage(systemName: imageName)
+                cellContent.imageProperties.tintColor = title == "Received" ? .green : .red
             }
-            
             cellContent.textProperties.font = .preferredFont(forTextStyle: .headline)
             cellContent.secondaryTextProperties.font = .preferredFont(forTextStyle: .footnote)
             cellContent.secondaryTextProperties.color = .gray

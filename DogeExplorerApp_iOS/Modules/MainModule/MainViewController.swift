@@ -197,6 +197,7 @@ extension MainViewController: UITableViewDataSource {
         cellContent.imageProperties.maximumSize = CGSize(width: 40, height: 40)
         
         cellContent.textProperties.numberOfLines = 1
+        cellContent.textProperties.font = .preferredFont(forTextStyle: .body)
         cellContent.secondaryTextProperties.color = .darkGray
         
         cell.contentConfiguration = cellContent
@@ -231,7 +232,7 @@ extension MainViewController: UITableViewDelegate {
         return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        presenter.getTitleFoHeader(in: section)
-    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        presenter.getTitleFoHeader(in: section)
+//    }
 }

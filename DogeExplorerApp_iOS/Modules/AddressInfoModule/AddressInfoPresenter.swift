@@ -107,7 +107,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         for input in currentTransaction.inputs {
             if input.address == self.address {
                 let value = input.value.formatNumberString()
-                completion("Sent \(indexPath.section + 1)", "\(value) DOGE\n\(time)", "arrow.up.to.line.alt")
+                completion("Sent", "\(value) DOGE\n\(time)", "arrow.up.to.line.alt")
                 return
             }
         }
@@ -115,7 +115,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         for output in currentTransaction.outputs {
             if output.address == self.address {
                 let value = output.value.formatNumberString()
-                completion("Received \(indexPath.section + 1)", "\(value) DOGE\n\(time)", "arrow.down.to.line.alt")
+                completion("Received", "\(value) DOGE\n\(time)", "arrow.down.to.line.alt")
                 return
             }
         }
