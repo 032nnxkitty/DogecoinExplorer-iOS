@@ -146,11 +146,11 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     
     func addTracking(with name: String?) {
         guard let name, !name.isEmpty else {
-            trackingService.addNewTrackedAddress(TrackedAddress(name: "No name", address: address))
+            trackingService.addNewTrackedAddress(address: address, name: "No name")
             configureTrackingState()
             return
         }
-        trackingService.addNewTrackedAddress(TrackedAddress(name: name, address: address))
+        trackingService.addNewTrackedAddress(address: address, name: name)
         configureTrackingState()
     }
     
@@ -204,9 +204,9 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
 // MARK: - Private Methods
 private extension AddressInfoPresenterImp {
     func configureTrackingState() {
-        if let trackedAddress = trackingService.getTrackedAddressModel(for: address) {
+        if let name = trackingService.getTrackingName(for: address) {
             isAddressTracked = true
-            view?.configureIfAddressTracked(name: trackedAddress.name)
+            view?.configureIfAddressTracked(name: name)
         } else {
             isAddressTracked = false
             view?.configureIfAddressNotTracked(shortenAddress: address.shortenAddress(prefix: 5, suffix: 4))

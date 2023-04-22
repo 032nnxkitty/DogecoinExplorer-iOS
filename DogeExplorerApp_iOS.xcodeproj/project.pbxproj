@@ -20,7 +20,6 @@
 		10A42D6729E9B2E800BE04B9 /* AddressInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D6629E9B2E800BE04B9 /* AddressInfoViewController.swift */; };
 		10A42D6929E9B76700BE04B9 /* R.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D6829E9B76700BE04B9 /* R.swift */; };
 		10A42D6C29E9B9E400BE04B9 /* ModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D6B29E9B9E400BE04B9 /* ModuleBuilder.swift */; };
-		10A42D7029EAE1E200BE04B9 /* AddressTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D6F29EAE1E200BE04B9 /* AddressTrackingService.swift */; };
 		10A42D7229EB1D5300BE04B9 /* String+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7129EB1D5300BE04B9 /* String+Formatting.swift */; };
 		10A42D7429EB36C700BE04B9 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7329EB36C700BE04B9 /* SettingsModel.swift */; };
 		10A42D7629EB483E00BE04B9 /* ThemeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7529EB483E00BE04B9 /* ThemeService.swift */; };
@@ -33,6 +32,10 @@
 		10ED211729F332B3008302EA /* TransactionsCountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211629F332B3008302EA /* TransactionsCountModel.swift */; };
 		10ED211929F332C1008302EA /* TransactionsPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211829F332C1008302EA /* TransactionsPageModel.swift */; };
 		10ED211B29F332D5008302EA /* DetailedTransactionInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211A29F332D5008302EA /* DetailedTransactionInfoModel.swift */; };
+		10ED216529F40A15008302EA /* AddressesTrackingDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 10ED216329F40A15008302EA /* AddressesTrackingDataModel.xcdatamodeld */; };
+		10ED216829F40A64008302EA /* TrackedAddressEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED216629F40A64008302EA /* TrackedAddressEntity+CoreDataClass.swift */; };
+		10ED216929F40A64008302EA /* TrackedAddressEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED216729F40A64008302EA /* TrackedAddressEntity+CoreDataProperties.swift */; };
+		10ED216C29F40AFF008302EA /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED216B29F40AFF008302EA /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +54,6 @@
 		10A42D6629E9B2E800BE04B9 /* AddressInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfoViewController.swift; sourceTree = "<group>"; };
 		10A42D6829E9B76700BE04B9 /* R.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = R.swift; sourceTree = "<group>"; };
 		10A42D6B29E9B9E400BE04B9 /* ModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBuilder.swift; sourceTree = "<group>"; };
-		10A42D6F29EAE1E200BE04B9 /* AddressTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTrackingService.swift; sourceTree = "<group>"; };
 		10A42D7129EB1D5300BE04B9 /* String+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Formatting.swift"; sourceTree = "<group>"; };
 		10A42D7329EB36C700BE04B9 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		10A42D7529EB483E00BE04B9 /* ThemeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeService.swift; sourceTree = "<group>"; };
@@ -64,6 +66,10 @@
 		10ED211629F332B3008302EA /* TransactionsCountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsCountModel.swift; sourceTree = "<group>"; };
 		10ED211829F332C1008302EA /* TransactionsPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsPageModel.swift; sourceTree = "<group>"; };
 		10ED211A29F332D5008302EA /* DetailedTransactionInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedTransactionInfoModel.swift; sourceTree = "<group>"; };
+		10ED216429F40A15008302EA /* AddressesTrackingDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AddressesTrackingDataModel.xcdatamodel; sourceTree = "<group>"; };
+		10ED216629F40A64008302EA /* TrackedAddressEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrackedAddressEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		10ED216729F40A64008302EA /* TrackedAddressEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrackedAddressEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		10ED216B29F40AFF008302EA /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,7 +133,7 @@
 		10529EF729E8A64700E73212 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				10A42D6F29EAE1E200BE04B9 /* AddressTrackingService.swift */,
+				10ED216A29F40AE9008302EA /* CoreData */,
 				10A42D7529EB483E00BE04B9 /* ThemeService.swift */,
 				10A42D7729EB532A00BE04B9 /* NetworkManager.swift */,
 				109FB83D29EC27D900D5929F /* URLs.swift */,
@@ -205,6 +211,17 @@
 				10ED20AC29F1DFFD008302EA /* LoaderButton.swift */,
 			);
 			path = SupportingViews;
+			sourceTree = "<group>";
+		};
+		10ED216A29F40AE9008302EA /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				10ED216629F40A64008302EA /* TrackedAddressEntity+CoreDataClass.swift */,
+				10ED216729F40A64008302EA /* TrackedAddressEntity+CoreDataProperties.swift */,
+				10ED216329F40A15008302EA /* AddressesTrackingDataModel.xcdatamodeld */,
+				10ED216B29F40AFF008302EA /* CoreDataManager.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,16 +307,19 @@
 				10ED211529F332A5008302EA /* Sent&ReceivedModels.swift in Sources */,
 				10BA60EC29EC63E5005FCE80 /* InternetConnectionObserver.swift in Sources */,
 				10ED211B29F332D5008302EA /* DetailedTransactionInfoModel.swift in Sources */,
-				10A42D7029EAE1E200BE04B9 /* AddressTrackingService.swift in Sources */,
 				10A42D6729E9B2E800BE04B9 /* AddressInfoViewController.swift in Sources */,
 				109FB83E29EC27D900D5929F /* URLs.swift in Sources */,
+				10ED216529F40A15008302EA /* AddressesTrackingDataModel.xcdatamodeld in Sources */,
 				10A42D7229EB1D5300BE04B9 /* String+Formatting.swift in Sources */,
 				10529EDE29E87CC600E73212 /* SceneDelegate.swift in Sources */,
 				10A42D5C29E9B19F00BE04B9 /* MainViewController.swift in Sources */,
 				10A42D6029E9B26E00BE04B9 /* SettingsPresenter.swift in Sources */,
+				10ED216929F40A64008302EA /* TrackedAddressEntity+CoreDataProperties.swift in Sources */,
 				10A42D7829EB532A00BE04B9 /* NetworkManager.swift in Sources */,
+				10ED216829F40A64008302EA /* TrackedAddressEntity+CoreDataClass.swift in Sources */,
 				10ED211729F332B3008302EA /* TransactionsCountModel.swift in Sources */,
 				10A42D6229E9B27D00BE04B9 /* SettingsViewController.swift in Sources */,
+				10ED216C29F40AFF008302EA /* CoreDataManager.swift in Sources */,
 				10A42D7429EB36C700BE04B9 /* SettingsModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -516,6 +536,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		10ED216329F40A15008302EA /* AddressesTrackingDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				10ED216429F40A15008302EA /* AddressesTrackingDataModel.xcdatamodel */,
+			);
+			currentVersion = 10ED216429F40A15008302EA /* AddressesTrackingDataModel.xcdatamodel */;
+			path = AddressesTrackingDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 10529ED029E87CC600E73212 /* Project object */;
 }
