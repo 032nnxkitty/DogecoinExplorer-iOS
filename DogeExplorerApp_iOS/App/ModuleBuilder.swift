@@ -35,4 +35,11 @@ final class ModuleBuilder {
         view.presenter = presenter
         return view
     }
+    
+    class func createTransactionModule() -> UIViewController {
+        let view = TransactionInfoViewController()
+        let presenter = TransactionInfoPresenterImp(view: view)
+        view.presenter = presenter
+        return view
+    }
 }

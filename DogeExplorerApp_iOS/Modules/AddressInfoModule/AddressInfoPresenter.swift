@@ -25,6 +25,7 @@ protocol AddressInfoEventHandling {
     func trackingStateDidChange()
     func renameButtonDidTap()
     func loadTransactionsButtonDidTap()
+    func didSelectRow(at indexPath: IndexPath)
 }
 
 protocol AddressInfoActions {
@@ -197,6 +198,15 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
             } catch {
                 print(error, #function)
             }
+        }
+    }
+    
+    func didSelectRow(at indexPath: IndexPath) {
+        switch showingSection {
+        case .info:
+            break
+        case .transactions:
+            view?.showTransactionInfoViewController()
         }
     }
 }

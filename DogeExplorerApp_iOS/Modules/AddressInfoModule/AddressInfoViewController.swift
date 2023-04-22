@@ -22,6 +22,7 @@ protocol AddressInfoView: AnyObject {
     func showAddTrackingAlert()
     func showDeleteAlert()
     func showRenameAlert()
+    func showTransactionInfoViewController()
     
     func hideLoadTransactionsButton()
 }
@@ -238,6 +239,17 @@ extension AddressInfoViewController: AddressInfoView {
     func hideLoadTransactionsButton() {
         loadTransactionsButton.isHidden = true
     }
+    
+    func showTransactionInfoViewController() {
+        let transactionVC = ModuleBuilder.createTransactionModule()
+        if let sheetController = transactionVC.sheetPresentationController {
+            sheetController.detents = [.medium()]
+            sheetController.prefersGrabberVisible = true
+            sheetController.preferredCornerRadius = 20
+        }
+        present(transactionVC, animated: true)
+        
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -290,7 +302,7 @@ extension AddressInfoViewController: UITableViewDataSource {
         guard presenter.isLoadMoreButtonVisible(section) else { return 10 }
         return 60
     }
-
+    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard presenter.isLoadMoreButtonVisible(section) else { return nil }
         return loadTransactionsButton
@@ -301,17 +313,6 @@ extension AddressInfoViewController: UITableViewDataSource {
 extension AddressInfoViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        if sectionSegmentedControl.selectedSegmentIndex == 1 {
-            let controller = UIViewController()
-            // if available ios 15
-            controller.view.backgroundColor = .systemBackground
-            controller.title = "Transaction information"
-            if let sheetController = controller.sheetPresentationController {
-                sheetController.detents = [.medium()]
-                sheetController.prefersGrabberVisible = true
-                sheetController.preferredCornerRadius = 20
-            }
-            present(controller, animated: true)
-        }
+        presenter.didSelectRow(at: indexPath)
     }
 }

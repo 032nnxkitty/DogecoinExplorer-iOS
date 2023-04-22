@@ -36,6 +36,8 @@
 		10ED216829F40A64008302EA /* TrackedAddressEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED216629F40A64008302EA /* TrackedAddressEntity+CoreDataClass.swift */; };
 		10ED216929F40A64008302EA /* TrackedAddressEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED216729F40A64008302EA /* TrackedAddressEntity+CoreDataProperties.swift */; };
 		10ED216C29F40AFF008302EA /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED216B29F40AFF008302EA /* CoreDataManager.swift */; };
+		10ED217829F458AA008302EA /* TransactionInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED217729F458AA008302EA /* TransactionInfoPresenter.swift */; };
+		10ED217A29F458B9008302EA /* TransactionInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED217929F458B9008302EA /* TransactionInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +72,8 @@
 		10ED216629F40A64008302EA /* TrackedAddressEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrackedAddressEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		10ED216729F40A64008302EA /* TrackedAddressEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrackedAddressEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		10ED216B29F40AFF008302EA /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		10ED217729F458AA008302EA /* TransactionInfoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionInfoPresenter.swift; sourceTree = "<group>"; };
+		10ED217929F458B9008302EA /* TransactionInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +130,7 @@
 				10A42D5729E9B16100BE04B9 /* MainModule */,
 				10A42D5E29E9B25B00BE04B9 /* SettingsModule */,
 				10A42D6329E9B2AB00BE04B9 /* AddressInfoModule */,
+				10ED217629F45872008302EA /* TransactionInfoModule */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -224,6 +229,15 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
+		10ED217629F45872008302EA /* TransactionInfoModule */ = {
+			isa = PBXGroup;
+			children = (
+				10ED217729F458AA008302EA /* TransactionInfoPresenter.swift */,
+				10ED217929F458B9008302EA /* TransactionInfoViewController.swift */,
+			);
+			path = TransactionInfoModule;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -301,6 +315,7 @@
 				10ED211329F33270008302EA /* BalanceModel.swift in Sources */,
 				10ED211929F332C1008302EA /* TransactionsPageModel.swift in Sources */,
 				10ED20AD29F1DFFD008302EA /* LoaderButton.swift in Sources */,
+				10ED217829F458AA008302EA /* TransactionInfoPresenter.swift in Sources */,
 				10A42D6929E9B76700BE04B9 /* R.swift in Sources */,
 				10A42D7629EB483E00BE04B9 /* ThemeService.swift in Sources */,
 				10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */,
@@ -320,6 +335,7 @@
 				10ED211729F332B3008302EA /* TransactionsCountModel.swift in Sources */,
 				10A42D6229E9B27D00BE04B9 /* SettingsViewController.swift in Sources */,
 				10ED216C29F40AFF008302EA /* CoreDataManager.swift in Sources */,
+				10ED217A29F458B9008302EA /* TransactionInfoViewController.swift in Sources */,
 				10A42D7429EB36C700BE04B9 /* SettingsModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
