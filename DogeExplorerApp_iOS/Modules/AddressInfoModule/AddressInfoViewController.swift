@@ -243,7 +243,7 @@ extension AddressInfoViewController: AddressInfoView {
     func showTransactionInfoViewController() {
         let transactionVC = ModuleBuilder.createTransactionModule()
         if let sheetController = transactionVC.sheetPresentationController {
-            sheetController.detents = [.medium()]
+            sheetController.detents = [.medium(), .large()]
             sheetController.prefersGrabberVisible = true
             sheetController.preferredCornerRadius = 20
         }

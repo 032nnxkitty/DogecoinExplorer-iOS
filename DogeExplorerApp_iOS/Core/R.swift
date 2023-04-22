@@ -9,9 +9,10 @@ import UIKit.UIColor
 
 enum R {
     enum Identifiers {
-        static let trackingCell    = "trackingCellIdentifier"
-        static let settingsCell    = "settingsCellIdentifier"
-        static let addressInfoCell = "addressInfoCellIdentifier"
+        static let trackingCell        = "trackingCellIdentifier"
+        static let settingsCell        = "settingsCellIdentifier"
+        static let addressInfoCell     = "addressInfoCellIdentifier"
+        static let transactionInfoCell = "transactionInfoCellIdentifier"
     }
     
     enum Colors {
