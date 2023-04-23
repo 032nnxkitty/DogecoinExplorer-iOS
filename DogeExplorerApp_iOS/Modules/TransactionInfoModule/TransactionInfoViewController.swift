@@ -36,6 +36,7 @@ final class TransactionInfoViewController: UIViewController {
 // MARK: - Private Methods
 private extension TransactionInfoViewController {
     func configureViewAppearance() {
+        title = "Transaction"
         view.backgroundColor = .systemBackground
         
         view.addSubview(informationTableView)

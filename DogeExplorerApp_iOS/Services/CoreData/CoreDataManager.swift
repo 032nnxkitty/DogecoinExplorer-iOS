@@ -52,7 +52,7 @@ final class CoreDataManager {
     }
 }
 
-// MARK: - Address Tracking Service
+// MARK: - Address Tracking Service Methods
 extension CoreDataManager: AddressTrackingService {
     func addNewTrackedAddress(address: String, name: String) {
         let newAddressEntity = TrackedAddressEntity(context: persistentContainer.viewContext)

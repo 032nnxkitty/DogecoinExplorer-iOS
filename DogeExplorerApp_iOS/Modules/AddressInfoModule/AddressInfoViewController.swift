@@ -51,8 +51,8 @@ final class AddressInfoViewController: UIViewController {
     private lazy var informationTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: R.Identifiers.addressInfoCell)
-        tableView.showsVerticalScrollIndicator = false
         tableView.layoutMargins = UIEdgeInsets(top: 0.1, left: 0.1, bottom: 0.1, right: 0.1)
+        tableView.showsVerticalScrollIndicator = false
         tableView.backgroundColor = .clear
         tableView.sectionHeaderHeight = 0
         tableView.dataSource = self
@@ -241,7 +241,7 @@ extension AddressInfoViewController: AddressInfoView {
     }
     
     func showTransactionInfoViewController() {
-        let transactionVC = ModuleBuilder.createTransactionModule()
+        let transactionVC = UINavigationController(rootViewController: ModuleBuilder.createTransactionModule())
         if let sheetController = transactionVC.sheetPresentationController {
             sheetController.detents = [.medium(), .large()]
             sheetController.prefersGrabberVisible = true
