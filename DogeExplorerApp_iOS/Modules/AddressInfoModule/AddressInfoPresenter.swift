@@ -21,7 +21,6 @@ protocol AddressInfoPresenter: AddressInfoEventHandling, AddressInfoActions{
 }
 
 protocol AddressInfoEventHandling {
-    func sectionDidChange(to section: Int)
     func trackingStateDidChange()
     func renameButtonDidTap()
     func loadTransactionsButtonDidTap()
@@ -69,7 +68,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         self.showingSection = .info
         
         configureTrackingState()
-        getBaseAddressInfo()
+        //getBaseAddressInfo()
     }
     
     // MARK: - Table View Configuring Methods
@@ -119,17 +118,6 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
                 return
             }
         }
-    }
-    
-    func sectionDidChange(to section: Int) {
-        showingSection = ShowingSection(rawValue: section)!
-        switch showingSection {
-        case .info:
-            view?.configureInfoSection()
-        case .transactions:
-            view?.configureTransactionsSection()
-        }
-        view?.reloadData()
     }
     
     // MARK: - Tracking Methods
