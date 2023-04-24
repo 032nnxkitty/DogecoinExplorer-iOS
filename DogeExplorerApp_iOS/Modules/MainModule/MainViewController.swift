@@ -228,7 +228,7 @@ extension MainViewController: UITableViewDelegate {
             completion(true)
         }
         renameAction.image = UIImage(systemName: "pencil")
-        renameAction.backgroundColor = .systemPurple
+        renameAction.backgroundColor = .systemMint
         return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
     }
     

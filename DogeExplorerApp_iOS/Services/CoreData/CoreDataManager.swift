@@ -109,13 +109,13 @@ extension CoreDataManager: AddressTrackingService {
     
     func addMockData() {
         deleteAllTrackedAddresses()
-        addNewTrackedAddress(address: "DEpFaVzjmQVYh4RWiCDSwnc6XyvQaxuyr8", name: "Andrew")
-        addNewTrackedAddress(address: "9ssX8XqDX6yTxW8rfLw6VHnbAnVUp8xtYY", name: "Martin")
-        addNewTrackedAddress(address: "DR2SpAVZPwJDVxJgTkJvGej3HC5aLBhQBM", name: "Luke")
+        addNewTrackedAddress(address: "DQL55LjFkYagcCdx9HXztYAepcXY3jb6Wa", name: "Andrew")
+        addNewTrackedAddress(address: "DKQJ5X3scmBqv37kvAYjWRRhTFDiXFdzz6", name: "Martin")
+        addNewTrackedAddress(address: "DNqp3QBLpc8SCXV2Ww9YeMxZPfjwci1uZ1", name: "Luke")
         addNewTrackedAddress(address: "DTsBpxfR9otQTRJEXc7dW4HmuNVgutc6fW", name: "Josh")
-        addNewTrackedAddress(address: "DPHAELEVeUxCCWEg9rUpTxcXxyrh1evNwP", name: "Pablo")
-        addNewTrackedAddress(address: "DLEeNyDDw9bTNnDRbaY2yuooyq8SUSJSLW", name: "Ondrej")
-        addNewTrackedAddress(address: "DSiyxmXxW5z4GQ3jHgorMTGLJBrGYAckEh", name: "Nasty")
+        addNewTrackedAddress(address: "9wYpKfWNaWFtZ3KCqgoZM5AyYCz7S7juLV", name: "Pablo")
+        addNewTrackedAddress(address: "DAwJBoNqkHoT523p9h8gUjWJYSPc4RdDsr", name: "Ondrej")
+        addNewTrackedAddress(address: "DNqos1BcjPSZGxQn51nhcKydjA73nxohwC", name: "Nasty")
         addNewTrackedAddress(address: "D5RpQhaVkpHHT4n8HrPahoVWbwmSohNpEt", name: "Ja")
     }
 }

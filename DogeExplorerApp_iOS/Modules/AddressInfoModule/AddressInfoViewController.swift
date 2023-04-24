@@ -29,50 +29,20 @@ protocol AddressInfoView: AnyObject {
 final class AddressInfoViewController: UIViewController {
     var presenter: AddressInfoPresenter!
     
-    // MARK: - UI Elementes
-    private let scrollableStack: ScrollableStackView = {
-        let stack = ScrollableStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.showsVerticalScrollIndicator = false
-        stack.axis = .vertical
-        stack.alpha = 0
-        return stack
-    }()
+    // MARK: - UI Elements
+    private var infoHeader: AddressInfoHeaderView!
+    private var infoHeaderHeightConstraint: NSLayoutConstraint!
     
-    private let infoLabelsStack: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 16, right: 16)
-        stack.isLayoutMarginsRelativeArrangement = true
-        return stack
-    }()
-    
-    private let addressLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .secondaryLabel
-        return label
-    }()
-    
-    private let dogeBalanceLabel: UILabel = {
-        let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 22)
-        return label
-    }()
-    
-    private let usdBalanceLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .secondaryLabel
-        return label
-    }()
-    
-    private lazy var transactionsTableView: SelfSizedTableView = {
-        let tableView = SelfSizedTableView(frame: .zero, style: .plain)
+    private lazy var transactionsTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(TransactionCell.self, forCellReuseIdentifier: R.Identifiers.addressInfoCell)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.showsVerticalScrollIndicator = false
         tableView.backgroundColor = .systemBackground
-        tableView.layer.cornerRadius = 20
-        tableView.layer.masksToBounds = true
+        //tableView.layer.cornerRadius = 20
+        //tableView.layer.masksToBounds = true
         //tableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        tableView.alpha = 0
         tableView.dataSource = self
         tableView.delegate = self
         return tableView
@@ -81,7 +51,6 @@ final class AddressInfoViewController: UIViewController {
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        refreshControl.tintColor = .white
         return refreshControl
     }()
     
@@ -90,28 +59,49 @@ final class AddressInfoViewController: UIViewController {
         return loader
     }()
     
-    // MARK: - View Life Cycel
+    private lazy var addTrackingButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "star"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(trackingStateDidChange))
+        return button
+    }()
+    
+    private lazy var deleteTrackingButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(barButtonSystemItem: .trash,
+                                     target: self,
+                                     action: #selector(trackingStateDidChange))
+        return button
+    }()
+    
+    private lazy var renameButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(barButtonSystemItem: .compose,
+                                     target: self,
+                                     action: #selector(renameButtonDidTap))
+        return button
+    }()
+    
+    private lazy var loadTransactionsButton: LoaderButton = {
+        let button = LoaderButton(configuration: .plain())
+        button.setTitle("Load more transactions", for: .normal)
+        button.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
+        return button
+    }()
+    
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setGradientBackground()
         configureViewAppearance()
         configureLoader()
-        configureScrollableStack()
+        configureTableView()
     }
 }
 
 // MARK: - Private Methods
 private extension AddressInfoViewController {
-    func setGradientBackground() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.systemBlue.cgColor, UIColor.systemBackground.cgColor]
-        gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.frame = view.bounds
-        view.layer.insertSublayer(gradientLayer, at:0)
-    }
-    
     func configureViewAppearance() {
         navigationItem.largeTitleDisplayMode = .never
+        view.backgroundColor = .systemBackground
     }
     
     func configureLoader() {
@@ -119,23 +109,30 @@ private extension AddressInfoViewController {
         loader.center = view.center
     }
     
-    func configureScrollableStack() {
-        scrollableStack.refreshControl = refreshControl
+    func configureTableView() {
+        infoHeader = AddressInfoHeaderView()
         
-        view.addSubview(scrollableStack)
+        transactionsTableView.refreshControl = refreshControl
+        
+        view.addSubview(transactionsTableView)
         NSLayoutConstraint.activate([
-            scrollableStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollableStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            scrollableStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            scrollableStack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            transactionsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            transactionsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            transactionsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            transactionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
-        
-        infoLabelsStack.addArrangedSubview(addressLabel)
-        infoLabelsStack.addArrangedSubview(dogeBalanceLabel)
-        infoLabelsStack.addArrangedSubview(usdBalanceLabel)
-        
-        scrollableStack.addArrangedSubview(infoLabelsStack)
-        scrollableStack.addArrangedSubview(transactionsTableView)
+    }
+    
+    func createTextFieldAlert(title: String, message: String, placeHolder: String, completion: @escaping (String?) -> Void) -> UIAlertController  {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addTextField { textField in textField.placeholder = placeHolder }
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { action in
+            completion(alert.textFields?[0].text)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        return alert
     }
 }
 
@@ -145,6 +142,18 @@ private extension AddressInfoViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.refreshControl.endRefreshing()
         }
+    }
+    
+    func trackingStateDidChange() {
+        presenter.trackingStateDidChange()
+    }
+    
+    func renameButtonDidTap() {
+        presenter.renameButtonDidTap()
+    }
+    
+    func loadTransactionsButtonDidTap() {
+        presenter.loadTransactionsButtonDidTap()
     }
 }
 
@@ -156,10 +165,12 @@ extension AddressInfoViewController: AddressInfoView {
     
     func configureIfAddressTracked(name: String) {
         title = name
+        navigationItem.rightBarButtonItems = [deleteTrackingButton, renameButton]
     }
     
     func configureIfAddressNotTracked(shortenAddress: String) {
         title = shortenAddress
+        navigationItem.rightBarButtonItems = [addTrackingButton]
     }
     
     func animateCentralLoader(_ isAnimated: Bool) {
@@ -167,41 +178,61 @@ extension AddressInfoViewController: AddressInfoView {
     }
     
     func animateLoadTransactionLoader(_ isAnimated: Bool) {
-        
+        isAnimated ? loadTransactionsButton.startLoading() : loadTransactionsButton.stopLoading()
     }
     
     func initialConfigure(address: String, dogeBalance: String, usdBalance: String) {
-        addressLabel.text = address
-        dogeBalanceLabel.text = dogeBalance
-        usdBalanceLabel.text = usdBalance
-        UIView.animate(withDuration: 0.5) {
-            self.scrollableStack.alpha = 1
-        }
         transactionsTableView.reloadData()
+        UIView.animate(withDuration: 0.5) {
+            self.transactionsTableView.alpha = 1
+        }
+        infoHeader.setInfo(address: address, dogeBalance: dogeBalance, usdBalance: usdBalance)
     }
     
     func showOkActionSheet(title: String, message: String) {
-        
+        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: "Ok", style: .cancel)
+        actionSheet.addAction(action)
+        present(actionSheet, animated: true)
     }
     
     func showAddTrackingAlert() {
-        
+        let trackingAlert = createTextFieldAlert(title: "Add name to address", message:  "If field will be empty..", placeHolder: "Enter name") { name in
+            self.presenter.addTracking(with: name)
+        }
+        present(trackingAlert, animated: true)
     }
     
     func showDeleteAlert() {
-        
+        let deleteAlert = UIAlertController(title: "Are u sure?", message: "", preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+            self.presenter.deleteTracking()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        deleteAlert.addAction(deleteAction)
+        deleteAlert.addAction(cancelAction)
+        present(deleteAlert, animated: true)
     }
     
     func showRenameAlert() {
-        
-    }
-    
-    func showTransactionInfoViewController() {
-        
+        let renameAlert = createTextFieldAlert(title: "Enter new name", message: "If field will be empty..", placeHolder: "Enter new name") { name in
+            self.presenter.renameAddress(newName: name)
+        }
+        present(renameAlert, animated: true)
     }
     
     func hideLoadTransactionsButton() {
-        
+        loadTransactionsButton.isHidden = true
+    }
+    
+    func showTransactionInfoViewController() {
+        let transactionVC = UINavigationController(rootViewController: ModuleBuilder.createTransactionModule())
+        if let sheetController = transactionVC.sheetPresentationController {
+            sheetController.detents = [.medium()]
+            sheetController.prefersGrabberVisible = true
+            sheetController.preferredCornerRadius = 20
+        }
+        present(transactionVC, animated: true)
     }
 }
 
@@ -219,8 +250,15 @@ extension AddressInfoViewController: UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Transactions"
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return infoHeader
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let stack = UIStackView()
+        stack.alignment = .center
+        stack.addArrangedSubview(loadTransactionsButton)
+        return stack
     }
 }
 
@@ -228,5 +266,6 @@ extension AddressInfoViewController: UITableViewDataSource {
 extension AddressInfoViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        presenter.didSelectTransaction(at: indexPath)
     }
 }

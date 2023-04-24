@@ -153,7 +153,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     }
     
     func didSelectTransaction(at indexPath: IndexPath) {
-        
+        view?.showTransactionInfoViewController()
     }
 }
 

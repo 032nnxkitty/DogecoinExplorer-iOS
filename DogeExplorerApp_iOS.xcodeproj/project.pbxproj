@@ -12,8 +12,7 @@
 		10529EE529E87CC700E73212 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10529EE429E87CC700E73212 /* Assets.xcassets */; };
 		10529EE829E87CC700E73212 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10529EE629E87CC700E73212 /* LaunchScreen.storyboard */; };
 		108CA9F629F5CB86003582B6 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108CA9F529F5CB86003582B6 /* TransactionCell.swift */; };
-		108CA9F829F5CE8B003582B6 /* ScrollStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108CA9F729F5CE8B003582B6 /* ScrollStackView.swift */; };
-		108CA9FA29F5D3EC003582B6 /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108CA9F929F5D3EC003582B6 /* SelfSizedTableView.swift */; };
+		108CA9FC29F6B92B003582B6 /* AddressInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108CA9FB29F6B92B003582B6 /* AddressInfoHeaderView.swift */; };
 		109FB83E29EC27D900D5929F /* URLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109FB83D29EC27D900D5929F /* URLs.swift */; };
 		10A42D5A29E9B18C00BE04B9 /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D5929E9B18C00BE04B9 /* MainPresenter.swift */; };
 		10A42D5C29E9B19F00BE04B9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D5B29E9B19F00BE04B9 /* MainViewController.swift */; };
@@ -51,8 +50,7 @@
 		10529EE729E87CC700E73212 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		10529EE929E87CC700E73212 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		108CA9F529F5CB86003582B6 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
-		108CA9F729F5CE8B003582B6 /* ScrollStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollStackView.swift; sourceTree = "<group>"; };
-		108CA9F929F5D3EC003582B6 /* SelfSizedTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
+		108CA9FB29F6B92B003582B6 /* AddressInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfoHeaderView.swift; sourceTree = "<group>"; };
 		109FB83D29EC27D900D5929F /* URLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLs.swift; sourceTree = "<group>"; };
 		10A42D5929E9B18C00BE04B9 /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
 		10A42D5B29E9B19F00BE04B9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -220,9 +218,8 @@
 		10ED211129F31DF6008302EA /* SupportingViews */ = {
 			isa = PBXGroup;
 			children = (
-				108CA9F929F5D3EC003582B6 /* SelfSizedTableView.swift */,
-				108CA9F729F5CE8B003582B6 /* ScrollStackView.swift */,
 				10ED20AC29F1DFFD008302EA /* LoaderButton.swift */,
+				108CA9FB29F6B92B003582B6 /* AddressInfoHeaderView.swift */,
 			);
 			path = SupportingViews;
 			sourceTree = "<group>";
@@ -323,7 +320,6 @@
 				10A42D6C29E9B9E400BE04B9 /* ModuleBuilder.swift in Sources */,
 				10ED211329F33270008302EA /* BalanceModel.swift in Sources */,
 				10ED211929F332C1008302EA /* TransactionsPageModel.swift in Sources */,
-				108CA9F829F5CE8B003582B6 /* ScrollStackView.swift in Sources */,
 				10ED20AD29F1DFFD008302EA /* LoaderButton.swift in Sources */,
 				10ED217829F458AA008302EA /* TransactionInfoPresenter.swift in Sources */,
 				108CA9F629F5CB86003582B6 /* TransactionCell.swift in Sources */,
@@ -331,6 +327,7 @@
 				10A42D7629EB483E00BE04B9 /* ThemeService.swift in Sources */,
 				10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */,
 				10ED211529F332A5008302EA /* Sent&ReceivedModels.swift in Sources */,
+				108CA9FC29F6B92B003582B6 /* AddressInfoHeaderView.swift in Sources */,
 				10BA60EC29EC63E5005FCE80 /* InternetConnectionObserver.swift in Sources */,
 				10ED211B29F332D5008302EA /* DetailedTransactionInfoModel.swift in Sources */,
 				10A42D6729E9B2E800BE04B9 /* AddressInfoViewController.swift in Sources */,
@@ -348,7 +345,6 @@
 				10ED216C29F40AFF008302EA /* CoreDataManager.swift in Sources */,
 				10ED217A29F458B9008302EA /* TransactionInfoViewController.swift in Sources */,
 				10A42D7429EB36C700BE04B9 /* SettingsModel.swift in Sources */,
-				108CA9FA29F5D3EC003582B6 /* SelfSizedTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
