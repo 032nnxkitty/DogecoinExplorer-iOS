@@ -14,9 +14,7 @@ enum ShowingSection: Int {
 
 protocol AddressInfoPresenter: AddressInfoEventHandling, AddressInfoActions{
     init(address: String, view: AddressInfoView, networkManager: NetworkManager, trackingService: AddressTrackingService)
-    
-    func getNumberOfSections() -> Int
-    func getNumberOfRows() -> Int
+    func getNumberOfTransactions() -> Int
     func isLoadMoreButtonVisible(_ section: Int) -> Bool
 }
 
@@ -24,12 +22,11 @@ protocol AddressInfoEventHandling {
     func trackingStateDidChange()
     func renameButtonDidTap()
     func loadTransactionsButtonDidTap()
-    func didSelectRow(at indexPath: IndexPath)
+    func didSelectTransaction(at indexPath: IndexPath)
 }
 
 protocol AddressInfoActions {
-    func configureInfoCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void)
-    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String, String, String) -> Void)
+    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (_ style: TransactionStyle, _ value: String, _ time: String, _ hash: String) -> Void)
     
     func addTracking(with name: String?)
     func renameAddress(newName: String?)
@@ -43,19 +40,8 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     
     private let address: String
     private var isAddressTracked: Bool!
-    private var addressInfo: (BalanceModel, SentModel, ReceivedModel, TransactionsCountModel)?
+    private var addressInfo: (BalanceModel, TransactionsCountModel)?
     private var loadedTransactions: [DetailedTransactionModel]
-    
-    private var showingSection: ShowingSection
-    
-    private var infoSectionModel: [[String]] {
-        guard let addressInfo else { return [] }
-        return [["Address:",              address],
-                ["Balance:",            "\(addressInfo.0.balance.formatNumberString()) DOGE"],
-                ["Amount sent:",        "\(addressInfo.1.sent.formatNumberString()) DOGE"],
-                ["Amount received:",    "\(addressInfo.2.received.formatNumberString()) DOGE"],
-                ["Transactions count:", "\(addressInfo.3.info.total)"]]
-    }
     
     // MARK: - Init
     required init(address: String, view: AddressInfoView, networkManager: NetworkManager, trackingService: AddressTrackingService) {
@@ -65,48 +51,26 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         
         self.address = address
         self.loadedTransactions = []
-        self.showingSection = .info
         
         configureTrackingState()
-        //getBaseAddressInfo()
+        getBaseAddressInfo()
     }
     
     // MARK: - Table View Configuring Methods
-    func getNumberOfSections() -> Int {
-        switch showingSection {
-        case .info:
-            return 1
-        case .transactions:
-            return loadedTransactions.count
-        }
+    func getNumberOfTransactions() -> Int {
+        return loadedTransactions.count
     }
     
-    func getNumberOfRows() -> Int {
-        switch showingSection {
-        case .info:
-            return infoSectionModel.count
-        case .transactions:
-            return 1
-        }
-    }
-    
-    func configureInfoCell(at indexPath: IndexPath, completion: @escaping (String, String) -> Void) {
-        guard indexPath.row < infoSectionModel.count else { return }
-        let title = infoSectionModel[indexPath.row][0]
-        let value = infoSectionModel[indexPath.row][1]
-        completion(title, value)
-    }
-    
-    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (String, String, String) -> Void) {
-        guard indexPath.section < loadedTransactions.count else { return }
-        let currentTransaction = loadedTransactions[indexPath.section].transaction
+    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (_ style: TransactionStyle, _ value: String, _ time: String, _ hash: String) -> Void) {
+        guard indexPath.row < loadedTransactions.count else { return }
+        let currentTransaction = loadedTransactions[indexPath.row].transaction
         
         let time = currentTransaction.time.formatUnixTime(style: .short)
-        let hash = currentTransaction.hash
+        let hash = currentTransaction.hash.shorten(prefix: 7, suffix: 7)
         for input in currentTransaction.inputs {
             if input.address == self.address {
                 let value = input.value.formatNumberString()
-                completion("Sent", "\(value) DOGE\n\(time)", "tray.and.arrow.up.fill")
+                completion(.sent, "-\(value) DOGE", time, hash)
                 return
             }
         }
@@ -114,7 +78,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         for output in currentTransaction.outputs {
             if output.address == self.address {
                 let value = output.value.formatNumberString()
-                completion("Received", "\(value) DOGE\n\(time)", "tray.and.arrow.down.fill")
+                completion(.received, "+\(value) DOGE", time, hash)
                 return
             }
         }
@@ -160,13 +124,12 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     
     // MARK: - Load Transactions Methods
     func isLoadMoreButtonVisible(_ section: Int) -> Bool {
-        guard showingSection == .transactions else { return false }
         guard section == loadedTransactions.count - 1 else { return false }
         return true
     }
     
     func loadTransactionsButtonDidTap() {
-        guard let allTransactionsCount = addressInfo?.3.info.total else { return }
+        guard let allTransactionsCount = addressInfo?.1.info.total else { return }
         let difference = allTransactionsCount - loadedTransactions.count
         guard difference > 0 else { return }
         let pageToLoad = (loadedTransactions.count / 10) + 1
@@ -189,13 +152,8 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         }
     }
     
-    func didSelectRow(at indexPath: IndexPath) {
-        switch showingSection {
-        case .info:
-            break
-        case .transactions:
-            view?.showTransactionInfoViewController()
-        }
+    func didSelectTransaction(at indexPath: IndexPath) {
+        
     }
 }
 
@@ -223,7 +181,7 @@ private extension AddressInfoPresenterImp {
                 addressInfo = try await info
                 loadedTransactions.append(contentsOf: try await transactions)
                 
-                if let addressInfo, addressInfo.3.info.total <= 10 {
+                if let addressInfo, addressInfo.1.info.total <= 10 {
                     view?.hideLoadTransactionsButton()
                 }
                 
@@ -231,7 +189,9 @@ private extension AddressInfoPresenterImp {
                 
                 print("base info loading time: \(Date().timeIntervalSince(start))")
                 
-                view?.reloadData()
+                view?.initialConfigure(address: address.shorten(prefix: 7, suffix: 7),
+                                       dogeBalance: "\(addressInfo!.0.balance.formatNumberString()) DOGE",
+                                       usdBalance: "= ... $")
             } catch {
                 view?.showOkActionSheet(title: ":/", message: error.localizedDescription)
             }

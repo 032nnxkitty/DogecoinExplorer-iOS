@@ -7,19 +7,111 @@
 
 import UIKit
 
+enum TransactionStyle {
+    case sent
+    case received
+}
+
 final class TransactionCell: UITableViewCell {
+    private let containerStack: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.distribution = .fillEqually
+        stack.axis = .vertical
+        stack.spacing = 4
+        stack.isLayoutMarginsRelativeArrangement = true
+        stack.layoutMargins = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
+        return stack
+    }()
     
-//    private let containerStack: UIStackView = {
-//        let stack = UIStackView()
-//        stack.axis = .horizontal
-//    }()
+    private let topStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        return stack
+    }()
+    
+    private let bottomStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        return stack
+    }()
+    
+    private let stateLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .boldSystemFont(ofSize: 17)
+        return label
+    }()
+    
+    private let sumLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.font = .boldSystemFont(ofSize: 17)
+        return label
+    }()
+    
+    private let fromToLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .secondaryLabel
+        return label
+    }()
+    
+    private let timeLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .secondaryLabel
+        return label
+    }()
     
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configureAppearance()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Public Methods
+    func configure(style: TransactionStyle, value: String, date: String, hash: String) {
+        switch style {
+        case .sent:
+            stateLabel.text = "Sent"
+            sumLabel.text = value
+            sumLabel.textColor = .label
+        case .received:
+            stateLabel.text = "Received"
+            sumLabel.text = value
+            sumLabel.textColor = .systemGreen
+        }
+        timeLabel.text = date
+        fromToLabel.text = hash
+    }
+}
+
+// MARK: - Private Methods
+private extension TransactionCell {
+    func configureAppearance() {
+        backgroundColor = .systemBackground
+        
+        addSubview(containerStack)
+        NSLayoutConstraint.activate([
+            containerStack.topAnchor.constraint(equalTo: self.topAnchor),
+            containerStack.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            containerStack.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            containerStack.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        ])
+        containerStack.addArrangedSubview(topStack)
+        containerStack.addArrangedSubview(bottomStack)
+        
+        topStack.addArrangedSubview(stateLabel)
+        topStack.addArrangedSubview(sumLabel)
+        
+        bottomStack.addArrangedSubview(fromToLabel)
+        bottomStack.addArrangedSubview(timeLabel)
     }
 }

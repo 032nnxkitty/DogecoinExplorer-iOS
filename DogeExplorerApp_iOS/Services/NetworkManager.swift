@@ -16,7 +16,7 @@ enum NetworkError: Error {
 
 protocol NetworkManager {
     func checkAddressExistence(_ address: String) async throws -> Bool
-    func getAddressInfo(_ address: String) async throws -> (BalanceModel, SentModel, ReceivedModel, TransactionsCountModel)
+    func getAddressInfo(_ address: String) async throws -> (BalanceModel, TransactionsCountModel)
     func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel]
 }
 
@@ -30,12 +30,10 @@ final class NetworkManagerImp: NetworkManager {
         }
     }
     
-    func getAddressInfo(_ address: String) async throws -> (BalanceModel, SentModel, ReceivedModel, TransactionsCountModel) {
+    func getAddressInfo(_ address: String) async throws -> (BalanceModel, TransactionsCountModel) {
         async let balance           = request(url: URLs.getBalance(for: address), decodeTo: BalanceModel.self)
-        async let sent              = request(url: URLs.getAmountSent(for: address), decodeTo: SentModel.self)
-        async let received          = request(url: URLs.getAmountReceived(for: address), decodeTo: ReceivedModel.self)
         async let transactionsCount = request(url: URLs.getTransactionsCount(for: address), decodeTo: TransactionsCountModel.self)
-        return try await (balance, sent, received, transactionsCount)
+        return try await (balance, transactionsCount)
     }
     
     func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel] {

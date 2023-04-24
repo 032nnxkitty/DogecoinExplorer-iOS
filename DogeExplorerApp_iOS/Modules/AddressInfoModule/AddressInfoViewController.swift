@@ -16,6 +16,7 @@ protocol AddressInfoView: AnyObject {
     func animateCentralLoader(_ isAnimated: Bool)
     func animateLoadTransactionLoader(_ isAnimated: Bool)
     
+    func initialConfigure(address: String, dogeBalance: String, usdBalance: String)
     func showOkActionSheet(title: String, message: String)
     func showAddTrackingAlert()
     func showDeleteAlert()
@@ -34,41 +35,39 @@ final class AddressInfoViewController: UIViewController {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.showsVerticalScrollIndicator = false
         stack.axis = .vertical
+        stack.alpha = 0
         return stack
     }()
     
     private let infoLabelsStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        stack.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 16, right: 16)
         stack.isLayoutMarginsRelativeArrangement = true
         return stack
     }()
     
     private let addressLabel: UILabel = {
         let label = UILabel()
-        label.text = "DEpFaVzjmQVYh4RWiCDSwnc6XyvQaxuyr8".shorten(prefix: 6, suffix: 6)
         label.textColor = .secondaryLabel
         return label
     }()
     
     private let dogeBalanceLabel: UILabel = {
         let label = UILabel()
-        label.text = "34,555,234,678 DOGE"
         label.font = .boldSystemFont(ofSize: 22)
         return label
     }()
     
     private let usdBalanceLabel: UILabel = {
         let label = UILabel()
-        label.text = "≈ 1,643,367.103 $"
         label.textColor = .secondaryLabel
         return label
     }()
     
     private lazy var transactionsTableView: SelfSizedTableView = {
         let tableView = SelfSizedTableView(frame: .zero, style: .plain)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: R.Identifiers.addressInfoCell)
+        tableView.register(TransactionCell.self, forCellReuseIdentifier: R.Identifiers.addressInfoCell)
         tableView.showsVerticalScrollIndicator = false
         tableView.backgroundColor = .systemBackground
         tableView.layer.cornerRadius = 20
@@ -86,11 +85,17 @@ final class AddressInfoViewController: UIViewController {
         return refreshControl
     }()
     
+    private let loader: UIActivityIndicatorView = {
+        let loader = UIActivityIndicatorView()
+        return loader
+    }()
+    
     // MARK: - View Life Cycel
     override func viewDidLoad() {
         super.viewDidLoad()
         setGradientBackground()
-        configureAppearance()
+        configureViewAppearance()
+        configureLoader()
         configureScrollableStack()
     }
 }
@@ -105,9 +110,13 @@ private extension AddressInfoViewController {
         view.layer.insertSublayer(gradientLayer, at:0)
     }
     
-    func configureAppearance() {
-        title = "Address"
+    func configureViewAppearance() {
         navigationItem.largeTitleDisplayMode = .never
+    }
+    
+    func configureLoader() {
+        view.addSubview(loader)
+        loader.center = view.center
     }
     
     func configureScrollableStack() {
@@ -144,20 +153,31 @@ extension AddressInfoViewController: AddressInfoView {
     func reloadData() {
         transactionsTableView.reloadData()
     }
+    
     func configureIfAddressTracked(name: String) {
-        
+        title = name
     }
     
     func configureIfAddressNotTracked(shortenAddress: String) {
-        
+        title = shortenAddress
     }
     
     func animateCentralLoader(_ isAnimated: Bool) {
-        
+        isAnimated ? loader.startAnimating() : loader.stopAnimating()
     }
     
     func animateLoadTransactionLoader(_ isAnimated: Bool) {
         
+    }
+    
+    func initialConfigure(address: String, dogeBalance: String, usdBalance: String) {
+        addressLabel.text = address
+        dogeBalanceLabel.text = dogeBalance
+        usdBalanceLabel.text = usdBalance
+        UIView.animate(withDuration: 0.5) {
+            self.scrollableStack.alpha = 1
+        }
+        transactionsTableView.reloadData()
     }
     
     func showOkActionSheet(title: String, message: String) {
@@ -188,16 +208,14 @@ extension AddressInfoViewController: AddressInfoView {
 // MARK: - UITableViewDataSource
 extension AddressInfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 30
+        return presenter.getNumberOfTransactions()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.addressInfoCell, for: indexPath)
-        var cellContent = cell.defaultContentConfiguration()
-        cellContent.text = "Sent"
-        cellContent.secondaryText = "Some text"
-        cellContent.image = UIImage(systemName: "arrow.left.arrow.right")
-        cell.contentConfiguration = cellContent
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.addressInfoCell, for: indexPath) as! TransactionCell
+        presenter.configureTransactionCell(at: indexPath) { style, value, time, hash in
+            cell.configure(style: style, value: value, date: time, hash: hash)
+        }
         return cell
     }
     
