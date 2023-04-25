@@ -201,7 +201,6 @@
 			children = (
 				10A42D6429E9B2D400BE04B9 /* AddressInfoPresenter.swift */,
 				10A42D6629E9B2E800BE04B9 /* AddressInfoViewController.swift */,
-				108CA9F529F5CB86003582B6 /* TransactionCell.swift */,
 			);
 			path = AddressInfoModule;
 			sourceTree = "<group>";
@@ -218,6 +217,7 @@
 		10ED211129F31DF6008302EA /* SupportingViews */ = {
 			isa = PBXGroup;
 			children = (
+				108CA9F529F5CB86003582B6 /* TransactionCell.swift */,
 				10ED20AC29F1DFFD008302EA /* LoaderButton.swift */,
 				108CA9FB29F6B92B003582B6 /* AddressInfoHeaderView.swift */,
 			);
