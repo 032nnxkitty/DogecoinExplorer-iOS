@@ -22,7 +22,7 @@ final class MainViewController: UIViewController {
     private let addressSearchBar: UISearchBar = {
         let bar = UISearchBar()
         bar.translatesAutoresizingMaskIntoConstraints = false
-        bar.placeholder = "Enter the address to search"
+        bar.placeholder = R.LocalizableStrings.searchBar
         bar.searchTextField.layer.masksToBounds = true
         bar.searchTextField.layer.cornerRadius = 18
         bar.backgroundImage = UIImage()

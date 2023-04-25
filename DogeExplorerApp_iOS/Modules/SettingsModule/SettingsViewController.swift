@@ -29,7 +29,9 @@ final class SettingsViewController: UIViewController {
     }()
     
     private lazy var themeSegmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl(items: ["Device", "Dark", "Light"])
+        let segmentedControl = UISegmentedControl(items: [R.LocalizableStrings.device,
+                                                          R.LocalizableStrings.dark,
+                                                          R.LocalizableStrings.light])
         segmentedControl.addTarget(self, action: #selector(themeChanged), for: .valueChanged)
         return segmentedControl
     }()
@@ -45,7 +47,7 @@ final class SettingsViewController: UIViewController {
 // MARK: - Private Methods
 private extension SettingsViewController {
     func configureViewAppearance() {
-        title = "Settings"
+        title = R.LocalizableStrings.settingsTitle
         view.backgroundColor = .systemBackground
     }
     

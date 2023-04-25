@@ -26,7 +26,7 @@ final class TransactionInfoViewController: UIViewController {
 // MARK: - Private Methods
 private extension TransactionInfoViewController {
     func configureViewAppearance() {
-        title = "Transaction"
+        title = R.LocalizableStrings.transactionTitle
         view.backgroundColor = .systemBackground
     }
 }

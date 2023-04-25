@@ -22,5 +22,27 @@ enum R {
     enum Keys {
         static let theme = "themeKey"
         static let trackingAddresses = "trackedAddressesKey"
-    } 
+    }
+    
+    enum LocalizableStrings {
+        static let searchBar     = NSLocalizedString("addressSearchBar", comment: "")
+        
+        static let settingsTitle = NSLocalizedString("settingsTitle", comment: "")
+        static let language      = NSLocalizedString("language", comment: "")
+        static let theme         = NSLocalizedString("theme", comment: "")
+        static let deleteAll     = NSLocalizedString("deleteAll", comment: "")
+        static let sourceCode    = NSLocalizedString("sourceCode", comment: "")
+        static let feedback      = NSLocalizedString("feedback", comment: "")
+        static let appStore      = NSLocalizedString("appStore", comment: "")
+        static let support       = NSLocalizedString("support", comment: "")
+        static let appInfo       = NSLocalizedString("appInfo", comment: "")
+        
+        static let device      = NSLocalizedString("device", comment: "")
+        static let dark       = NSLocalizedString("dark", comment: "")
+        static let light       = NSLocalizedString("light", comment: "")
+        
+        static let transactionTitle = NSLocalizedString("transactionTitle", comment: "")
+        static let sent             = NSLocalizedString("sent", comment: "")
+        static let received         = NSLocalizedString("received", comment: "")
+    }
 }

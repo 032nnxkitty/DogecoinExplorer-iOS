@@ -80,11 +80,11 @@ final class TransactionCell: UITableViewCell {
     func configure(style: TransactionStyle, value: String, date: String, hash: String) {
         switch style {
         case .sent:
-            stateLabel.text = "Sent"
+            stateLabel.text = R.LocalizableStrings.sent
             sumLabel.text = value
             sumLabel.textColor = .label
         case .received:
-            stateLabel.text = "Received"
+            stateLabel.text = R.LocalizableStrings.received
             sumLabel.text = value
             sumLabel.textColor = .systemGreen
         }

@@ -42,7 +42,7 @@ final class SettingsPresenterImp: SettingsPresenter {
     
     func configureCell(at indexPath: IndexPath, completion: @escaping (_ title: String, _ iconName: String, _ isThemeCell: Bool) -> Void) {
         let currentCell = cell(at: indexPath)
-        completion(currentCell.title, currentCell.style.rawValue, currentCell.title == "Theme")
+        completion(currentCell.title, currentCell.style.rawValue, currentCell.style == .theme)
     }
     
     func getTitleForFooter(in section: Int) -> String? {

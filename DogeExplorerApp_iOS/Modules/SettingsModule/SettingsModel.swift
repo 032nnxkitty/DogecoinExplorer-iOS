@@ -29,15 +29,15 @@ struct SettingsModel {
     var model: [SettingsSection] {
         return [
             [
-                SettingsCell(title: "Language",                     style: .language),
-                SettingsCell(title: "Theme",                        style: .theme),
-                SettingsCell(title: "Delete all tracked addresses", style: .deleteAddresses)
+                SettingsCell(title: R.LocalizableStrings.language,   style: .language),
+                SettingsCell(title: R.LocalizableStrings.theme,      style: .theme),
+                SettingsCell(title: R.LocalizableStrings.deleteAll,  style: .deleteAddresses)
             ],
             [
-                SettingsCell(title: "Source code",                  style: .github),
-                SettingsCell(title: "Feedback",                     style: .feedback),
-                SettingsCell(title: "Rate App in the App Store",    style: .rateApp),
-                SettingsCell(title: "My dogecoin address :)",       style: .supportMe),
+                SettingsCell(title: R.LocalizableStrings.sourceCode, style: .github),
+                SettingsCell(title: R.LocalizableStrings.feedback,   style: .feedback),
+                SettingsCell(title: R.LocalizableStrings.appStore,   style: .rateApp),
+                SettingsCell(title: R.LocalizableStrings.support,    style: .supportMe),
             ]
         ]
     }

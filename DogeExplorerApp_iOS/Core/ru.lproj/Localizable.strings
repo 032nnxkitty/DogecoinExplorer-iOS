@@ -1,0 +1,27 @@
+/* 
+  Localizable.strings
+  DogeExplorerApp_iOS
+
+  Created by Arseniy Zolotarev on 25.04.2023.
+  
+*/
+
+"addressSearchBar" = "Введите адрес для поиска";
+
+"settingsTitle" = "Настройки";
+"language" = "Язык";
+"theme" = "Тема";
+"deleteAll" = "Удалить все отслеживаемые кошельки";
+"sourceCode" = "Код приложения";
+"feedback" = "Фидбэк";
+"appStore" = "Оценить приложение в App Store";
+"support" = "Мой догекоин кошклек :)";
+"appInfo" = "Developed by Arseniy Zolotarev\nPowered by Dogechain.info";
+
+"device" = "Сист.";
+"dark" = "Темн.";
+"light" = "Светл.";
+
+"transactionTitle" = "Транзакция";
+"sent" = "Отправлено";
+"received" = "Получено";
