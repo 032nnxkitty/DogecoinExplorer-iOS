@@ -220,11 +220,11 @@ extension MainViewController: UITableViewDelegate {
             completion(true)
         }
         renameAction.image = UIImage(systemName: "pencil")
-        renameAction.backgroundColor = .systemMint
+        renameAction.backgroundColor = .systemPurple
         return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
     }
     
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        presenter.getTitleFoHeader(in: section)
-//    }
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        presenter.getTitleFoHeader(in: section)
+    }
 }
