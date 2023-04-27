@@ -15,6 +15,13 @@ final class TransactionInfoViewController: UIViewController {
     var presenter: TransactionInfoPresenter!
     
     // MARK: - UI Elements
+    private let infoLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.text = "Here will be information about the transaction"
+        return label
+    }()
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -26,6 +33,14 @@ final class TransactionInfoViewController: UIViewController {
 // MARK: - Private Methods
 private extension TransactionInfoViewController {
     func configureViewAppearance() {
+        view.addSubview(infoLabel)
+        
+        NSLayoutConstraint.activate([
+            infoLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            infoLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+        ])
+        
+        infoLabel.center = view.center
         title = R.LocalizableStrings.transactionTitle
         view.backgroundColor = .systemBackground
     }
