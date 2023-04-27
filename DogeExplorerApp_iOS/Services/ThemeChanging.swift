@@ -1,5 +1,5 @@
 //
-//  ThemeService.swift
+//  ThemeChanging.swift
 //  DogeExplorerApp_iOS
 //
 //  Created by Arseniy Zolotarev on 15.04.2023.

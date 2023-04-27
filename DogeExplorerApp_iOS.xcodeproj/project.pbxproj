@@ -33,7 +33,7 @@
 		10A42D6C29E9B9E400BE04B9 /* ModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D6B29E9B9E400BE04B9 /* ModuleBuilder.swift */; };
 		10A42D7229EB1D5300BE04B9 /* String+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7129EB1D5300BE04B9 /* String+Formatting.swift */; };
 		10A42D7429EB36C700BE04B9 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7329EB36C700BE04B9 /* SettingsModel.swift */; };
-		10A42D7629EB483E00BE04B9 /* ThemeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7529EB483E00BE04B9 /* ThemeService.swift */; };
+		10A42D7629EB483E00BE04B9 /* ThemeChanging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7529EB483E00BE04B9 /* ThemeChanging.swift */; };
 		10A42D7829EB532A00BE04B9 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D7729EB532A00BE04B9 /* NetworkManager.swift */; };
 		10BA60EC29EC63E5005FCE80 /* InternetConnectionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */; };
 		10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */; };
@@ -100,7 +100,7 @@
 		10A42D6B29E9B9E400BE04B9 /* ModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBuilder.swift; sourceTree = "<group>"; };
 		10A42D7129EB1D5300BE04B9 /* String+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Formatting.swift"; sourceTree = "<group>"; };
 		10A42D7329EB36C700BE04B9 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
-		10A42D7529EB483E00BE04B9 /* ThemeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeService.swift; sourceTree = "<group>"; };
+		10A42D7529EB483E00BE04B9 /* ThemeChanging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeChanging.swift; sourceTree = "<group>"; };
 		10A42D7729EB532A00BE04B9 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionObserver.swift; sourceTree = "<group>"; };
 		10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+UnixTime.swift"; sourceTree = "<group>"; };
@@ -212,7 +212,7 @@
 				10529EF529E8A63B00E73212 /* App */,
 				10529EF729E8A64700E73212 /* Services */,
 				10529EF629E8A64100E73212 /* Modules */,
-				10529EF829E8A65E00E73212 /* Core */,
+				10529EF829E8A65E00E73212 /* SupportingFiles */,
 			);
 			path = DogeExplorerApp_iOS;
 			sourceTree = "<group>";
@@ -242,15 +242,15 @@
 			isa = PBXGroup;
 			children = (
 				10ED216A29F40AE9008302EA /* CoreData */,
-				10A42D7529EB483E00BE04B9 /* ThemeService.swift */,
+				10A42D7529EB483E00BE04B9 /* ThemeChanging.swift */,
 				10A42D7729EB532A00BE04B9 /* NetworkManager.swift */,
-				109FB83D29EC27D900D5929F /* DogechainAPIEndpoint.swift */,
 				10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */,
+				109FB83D29EC27D900D5929F /* DogechainAPIEndpoint.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		10529EF829E8A65E00E73212 /* Core */ = {
+		10529EF829E8A65E00E73212 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
 				10ED211129F31DF6008302EA /* SupportingViews */,
@@ -262,7 +262,7 @@
 				10529EE929E87CC700E73212 /* Info.plist */,
 				1047F6D029F86C6100B46708 /* Localizable.strings */,
 			);
-			path = Core;
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		109FB83929EC270900D5929F /* Models */ = {
@@ -510,7 +510,7 @@
 				1047F76A29FADA4E00B46708 /* AddressInfoViewProtocol.swift in Sources */,
 				108CA9F629F5CB86003582B6 /* TransactionCell.swift in Sources */,
 				10A42D6929E9B76700BE04B9 /* R.swift in Sources */,
-				10A42D7629EB483E00BE04B9 /* ThemeService.swift in Sources */,
+				10A42D7629EB483E00BE04B9 /* ThemeChanging.swift in Sources */,
 				10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */,
 				10ED211529F332A5008302EA /* Sent&ReceivedModels.swift in Sources */,
 				108CA9FC29F6B92B003582B6 /* AddressInfoHeaderView.swift in Sources */,
@@ -766,7 +766,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RYP579LK57;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = DogeExplorerApp_iOS/Core/Info.plist;
+				INFOPLIST_FILE = DogeExplorerApp_iOS/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -797,7 +797,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RYP579LK57;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = DogeExplorerApp_iOS/Core/Info.plist;
+				INFOPLIST_FILE = DogeExplorerApp_iOS/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
