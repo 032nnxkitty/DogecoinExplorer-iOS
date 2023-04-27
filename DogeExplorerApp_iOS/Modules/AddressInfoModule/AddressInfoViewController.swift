@@ -16,7 +16,7 @@ protocol AddressInfoView: AnyObject {
     func animateCentralLoader(_ isAnimated: Bool)
     func animateLoadTransactionLoader(_ isAnimated: Bool)
     
-    func initialConfigure(address: String, dogeBalance: String, usdBalance: String)
+    func initialConfigure(address: String, dogeBalance: String, transactionsCount: String)
     func showOkActionSheet(title: String, message: String)
     func showAddTrackingAlert()
     func showDeleteAlert()
@@ -34,14 +34,12 @@ final class AddressInfoViewController: UIViewController {
     private var infoHeaderHeightConstraint: NSLayoutConstraint!
     
     private lazy var transactionsTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(TransactionCell.self, forCellReuseIdentifier: R.Identifiers.addressInfoCell)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.showsVerticalScrollIndicator = false
         tableView.backgroundColor = .systemBackground
-        //tableView.layer.cornerRadius = 20
-        //tableView.layer.masksToBounds = true
-        //tableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        tableView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         tableView.alpha = 0
         tableView.dataSource = self
         tableView.delegate = self
@@ -181,12 +179,12 @@ extension AddressInfoViewController: AddressInfoView {
         isAnimated ? loadTransactionsButton.startLoading() : loadTransactionsButton.stopLoading()
     }
     
-    func initialConfigure(address: String, dogeBalance: String, usdBalance: String) {
+    func initialConfigure(address: String, dogeBalance: String, transactionsCount: String) {
         transactionsTableView.reloadData()
         UIView.animate(withDuration: 0.5) {
             self.transactionsTableView.alpha = 1
         }
-        infoHeader.setInfo(address: address, dogeBalance: dogeBalance, usdBalance: usdBalance)
+        infoHeader.setInfo(address: address, dogeBalance: dogeBalance, transactionsCount: transactionsCount)
     }
     
     func showOkActionSheet(title: String, message: String) {

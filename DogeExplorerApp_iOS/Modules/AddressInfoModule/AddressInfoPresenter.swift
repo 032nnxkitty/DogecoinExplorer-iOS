@@ -15,7 +15,6 @@ enum ShowingSection: Int {
 protocol AddressInfoPresenter: AddressInfoEventHandling, AddressInfoActions{
     init(address: String, view: AddressInfoView, networkManager: NetworkManager, trackingService: AddressTrackingService)
     func getNumberOfTransactions() -> Int
-    func isLoadMoreButtonVisible(_ section: Int) -> Bool
 }
 
 protocol AddressInfoEventHandling {
@@ -123,11 +122,6 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     }
     
     // MARK: - Load Transactions Methods
-    func isLoadMoreButtonVisible(_ section: Int) -> Bool {
-        guard section == loadedTransactions.count - 1 else { return false }
-        return true
-    }
-    
     func loadTransactionsButtonDidTap() {
         guard let allTransactionsCount = addressInfo?.1.info.total else { return }
         let difference = allTransactionsCount - loadedTransactions.count
@@ -191,7 +185,7 @@ private extension AddressInfoPresenterImp {
                 
                 view?.initialConfigure(address: address.shorten(prefix: 7, suffix: 7),
                                        dogeBalance: "\(addressInfo!.0.balance.formatNumberString()) DOGE",
-                                       usdBalance: "= ... $")
+                                       transactionsCount: "Transactions: \(addressInfo!.1.info.total)")
             } catch {
                 view?.showOkActionSheet(title: ":/", message: error.localizedDescription)
             }

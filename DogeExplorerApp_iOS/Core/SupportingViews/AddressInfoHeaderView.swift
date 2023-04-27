@@ -13,8 +13,9 @@ final class AddressInfoHeaderView: UIView {
     private let infoLabelsStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
         stack.distribution = .fillEqually
+        stack.axis = .vertical
+        stack.spacing = 0
         return stack
     }()
     
@@ -39,6 +40,13 @@ final class AddressInfoHeaderView: UIView {
         return label
     }()
     
+    private let transactionsCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Transactions: ..."
+        label.textColor = .secondaryLabel
+        return label
+    }()
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -50,10 +58,10 @@ final class AddressInfoHeaderView: UIView {
     }
     
     // MARK: - Public Methods
-    func setInfo(address: String, dogeBalance: String, usdBalance: String) {
+    func setInfo(address: String, dogeBalance: String, transactionsCount: String) {
         addressLabel.text = address
         dogeBalanceLabel.text = dogeBalance
-        usdBalanceLabel.text = usdBalance
+        transactionsCountLabel.text = transactionsCount
     }
 }
 
@@ -64,13 +72,14 @@ private extension AddressInfoHeaderView {
         
         NSLayoutConstraint.activate([
             infoLabelsStack.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            infoLabelsStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            infoLabelsStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            infoLabelsStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            infoLabelsStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             infoLabelsStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
         
         infoLabelsStack.addArrangedSubview(addressLabel)
         infoLabelsStack.addArrangedSubview(dogeBalanceLabel)
-        infoLabelsStack.addArrangedSubview(usdBalanceLabel)
+        //infoLabelsStack.addArrangedSubview(usdBalanceLabel)
+        infoLabelsStack.addArrangedSubview(transactionsCountLabel)
     }
 }

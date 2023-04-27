@@ -81,13 +81,12 @@ final class TransactionCell: UITableViewCell {
         switch style {
         case .sent:
             stateLabel.text = R.LocalizableStrings.sent
-            sumLabel.text = value
             sumLabel.textColor = .label
         case .received:
             stateLabel.text = R.LocalizableStrings.received
-            sumLabel.text = value
             sumLabel.textColor = .systemGreen
         }
+        sumLabel.text = value
         timeLabel.text = date
         fromToLabel.text = hash
     }
@@ -96,7 +95,7 @@ final class TransactionCell: UITableViewCell {
 // MARK: - Private Methods
 private extension TransactionCell {
     func configureAppearance() {
-        backgroundColor = .systemBackground
+        backgroundColor = .systemGray6
         
         addSubview(containerStack)
         NSLayoutConstraint.activate([
