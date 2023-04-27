@@ -22,8 +22,10 @@ protocol NetworkManager {
 
 final class NetworkManagerImp: NetworkManager {
     func checkAddressExistence(_ address: String) async throws -> Bool {
+        let url = DogechainAPIEndpoint.balance(address: address).url
+        
         do {
-            let _ = try await request(url: URLs.getBalance(for: address), decodeTo: BalanceModel.self)
+            let _ = try await request(url: url, decodeTo: BalanceModel.self)
             return true
         } catch {
             return false
@@ -31,19 +33,29 @@ final class NetworkManagerImp: NetworkManager {
     }
     
     func getAddressInfo(_ address: String) async throws -> (BalanceModel, TransactionsCountModel) {
-        async let balance           = request(url: URLs.getBalance(for: address), decodeTo: BalanceModel.self)
-        async let transactionsCount = request(url: URLs.getTransactionsCount(for: address), decodeTo: TransactionsCountModel.self)
+        let balanceUrl           = DogechainAPIEndpoint.balance(address: address).url
+        let transactionsCountUrl = DogechainAPIEndpoint.transactionsCount(address: address).url
+        
+        async let balance           = request(url: balanceUrl, decodeTo: BalanceModel.self)
+        async let transactionsCount = request(url: transactionsCountUrl, decodeTo: TransactionsCountModel.self)
+        
         return try await (balance, transactionsCount)
     }
     
     func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel] {
-        let transactionPage = try await request(url: URLs.getTransactionsPage(for: address, page: page), decodeTo: TransactionsPageModel.self)
+        let pageUrl = DogechainAPIEndpoint.transactionsPage(address: address, page: page).url
+        
+        let transactionPage = try await request(url: pageUrl, decodeTo: TransactionsPageModel.self)
         
         var detailedTransactionsPage: [DetailedTransactionModel] = []
         return try await withThrowingTaskGroup(of: DetailedTransactionModel.self, returning: [DetailedTransactionModel].self) { taskGroup in
             for transaction in transactionPage.transactions {
+                
+                let hash = transaction.hash
+                let transactionInfoUrl = DogechainAPIEndpoint.transactionInfo(hash: hash).url
+                
                 taskGroup.addTask {
-                    let transaction = try await self.request(url: URLs.getTransactionInfo(hash: transaction.hash), decodeTo: DetailedTransactionModel.self)
+                    let transaction = try await self.request(url: transactionInfoUrl, decodeTo: DetailedTransactionModel.self)
                     return transaction
                 }
             }
