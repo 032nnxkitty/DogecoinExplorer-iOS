@@ -7,25 +7,6 @@
 
 import UIKit
 
-protocol AddressInfoView: AnyObject {
-    func reloadData()
-    
-    func configureIfAddressTracked(name: String)
-    func configureIfAddressNotTracked(shortenAddress: String)
-    
-    func animateCentralLoader(_ isAnimated: Bool)
-    func animateLoadTransactionLoader(_ isAnimated: Bool)
-    
-    func initialConfigure(address: String, dogeBalance: String, transactionsCount: String)
-    func showOkActionSheet(title: String, message: String)
-    func showAddTrackingAlert()
-    func showDeleteAlert()
-    func showRenameAlert()
-    func showTransactionInfoViewController()
-    
-    func hideLoadTransactionsButton()
-}
-
 final class AddressInfoViewController: UIViewController {
     var presenter: AddressInfoPresenter!
     
@@ -179,7 +160,7 @@ extension AddressInfoViewController: AddressInfoView {
         isAnimated ? loadTransactionsButton.startLoading() : loadTransactionsButton.stopLoading()
     }
     
-    func initialConfigure(address: String, dogeBalance: String, transactionsCount: String) {
+    func setAddressInfo(address: String, dogeBalance: String, transactionsCount: String) {
         transactionsTableView.reloadData()
         UIView.animate(withDuration: 0.5) {
             self.transactionsTableView.alpha = 1

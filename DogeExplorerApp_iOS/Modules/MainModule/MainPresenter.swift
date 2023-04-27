@@ -7,25 +7,6 @@
 
 import Foundation
 
-protocol MainPresenter {
-    init(view: MainView, networkManager: NetworkManager, trackingService: AddressTrackingService)
-    
-    func getNumberOfTrackedAddresses() -> Int
-    func configureCell(at indexPath: IndexPath, completion: @escaping (_ name: String, _ address: String) -> Void)
-    
-    
-    func deleteTrackingForAddress(at indexPath: IndexPath)
-    func renameAddress(at indexPath: IndexPath, newName: String?)
-    
-    func viewWillAppear()
-    func getTitleFoHeader(in section: Int) -> String?
-    
-    func refresh()
-    func settingsButtonDidTap()
-    func didSelectAddress(at indexPath: IndexPath)
-    func searchButtonDidTap(with text: String?)
-}
-
 final class MainPresenterImp: MainPresenter {
     private weak var view: MainView?
     private let trackingService: AddressTrackingService

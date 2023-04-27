@@ -7,31 +7,6 @@
 
 import Foundation
 
-enum ShowingSection: Int {
-    case info
-    case transactions
-}
-
-protocol AddressInfoPresenter: AddressInfoEventHandling, AddressInfoActions{
-    init(address: String, view: AddressInfoView, networkManager: NetworkManager, trackingService: AddressTrackingService)
-    func getNumberOfTransactions() -> Int
-}
-
-protocol AddressInfoEventHandling {
-    func trackingStateDidChange()
-    func renameButtonDidTap()
-    func loadTransactionsButtonDidTap()
-    func didSelectTransaction(at indexPath: IndexPath)
-}
-
-protocol AddressInfoActions {
-    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (_ style: TransactionStyle, _ value: String, _ time: String, _ hash: String) -> Void)
-    
-    func addTracking(with name: String?)
-    func renameAddress(newName: String?)
-    func deleteTracking()
-}
-
 final class AddressInfoPresenterImp: AddressInfoPresenter {
     private weak var view: AddressInfoView?
     private let networkManager: NetworkManager
@@ -183,7 +158,7 @@ private extension AddressInfoPresenterImp {
                 
                 print("base info loading time: \(Date().timeIntervalSince(start))")
                 
-                view?.initialConfigure(address: address.shorten(prefix: 7, suffix: 7),
+                view?.setAddressInfo(address: address.shorten(prefix: 7, suffix: 7),
                                        dogeBalance: "\(addressInfo!.0.balance.formatNumberString()) DOGE",
                                        transactionsCount: "Transactions: \(addressInfo!.1.info.total)")
             } catch {

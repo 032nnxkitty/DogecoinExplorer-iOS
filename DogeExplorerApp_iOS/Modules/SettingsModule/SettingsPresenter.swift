@@ -7,19 +7,6 @@
 
 import Foundation
 
-protocol SettingsPresenter {
-    init(view: SettingsView, trackingService: AddressTrackingService)
-    func getNumberOfSection() -> Int
-    func getNumberOfRows(in section: Int) -> Int
-    
-    func configureCell(at indexPath: IndexPath, completion: @escaping (_ title: String, _ iconName: String, _ isThemeCell: Bool) -> Void)
-    func getTitleForFooter(in section: Int) -> String?
-    func deleteAllTrackedAddresses()
-    
-    func didSelectRow(at indexPath: IndexPath)
-    func themeIndexDidChange(to index: Int)
-}
-
 final class SettingsPresenterImp: SettingsPresenter {
     private weak var view: SettingsView?
     private let settingsModel: [SettingsSection]
