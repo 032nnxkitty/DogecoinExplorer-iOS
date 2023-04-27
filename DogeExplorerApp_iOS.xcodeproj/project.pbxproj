@@ -22,6 +22,7 @@
 		10529EE829E87CC700E73212 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10529EE629E87CC700E73212 /* LaunchScreen.storyboard */; };
 		108CA9F629F5CB86003582B6 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108CA9F529F5CB86003582B6 /* TransactionCell.swift */; };
 		108CA9FC29F6B92B003582B6 /* AddressInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108CA9FB29F6B92B003582B6 /* AddressInfoHeaderView.swift */; };
+		109CD0A929FAED8A005B7CC7 /* CoreDataManagerUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109CD0A829FAED8A005B7CC7 /* CoreDataManagerUnitTests.swift */; };
 		109FB83E29EC27D900D5929F /* DogechainAPIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109FB83D29EC27D900D5929F /* DogechainAPIEndpoint.swift */; };
 		10A42D5A29E9B18C00BE04B9 /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D5929E9B18C00BE04B9 /* MainPresenter.swift */; };
 		10A42D5C29E9B19F00BE04B9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D5B29E9B19F00BE04B9 /* MainViewController.swift */; };
@@ -89,6 +90,7 @@
 		10529EE929E87CC700E73212 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		108CA9F529F5CB86003582B6 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		108CA9FB29F6B92B003582B6 /* AddressInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfoHeaderView.swift; sourceTree = "<group>"; };
+		109CD0A829FAED8A005B7CC7 /* CoreDataManagerUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerUnitTests.swift; sourceTree = "<group>"; };
 		109FB83D29EC27D900D5929F /* DogechainAPIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogechainAPIEndpoint.swift; sourceTree = "<group>"; };
 		10A42D5929E9B18C00BE04B9 /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
 		10A42D5B29E9B19F00BE04B9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				1047F73029F9897D00B46708 /* DogeExplorerAppUnitTests.swift */,
+				109CD0A829FAED8A005B7CC7 /* CoreDataManagerUnitTests.swift */,
 			);
 			path = DogeExplorerAppUnitTests;
 			sourceTree = "<group>";
@@ -479,6 +482,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				109CD0A929FAED8A005B7CC7 /* CoreDataManagerUnitTests.swift in Sources */,
 				1047F73129F9897D00B46708 /* DogeExplorerAppUnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
