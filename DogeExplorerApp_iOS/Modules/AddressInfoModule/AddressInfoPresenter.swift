@@ -41,20 +41,29 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         
         let time = currentTransaction.time.formatUnixTime(style: .short)
         let hash = currentTransaction.hash.shorten(prefix: 7, suffix: 7)
+        
+        var balanceChange: Double = 0.0
+        
         for input in currentTransaction.inputs {
             if input.address == self.address {
-                let value = input.value.formatNumberString()
-                completion(.sent, "-\(value) DOGE", time, hash)
-                return
+                let value = Double(input.value) ?? 0
+                balanceChange -= value
             }
         }
         
         for output in currentTransaction.outputs {
             if output.address == self.address {
-                let value = output.value.formatNumberString()
-                completion(.received, "+\(value) DOGE", time, hash)
-                return
+                let value = Double(output.value) ?? 0
+                balanceChange += value
             }
+        }
+        
+        let balanceChangeToShow = String(abs(balanceChange)).formatNumberString()
+        
+        if balanceChange >= 0 {
+            completion(.received, "+\(balanceChangeToShow) DOGE", time, hash)
+        } else {
+            completion(.sent, "-\(balanceChangeToShow) DOGE", time, hash)
         }
     }
     
