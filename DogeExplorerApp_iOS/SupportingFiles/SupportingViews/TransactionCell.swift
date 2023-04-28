@@ -16,11 +16,11 @@ final class TransactionCell: UITableViewCell {
     private let containerStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.isLayoutMarginsRelativeArrangement = true
+        stack.layoutMargins = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
         stack.distribution = .fillEqually
         stack.axis = .vertical
         stack.spacing = 4
-        stack.isLayoutMarginsRelativeArrangement = true
-        stack.layoutMargins = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
         return stack
     }()
     

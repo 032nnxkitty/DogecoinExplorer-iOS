@@ -12,6 +12,7 @@ final class SettingsPresenterImp: SettingsPresenter {
     private let settingsModel: [SettingsSection]
     private let trackingService: AddressTrackingService
     
+    // MARK: - Init
     init(view: SettingsView, trackingService: AddressTrackingService) {
         self.view = view
         self.settingsModel = SettingsModel().model
@@ -19,6 +20,7 @@ final class SettingsPresenterImp: SettingsPresenter {
         initialize()
     }
     
+    // MARK: - Public Methods
     func getNumberOfSection() -> Int {
         return settingsModel.count
     }

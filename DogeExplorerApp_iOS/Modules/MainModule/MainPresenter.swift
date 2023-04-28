@@ -13,6 +13,7 @@ final class MainPresenterImp: MainPresenter {
     private let networkManager: NetworkManager
     private let internetConnectionObserver: InternetConnectionObserver
     
+    // MARK: - Init
     init(view: MainView, networkManager: NetworkManager, trackingService: AddressTrackingService) {
         self.view = view
         self.networkManager = networkManager
@@ -53,6 +54,7 @@ final class MainPresenterImp: MainPresenter {
             view?.showOkActionSheet(title: "Title", message: "Address should contains 34 symbols")
             return
         }
+        
         Task { @MainActor in
             guard try await networkManager.checkAddressExistence(address) else {
                 view?.showOkActionSheet(title: "Address not found", message: ":(")

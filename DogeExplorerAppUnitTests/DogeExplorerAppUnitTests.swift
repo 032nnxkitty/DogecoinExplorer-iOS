@@ -17,7 +17,7 @@ final class DogeExplorerAppUnitTests: XCTestCase {
         
     }
 
-    // MARK: - Tests
+    // MARK: - Extensions Tests
     func testShortenAddress() throws {
         // Given
         let givenAddress = "D5RpQhaVkpHHT4n8HrPahoVWbwmSohNpEt"

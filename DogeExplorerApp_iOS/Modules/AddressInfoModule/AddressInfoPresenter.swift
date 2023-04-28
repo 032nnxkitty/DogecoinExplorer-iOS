@@ -18,7 +18,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     private var loadedTransactions: [DetailedTransactionModel]
     
     // MARK: - Init
-    required init(address: String, view: AddressInfoView, networkManager: NetworkManager, trackingService: AddressTrackingService) {
+    init(address: String, view: AddressInfoView, networkManager: NetworkManager, trackingService: AddressTrackingService) {
         self.view = view
         self.networkManager = networkManager
         self.trackingService = trackingService
@@ -168,8 +168,8 @@ private extension AddressInfoPresenterImp {
                 print("base info loading time: \(Date().timeIntervalSince(start))")
                 
                 view?.setAddressInfo(address: address.shorten(prefix: 7, suffix: 7),
-                                       dogeBalance: "\(addressInfo!.0.balance.formatNumberString()) DOGE",
-                                       transactionsCount: "Transactions: \(addressInfo!.1.info.total)")
+                                     dogeBalance: "\(addressInfo!.0.balance.formatNumberString()) DOGE",
+                                     transactionsCount: "Transactions: \(addressInfo!.1.info.total)")
             } catch {
                 view?.showOkActionSheet(title: ":/", message: error.localizedDescription)
             }

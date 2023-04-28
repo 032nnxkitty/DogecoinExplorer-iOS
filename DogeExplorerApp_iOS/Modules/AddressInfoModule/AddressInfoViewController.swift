@@ -12,7 +12,6 @@ final class AddressInfoViewController: UIViewController {
     
     // MARK: - UI Elements
     private var infoHeader: AddressInfoHeaderView!
-    private var infoHeaderHeightConstraint: NSLayoutConstraint!
     
     private lazy var transactionsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -81,6 +80,7 @@ private extension AddressInfoViewController {
     func configureViewAppearance() {
         navigationItem.largeTitleDisplayMode = .never
         view.backgroundColor = .systemBackground
+        infoHeader = AddressInfoHeaderView()
     }
     
     func configureLoader() {
@@ -89,8 +89,6 @@ private extension AddressInfoViewController {
     }
     
     func configureTableView() {
-        infoHeader = AddressInfoHeaderView()
-        
         transactionsTableView.refreshControl = refreshControl
         
         view.addSubview(transactionsTableView)
@@ -176,7 +174,9 @@ extension AddressInfoViewController: AddressInfoView {
     }
     
     func showAddTrackingAlert() {
-        let trackingAlert = createTextFieldAlert(title: "Add name to address", message:  "If field will be empty..", placeHolder: "Enter name") { name in
+        let trackingAlert = createTextFieldAlert(title: "Add name to address",
+                                                 message:  "If field will be empty..",
+                                                 placeHolder: "Enter name") { name in
             self.presenter.addTracking(with: name)
         }
         present(trackingAlert, animated: true)
@@ -194,7 +194,9 @@ extension AddressInfoViewController: AddressInfoView {
     }
     
     func showRenameAlert() {
-        let renameAlert = createTextFieldAlert(title: "Enter new name", message: "If field will be empty..", placeHolder: "Enter new name") { name in
+        let renameAlert = createTextFieldAlert(title: "Enter new name",
+                                               message: "If field will be empty..",
+                                               placeHolder: "Enter new name") { name in
             self.presenter.renameAddress(newName: name)
         }
         present(renameAlert, animated: true)
