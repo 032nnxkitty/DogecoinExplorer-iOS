@@ -12,6 +12,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
     private let networkManager: NetworkManager
     private let trackingService: AddressTrackingService
     
+    // MARK: - Info About Address
     private let address: String
     private var isAddressTracked: Bool!
     private var addressInfo: (BalanceModel, TransactionsCountModel)?
@@ -58,12 +59,12 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
             }
         }
         
-        let balanceChangeToShow = String(abs(balanceChange)).formatNumberString()
+        let formattedBalanceChange = String(abs(balanceChange)).formatNumberString()
         
         if balanceChange >= 0 {
-            completion(.received, "+\(balanceChangeToShow) DOGE", time, hash)
+            completion(.received, "+\(formattedBalanceChange) DOGE", time, hash)
         } else {
-            completion(.sent, "-\(balanceChangeToShow) DOGE", time, hash)
+            completion(.sent, "-\(formattedBalanceChange) DOGE", time, hash)
         }
     }
     
@@ -110,20 +111,19 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         guard let allTransactionsCount = addressInfo?.1.info.total else { return }
         let difference = allTransactionsCount - loadedTransactions.count
         guard difference > 0 else { return }
-        let pageToLoad = (loadedTransactions.count / 10) + 1
+        
         view?.animateLoadTransactionLoader(true)
         Task { @MainActor in
             do {
                 let start = Date()
                 
-                let transactions = try await networkManager.getDetailedTransactionsPage(for: address, page: pageToLoad)
-                loadedTransactions += transactions
-                loadedTransactions.sort { $0.transaction.time > $1.transaction.time }
-                view?.animateLoadTransactionLoader(false)
+                let pageToLoad = (loadedTransactions.count / 10) + 1
+                try await loadTransactionsPage(pageToLoad)
                 if difference <= 10 { view?.hideLoadTransactionsButton() }
-                print("full transaction page loading time: \(Date().timeIntervalSince(start))")
-                
+                view?.animateLoadTransactionLoader(false)
                 view?.reloadData()
+                
+                print("full transaction page loading time: \(Date().timeIntervalSince(start))")
             } catch {
                 print(error, #function)
             }
@@ -154,26 +154,26 @@ private extension AddressInfoPresenterImp {
                 let start = Date()
                 
                 async let info = networkManager.getAddressInfo(address)
-                async let transactions = networkManager.getDetailedTransactionsPage(for: address, page: 1)
-                
+                try await loadTransactionsPage(1)
                 addressInfo = try await info
-                loadedTransactions.append(contentsOf: try await transactions)
                 
-                if let addressInfo, addressInfo.1.info.total <= 10 {
-                    view?.hideLoadTransactionsButton()
-                }
-                
-                loadedTransactions.sort { $0.transaction.time > $1.transaction.time }
-                
-                print("base info loading time: \(Date().timeIntervalSince(start))")
-                
+                if addressInfo!.1.info.total <= 10 { view?.hideLoadTransactionsButton() }
                 view?.setAddressInfo(address: address.shorten(prefix: 7, suffix: 7),
                                      dogeBalance: "\(addressInfo!.0.balance.formatNumberString()) DOGE",
                                      transactionsCount: "Transactions: \(addressInfo!.1.info.total)")
+                
+                
+                print("base info loading time: \(Date().timeIntervalSince(start))")
             } catch {
                 view?.showOkActionSheet(title: ":/", message: error.localizedDescription)
             }
             view?.animateCentralLoader(false)
         }
+    }
+    
+    func loadTransactionsPage(_ page: Int) async throws {
+        let newTransactions = try await networkManager.getDetailedTransactionsPage(for: address, page: page)
+        loadedTransactions += newTransactions
+        loadedTransactions.sort { $0.transaction.time > $1.transaction.time }
     }
 }
