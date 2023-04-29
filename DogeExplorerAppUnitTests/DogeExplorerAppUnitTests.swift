@@ -32,8 +32,8 @@ final class DogeExplorerAppUnitTests: XCTestCase {
     
     func testSumFormattingWithFloatPoint() throws {
         // Given
-        let givenSum = "105730562.40957393"
-        let expectedResult = "105,730,562.410"
+        let givenSum = "105730562.124"
+        let expectedResult = "105 730 562,124"
         
         // When
         let result = givenSum.formatNumberString()
