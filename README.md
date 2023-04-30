@@ -7,7 +7,7 @@ iOS application for viewing information about addresses and transactions in the 
 ![UIKit](https://img.shields.io/badge/-UIKit-purple.svg)
 ![Dogecoin](https://img.shields.io/badge/-Dogecoin-yellow.svg)
 
-<img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/main.PNG" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/address.PNG" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/transaction.PNG" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/settings.PNG" width="200"> 
+<img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/main.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/address.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/transaction.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/settings.png" width="200"> 
 
 ## Features
 - MVP (Model View Presenter) architecture
