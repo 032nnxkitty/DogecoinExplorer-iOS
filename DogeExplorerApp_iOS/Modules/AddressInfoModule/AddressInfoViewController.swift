@@ -238,6 +238,8 @@ extension AddressInfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let stack = UIStackView()
         stack.alignment = .center
+        stack.isLayoutMarginsRelativeArrangement = true
+        stack.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
         stack.addArrangedSubview(loadTransactionsButton)
         return stack
     }
