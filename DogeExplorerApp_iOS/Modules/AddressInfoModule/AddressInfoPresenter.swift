@@ -11,6 +11,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
     private weak var view: AddressInfoView?
     private let networkManager: NetworkManager
     private let trackingService: AddressTrackingService
+    private let internetConnectionObserver: InternetConnectionObserver
     
     // MARK: - Info About Address
     private let address: String
@@ -23,6 +24,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
         self.view = view
         self.networkManager = networkManager
         self.trackingService = trackingService
+        self.internetConnectionObserver = InternetConnectionObserverImp()
         
         self.address = address
         self.loadedTransactions = []
@@ -108,6 +110,11 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
     
     // MARK: - Load Transactions Methods
     func loadTransactionsButtonDidTap() {
+        guard internetConnectionObserver.isReachable else {
+            view?.showOkActionSheet(title: ":/", message: "No internet connection")
+            return
+        }
+        
         guard let allTransactionsCount = addressInfo?.1.info.total else { return }
         let difference = allTransactionsCount - loadedTransactions.count
         guard difference > 0 else { return }
