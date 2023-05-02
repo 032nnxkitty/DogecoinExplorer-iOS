@@ -12,7 +12,7 @@ enum TransactionStyle {
     case received
 }
 
-final class TransactionCell: UITableViewCell {
+class TransactionCell: UITableViewCell {
     private let containerStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false

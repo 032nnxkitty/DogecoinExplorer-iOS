@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController {
     public var presenter: SettingsPresenter!
     
     // MARK: - UI Elements

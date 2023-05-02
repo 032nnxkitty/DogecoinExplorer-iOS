@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class MainPresenterImp: MainPresenter {
+class MainPresenterImp: MainPresenter {
     private weak var view: MainView?
     private let trackingService: AddressTrackingService
     private let networkManager: NetworkManager

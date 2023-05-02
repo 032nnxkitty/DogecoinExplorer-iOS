@@ -11,7 +11,7 @@ protocol InternetConnectionObserver {
     var isReachable: Bool { get }
 }
 
-final class InternetConnectionObserverImp: InternetConnectionObserver {
+class InternetConnectionObserverImp: InternetConnectionObserver {
     private let monitor: NWPathMonitor
     private var status: NWPath.Status
     

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class LoaderButton: UIButton {
+class LoaderButton: UIButton {
     private let loader = UIActivityIndicatorView()
     
     // MARK: - Init
@@ -20,6 +20,7 @@ final class LoaderButton: UIButton {
         super.init(coder: coder)
         configure()
     }
+    
     // MARK: - Public Methods
     func startLoading() {
         loader.startAnimating()
@@ -35,6 +36,7 @@ final class LoaderButton: UIButton {
     private func configure() {
         loader.hidesWhenStopped = true
         loader.translatesAutoresizingMaskIntoConstraints = false
+        
         addSubview(loader)
         NSLayoutConstraint.activate([
             loader.centerXAnchor.constraint(equalTo: self.centerXAnchor),

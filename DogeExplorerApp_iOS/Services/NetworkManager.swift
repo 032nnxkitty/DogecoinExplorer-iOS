@@ -20,7 +20,7 @@ protocol NetworkManager {
     func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel]
 }
 
-final class NetworkManagerImp: NetworkManager {
+class NetworkManagerImp: NetworkManager {
     func checkAddressExistence(_ address: String) async throws -> Bool {
         let url = DogechainAPIEndpoint.balance(address: address).url
         
@@ -69,6 +69,7 @@ final class NetworkManagerImp: NetworkManager {
     }
 }
 
+// MARK: - Private Generic Request
 private extension NetworkManagerImp {
     func request<T: Decodable>(url: URL?, decodeTo: T.Type) async throws -> T {
         guard let url else {

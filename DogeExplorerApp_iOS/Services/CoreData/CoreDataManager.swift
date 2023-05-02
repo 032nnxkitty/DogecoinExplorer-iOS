@@ -19,7 +19,7 @@ protocol AddressTrackingService {
     func addMockData()
 }
 
-final class CoreDataManager {
+class CoreDataManager {
     static let shared = CoreDataManager()
     private init() {}
     

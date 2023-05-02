@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AddressInfoHeaderView: UIView {
+class AddressInfoHeaderView: UIView {
     
     // MARK: - UI Elements
     private let infoLabelsStack: UIStackView = {

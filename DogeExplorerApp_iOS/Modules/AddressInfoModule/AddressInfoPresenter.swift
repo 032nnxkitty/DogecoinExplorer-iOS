@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class AddressInfoPresenterImp: AddressInfoPresenter {
+class AddressInfoPresenterImp: AddressInfoPresenter {
     private weak var view: AddressInfoView?
     private let networkManager: NetworkManager
     private let trackingService: AddressTrackingService
@@ -41,7 +41,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
         let currentTransaction = loadedTransactions[indexPath.row].transaction
         
         let time = currentTransaction.time.formatUnixTime(style: .short)
-        let hash = currentTransaction.hash.shorten(prefix: 7, suffix: 7)
+        let hash = currentTransaction.hash.shorten(prefix: 6, suffix: 6)
         
         var balanceChange: Double = 0.0
         

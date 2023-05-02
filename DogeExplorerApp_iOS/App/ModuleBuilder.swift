@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ModuleBuilder {
+class ModuleBuilder {
     private init() {}
     
     class func createMainModule() -> UIViewController {

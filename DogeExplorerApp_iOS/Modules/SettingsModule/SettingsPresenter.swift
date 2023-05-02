@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class SettingsPresenterImp: SettingsPresenter {
+class SettingsPresenterImp: SettingsPresenter {
     private weak var view: SettingsView?
     private let settingsModel: [SettingsSection]
     private let trackingService: AddressTrackingService

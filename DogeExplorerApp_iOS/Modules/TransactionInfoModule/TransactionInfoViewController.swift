@@ -11,7 +11,7 @@ protocol TransactionInfoView: AnyObject {
     
 }
 
-final class TransactionInfoViewController: UIViewController {
+class TransactionInfoViewController: UIViewController {
     var presenter: TransactionInfoPresenter!
     
     // MARK: - UI Elements
@@ -21,6 +21,13 @@ final class TransactionInfoViewController: UIViewController {
         label.textAlignment = .center
         label.text = "Here will be information about the transaction"
         return label
+    }()
+    
+    private let openDogechainButton: UIButton  = {
+        let button = UIButton(configuration: .filled())
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("More info about transaction", for: .normal)
+        return button
     }()
     
     // MARK: - View Life Cycle
@@ -34,15 +41,28 @@ final class TransactionInfoViewController: UIViewController {
 private extension TransactionInfoViewController {
     func configureViewAppearance() {
         view.addSubview(infoLabel)
+        view.addSubview(openDogechainButton)
         
         NSLayoutConstraint.activate([
             infoLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             infoLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            
+            openDogechainButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            openDogechainButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            openDogechainButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
         ])
         
         infoLabel.center = view.center
         title = R.LocalizableStrings.transactionTitle
         view.backgroundColor = .systemBackground
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
+    }
+}
+
+// MARK: - Private Methods
+@objc private extension TransactionInfoViewController {
+    func close() {
+        dismiss(animated: true)
     }
 }
 

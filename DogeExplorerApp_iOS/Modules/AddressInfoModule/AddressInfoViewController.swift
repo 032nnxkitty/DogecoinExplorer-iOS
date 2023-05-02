@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AddressInfoViewController: UIViewController {
+class AddressInfoViewController: UIViewController {
     var presenter: AddressInfoPresenter!
     
     // MARK: - UI Elements
@@ -61,7 +61,7 @@ final class AddressInfoViewController: UIViewController {
     
     private lazy var loadTransactionsButton: LoaderButton = {
         let button = LoaderButton(configuration: .plain())
-        button.setTitle("Load more transactions", for: .normal)
+        button.setTitle("Load more", for: .normal)
         button.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
         return button
     }()

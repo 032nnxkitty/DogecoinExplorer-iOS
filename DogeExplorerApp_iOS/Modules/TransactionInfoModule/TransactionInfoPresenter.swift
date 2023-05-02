@@ -11,7 +11,7 @@ protocol TransactionInfoPresenter {
     init(view: TransactionInfoView)
 }
 
-final class TransactionInfoPresenterImp: TransactionInfoPresenter {
+class TransactionInfoPresenterImp: TransactionInfoPresenter {
     private let view: TransactionInfoView
     
     init(view: TransactionInfoView) {
