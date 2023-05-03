@@ -39,21 +39,21 @@ class TransactionCell: UITableViewCell {
     private let stateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = .boldSystemFont(ofSize: 17)
+        label.font = .preferredFont(forTextStyle: .headline)
         return label
     }()
     
     private let sumLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.font = .boldSystemFont(ofSize: 17)
+        label.font = .preferredFont(forTextStyle: .headline)
         return label
     }()
     
     private let fromToLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 14)
+        label.font = .preferredFont(forTextStyle: .footnote)
         label.textColor = .secondaryLabel
         return label
     }()
@@ -61,7 +61,7 @@ class TransactionCell: UITableViewCell {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.font = .systemFont(ofSize: 14)
+        label.font = .preferredFont(forTextStyle: .footnote)
         label.textColor = .secondaryLabel
         return label
     }()
