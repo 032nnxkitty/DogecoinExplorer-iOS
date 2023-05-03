@@ -53,7 +53,8 @@ class AddressInfoViewController: UIViewController {
     }()
     
     private lazy var renameButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .compose,
+        let button = UIBarButtonItem(image: UIImage(systemName: "pencil"),
+                                     style: .plain,
                                      target: self,
                                      action: #selector(renameButtonDidTap))
         return button
