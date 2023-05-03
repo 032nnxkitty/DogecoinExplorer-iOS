@@ -37,22 +37,14 @@ class AddressInfoViewController: UIViewController {
         return loader
     }()
     
-    private lazy var addTrackingButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(systemName: "star"),
-                                     style: .plain,
+    private lazy var shareBarButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(barButtonSystemItem: .action,
                                      target: self,
-                                     action: #selector(trackingStateDidChange))
+                                     action: #selector(share))
         return button
     }()
     
-    private lazy var deleteTrackingButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .trash,
-                                     target: self,
-                                     action: #selector(trackingStateDidChange))
-        return button
-    }()
-    
-    private lazy var renameButton: UIBarButtonItem = {
+    private lazy var renameBarButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "pencil"),
                                      style: .plain,
                                      target: self,
@@ -60,12 +52,24 @@ class AddressInfoViewController: UIViewController {
         return button
     }()
     
+    private lazy var trackingStateButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(trackingStateDidChange), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        button.tintColor = .white
+        button.titleLabel?.textColor = .white
+        button.layer.cornerRadius = 10
+        return button
+    }()
+    
     private lazy var loadTransactionsButton: LoaderButton = {
         let button = LoaderButton(configuration: .plain())
-        button.setTitle(R.LocalizableStrings.loadMore, for: .normal)
+        //button.setTitle(R.LocalizableStrings.loadMore, for: .normal)
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
         button.backgroundColor = .systemGray6
-        button.layer.cornerRadius = 8
+        button.layer.cornerRadius = 10
         return button
     }()
     
@@ -135,6 +139,12 @@ private extension AddressInfoViewController {
     func loadTransactionsButtonDidTap() {
         presenter.loadTransactionsButtonDidTap()
     }
+    
+    func share() {
+        let textToShare = presenter.getAddressInfoToShare()
+        let avc = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+        present(avc, animated: true)
+    }
 }
 
 // MARK: - AddressInfoView Protocol
@@ -145,12 +155,20 @@ extension AddressInfoViewController: AddressInfoView {
     
     func configureIfAddressTracked(name: String) {
         title = name
-        navigationItem.rightBarButtonItems = [deleteTrackingButton, renameButton]
+        navigationItem.rightBarButtonItems = [shareBarButton, renameBarButton]
+        
+        trackingStateButton.setTitle(" Delete tracking", for: .normal)
+        trackingStateButton.setImage(UIImage(systemName: "eye.slash.fill"), for: .normal)
+        trackingStateButton.backgroundColor = .systemRed
     }
     
     func configureIfAddressNotTracked(shortenAddress: String) {
         title = shortenAddress
-        navigationItem.rightBarButtonItems = [addTrackingButton]
+        navigationItem.rightBarButtonItems = [shareBarButton]
+        
+        trackingStateButton.setTitle(" Add tracking", for: .normal)
+        trackingStateButton.setImage(UIImage(systemName: "eye.fill"), for: .normal)
+        trackingStateButton.backgroundColor = .systemBlue
     }
     
     func animateCentralLoader(_ isAnimated: Bool) {
@@ -235,11 +253,15 @@ extension AddressInfoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let anotherStack = UIStackView()
-        anotherStack.isLayoutMarginsRelativeArrangement = true
-        anotherStack.layoutMargins = UIEdgeInsets(top: 8, left: 0, bottom: 16, right: 0)
-        anotherStack.addArrangedSubview(infoHeader)
-        return anotherStack
+        let containerStack = UIStackView()
+        containerStack.axis = .vertical
+        containerStack.spacing = 10
+        containerStack.isLayoutMarginsRelativeArrangement = true
+        containerStack.layoutMargins = UIEdgeInsets(top: 8, left: 0, bottom: 10, right: 0)
+        containerStack.addArrangedSubview(infoHeader)
+        
+        containerStack.addArrangedSubview(trackingStateButton)
+        return containerStack
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

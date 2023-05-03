@@ -140,6 +140,12 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
     func didSelectTransaction(at indexPath: IndexPath) {
         view?.showTransactionInfoViewController()
     }
+    
+    func getAddressInfoToShare() -> [String] {
+        guard let addressInfo else { return ["Something went wrong"] }
+        let textToShare = "Address: \(address)\nBalance: \(addressInfo.0.balance.formatNumberString()) DOGE\nTransactions count: \(addressInfo.1.info.total)"
+        return [textToShare]
+    }
 }
 
 // MARK: - Private Methods
