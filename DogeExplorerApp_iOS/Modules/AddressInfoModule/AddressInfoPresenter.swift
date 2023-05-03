@@ -167,7 +167,7 @@ private extension AddressInfoPresenterImp {
                 if addressInfo!.1.info.total <= 10 { view?.hideLoadTransactionsButton() }
                 view?.setAddressInfo(address: address.shorten(prefix: 7, suffix: 7),
                                      dogeBalance: "\(addressInfo!.0.balance.formatNumberString()) DOGE",
-                                     transactionsCount: "Transactions: \(addressInfo!.1.info.total)")
+                                     transactionsCount: "\(addressInfo!.1.info.total)")
                 
                 
                 print("base info loading time: \(Date().timeIntervalSince(start))")
