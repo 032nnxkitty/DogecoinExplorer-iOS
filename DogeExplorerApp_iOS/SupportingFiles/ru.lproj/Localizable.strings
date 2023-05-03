@@ -9,19 +9,20 @@
 "addressSearchBar" = "Введите адрес для поиска";
 
 "settingsTitle" = "Настройки";
-"language" = "Язык";
-"theme" = "Тема";
-"deleteAll" = "Удалить все отслеживаемые кошельки";
+"language"   = "Язык";
+"theme"      = "Тема";
+"deleteAll"  = "Удалить все отслеживаемые кошельки";
 "sourceCode" = "Код приложения";
-"feedback" = "Фидбэк";
-"appStore" = "Оценить приложение в App Store";
-"support" = "Мой догекоин кошклек :)";
-"appInfo" = "Developed by Arseniy Zolotarev\nPowered by Dogechain.info";
+"feedback"   = "Фидбэк";
+"appStore"   = "Оценить приложение в App Store";
+"support"    = "Мой догекоин кошклек :)";
+"appInfo"    = "Developed by Arseniy Zolotarev\nPowered by Dogechain.info";
 
 "device" = "Сист.";
-"dark" = "Темн.";
-"light" = "Светл.";
+"dark"   = "Темн.";
+"light"  = "Светл.";
 
 "transactionTitle" = "Транзакция";
-"sent" = "Отправлено";
-"received" = "Получено";
+"sent"             = "Отправлено";
+"received"         = "Получено";
+"loadMore"         = "Загрузить еще";

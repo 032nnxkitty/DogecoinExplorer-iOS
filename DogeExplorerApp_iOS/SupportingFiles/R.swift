@@ -38,11 +38,12 @@ enum R {
         static let appInfo       = NSLocalizedString("appInfo", comment: "")
         
         static let device      = NSLocalizedString("device", comment: "")
-        static let dark       = NSLocalizedString("dark", comment: "")
+        static let dark        = NSLocalizedString("dark", comment: "")
         static let light       = NSLocalizedString("light", comment: "")
         
         static let transactionTitle = NSLocalizedString("transactionTitle", comment: "")
         static let sent             = NSLocalizedString("sent", comment: "")
         static let received         = NSLocalizedString("received", comment: "")
+        static let loadMore         = NSLocalizedString("loadMore", comment: "")
     }
 }

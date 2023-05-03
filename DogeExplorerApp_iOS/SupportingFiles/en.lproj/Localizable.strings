@@ -9,19 +9,20 @@
 "addressSearchBar" = "Enter the address to search";
 
 "settingsTitle" = "Settings";
-"language" = "Language";
-"theme" = "Theme";
-"deleteAll" = "Delete all tracked addresses";
+"language"   = "Language";
+"theme"      = "Theme";
+"deleteAll"  = "Delete all tracked addresses";
 "sourceCode" = "Source code";
-"feedback" = "Feedback";
-"appStore" = "Rate App in the App Store";
-"support" = "My dogecoin address :)";
-"appInfo" = "Developed by Arseniy Zolotarev\nPowered by Dogechain.info";
+"feedback"   = "Feedback";
+"appStore"   = "Rate App in the App Store";
+"support"    = "My dogecoin address :)";
+"appInfo"    = "Developed by Arseniy Zolotarev\nPowered by Dogechain.info";
 
 "device" = "Device";
-"dark" = "Dark";
-"light" = "Light";
+"dark"   = "Dark";
+"light"  = "Light";
 
 "transactionTitle" = "Transaction";
-"sent" = "Sent";
-"received" = "Received";
+"sent"             = "Sent";
+"received"         = "Received";
+"loadMore"         = "Load more"

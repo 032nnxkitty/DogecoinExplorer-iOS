@@ -28,6 +28,7 @@ class MainViewController: UIViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.keyboardDismissMode = .onDrag
         tableView.backgroundColor = .clear
+        tableView.sectionHeaderTopPadding = 0
         return tableView
     }()
     

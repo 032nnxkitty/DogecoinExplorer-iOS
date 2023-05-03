@@ -62,8 +62,10 @@ class AddressInfoViewController: UIViewController {
     
     private lazy var loadTransactionsButton: LoaderButton = {
         let button = LoaderButton(configuration: .plain())
-        button.setTitle("Load more", for: .normal)
+        button.setTitle(R.LocalizableStrings.loadMore, for: .normal)
         button.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
+        button.backgroundColor = .systemGray6
+        button.layer.cornerRadius = 8
         return button
     }()
     
@@ -237,12 +239,12 @@ extension AddressInfoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let stack = UIStackView()
-        stack.alignment = .center
-        stack.isLayoutMarginsRelativeArrangement = true
-        stack.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
-        stack.addArrangedSubview(loadTransactionsButton)
-        return stack
+        let containerStack = UIStackView()
+        containerStack.alignment = .center
+        containerStack.isLayoutMarginsRelativeArrangement = true
+        containerStack.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        containerStack.addArrangedSubview(loadTransactionsButton)
+        return containerStack
     }
 }
 
