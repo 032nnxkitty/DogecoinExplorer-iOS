@@ -40,7 +40,6 @@
 		10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */; };
 		10ED20AD29F1DFFD008302EA /* LoaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED20AC29F1DFFD008302EA /* LoaderButton.swift */; };
 		10ED211329F33270008302EA /* BalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211229F33270008302EA /* BalanceModel.swift */; };
-		10ED211529F332A5008302EA /* Sent&ReceivedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211429F332A5008302EA /* Sent&ReceivedModels.swift */; };
 		10ED211729F332B3008302EA /* TransactionsCountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211629F332B3008302EA /* TransactionsCountModel.swift */; };
 		10ED211929F332C1008302EA /* TransactionsPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211829F332C1008302EA /* TransactionsPageModel.swift */; };
 		10ED211B29F332D5008302EA /* DetailedTransactionInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211A29F332D5008302EA /* DetailedTransactionInfoModel.swift */; };
@@ -108,7 +107,6 @@
 		10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+UnixTime.swift"; sourceTree = "<group>"; };
 		10ED20AC29F1DFFD008302EA /* LoaderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderButton.swift; sourceTree = "<group>"; };
 		10ED211229F33270008302EA /* BalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceModel.swift; sourceTree = "<group>"; };
-		10ED211429F332A5008302EA /* Sent&ReceivedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sent&ReceivedModels.swift"; sourceTree = "<group>"; };
 		10ED211629F332B3008302EA /* TransactionsCountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsCountModel.swift; sourceTree = "<group>"; };
 		10ED211829F332C1008302EA /* TransactionsPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsPageModel.swift; sourceTree = "<group>"; };
 		10ED211A29F332D5008302EA /* DetailedTransactionInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedTransactionInfoModel.swift; sourceTree = "<group>"; };
@@ -272,7 +270,6 @@
 			isa = PBXGroup;
 			children = (
 				10ED211229F33270008302EA /* BalanceModel.swift */,
-				10ED211429F332A5008302EA /* Sent&ReceivedModels.swift */,
 				10ED211629F332B3008302EA /* TransactionsCountModel.swift */,
 				10ED211829F332C1008302EA /* TransactionsPageModel.swift */,
 				10ED211A29F332D5008302EA /* DetailedTransactionInfoModel.swift */,
@@ -516,7 +513,6 @@
 				10A42D6929E9B76700BE04B9 /* R.swift in Sources */,
 				10A42D7629EB483E00BE04B9 /* ThemeChanging.swift in Sources */,
 				10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */,
-				10ED211529F332A5008302EA /* Sent&ReceivedModels.swift in Sources */,
 				108CA9FC29F6B92B003582B6 /* AddressInfoHeaderView.swift in Sources */,
 				10BA60EC29EC63E5005FCE80 /* InternetConnectionObserver.swift in Sources */,
 				10ED211B29F332D5008302EA /* DetailedTransactionInfoModel.swift in Sources */,
