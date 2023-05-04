@@ -23,13 +23,6 @@ class TransactionInfoViewController: UIViewController {
         return label
     }()
     
-    private let openDogechainButton: UIButton  = {
-        let button = UIButton(configuration: .filled())
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("More info about transaction", for: .normal)
-        return button
-    }()
-    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,20 +34,16 @@ class TransactionInfoViewController: UIViewController {
 private extension TransactionInfoViewController {
     func configureViewAppearance() {
         view.addSubview(infoLabel)
-        view.addSubview(openDogechainButton)
         
         NSLayoutConstraint.activate([
             infoLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             infoLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             
-            openDogechainButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            openDogechainButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            openDogechainButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
         ])
         
         infoLabel.center = view.center
         title = R.LocalizableStrings.transactionTitle
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = R.Colors.background
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
     }
 }

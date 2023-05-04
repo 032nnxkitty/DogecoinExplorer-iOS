@@ -15,7 +15,7 @@ struct SettingsCell {
 // MARK: Raw Value = Image Name
 enum CellStyle: String {
     case language        = "globe"
-    case theme           = "lightbulb.fill"
+    case theme           = "circle.righthalf.filled"
     case deleteAddresses = "trash.fill"
     case github          = "swift"
     case feedback        = "paperplane.fill"

@@ -17,7 +17,7 @@ class TransactionCell: UITableViewCell {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.isLayoutMarginsRelativeArrangement = true
-        stack.layoutMargins = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
+        stack.layoutMargins = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 16)
         stack.distribution = .fillEqually
         stack.axis = .vertical
         stack.spacing = 4
@@ -95,10 +95,11 @@ class TransactionCell: UITableViewCell {
 // MARK: - Private Methods
 private extension TransactionCell {
     func configureAppearance() {
-        backgroundColor = .systemGray6
+        backgroundColor = R.Colors.uiElement
         
         addSubview(containerStack)
         NSLayoutConstraint.activate([
+            
             containerStack.topAnchor.constraint(equalTo: self.topAnchor),
             containerStack.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             containerStack.trailingAnchor.constraint(equalTo: self.trailingAnchor),

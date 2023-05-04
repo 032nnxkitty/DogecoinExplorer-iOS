@@ -28,7 +28,6 @@ class MainViewController: UIViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.keyboardDismissMode = .onDrag
         tableView.backgroundColor = .clear
-        tableView.sectionHeaderTopPadding = 0
         return tableView
     }()
     
@@ -78,8 +77,9 @@ class MainViewController: UIViewController {
 private extension MainViewController {
     func configureAppearance() {
         title = "Doge explorer🔎👀"
-        view.backgroundColor = .systemBackground
+        view.backgroundColor =  R.Colors.background
         navigationController?.navigationBar.prefersLargeTitles = true
+        //navigationController?.navigationBar.tintColor = .label
         navigationItem.backButtonDisplayMode = .minimal
         navigationItem.rightBarButtonItem = settingsButton
     }
@@ -208,7 +208,8 @@ extension MainViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "") { _, _, completion in
+        let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completion in
+            guard let self else { return }
             self.presenter.deleteTrackingForAddress(at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .right)
             completion(true)
@@ -216,13 +217,22 @@ extension MainViewController: UITableViewDelegate {
         deleteAction.image = UIImage(systemName: "trash")
         deleteAction.backgroundColor = .systemRed
         
-        let renameAction = UIContextualAction(style: .normal, title: "") { _, _, completion in
+        let renameAction = UIContextualAction(style: .normal, title: "") { [weak self] _, _, completion in
+            guard let self else { return }
             self.showRenameAlertForAddress(at: indexPath)
             completion(true)
         }
         renameAction.image = UIImage(systemName: "pencil")
-        renameAction.backgroundColor = .systemPurple
-        return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
+        renameAction.backgroundColor = .systemBlue
+        
+        let shareAction = UIContextualAction(style: .normal, title: "") { [weak self] _, _, completion in
+            //guard let self else { return }
+            print("share")
+            completion(true)
+        }
+        shareAction.image = UIImage(systemName: "square.and.arrow.up")
+        shareAction.backgroundColor = .systemPurple
+        return UISwipeActionsConfiguration(actions: [deleteAction, shareAction, renameAction])
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

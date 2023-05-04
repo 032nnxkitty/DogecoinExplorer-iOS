@@ -39,7 +39,7 @@ class SettingsViewController: UIViewController {
 private extension SettingsViewController {
     func configureViewAppearance() {
         title = R.LocalizableStrings.settingsTitle
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = R.Colors.background
     }
     
     func configureSettingsTableView() {
@@ -118,7 +118,7 @@ extension SettingsViewController: UITableViewDataSource {
         }
         cellContent.imageProperties.maximumSize = CGSize(width: 25, height: 25)
         cell.contentConfiguration = cellContent
-        cell.backgroundColor = .systemGray6
+        cell.backgroundColor = R.Colors.uiElement
         return cell
     }
 }

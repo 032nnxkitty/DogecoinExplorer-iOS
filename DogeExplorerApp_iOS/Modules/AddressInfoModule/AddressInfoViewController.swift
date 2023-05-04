@@ -18,7 +18,7 @@ class AddressInfoViewController: UIViewController {
         tableView.register(TransactionCell.self, forCellReuseIdentifier: R.Identifiers.addressInfoCell)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.showsVerticalScrollIndicator = false
-        tableView.backgroundColor = .systemBackground
+        tableView.backgroundColor = R.Colors.background
         tableView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         tableView.alpha = 0
         tableView.dataSource = self
@@ -57,19 +57,19 @@ class AddressInfoViewController: UIViewController {
         button.addTarget(self, action: #selector(trackingStateDidChange), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        button.tintColor = .white
-        button.titleLabel?.textColor = .white
         button.layer.cornerRadius = 10
         return button
     }()
     
     private lazy var loadTransactionsButton: LoaderButton = {
         let button = LoaderButton(configuration: .plain())
-        //button.setTitle(R.LocalizableStrings.loadMore, for: .normal)
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.setTitle(R.LocalizableStrings.loadMore, for: .normal)
+//        button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
-        button.backgroundColor = .systemGray6
+        button.backgroundColor =  R.Colors.uiElement
         button.layer.cornerRadius = 10
+        button.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
+        button.setTitleColor(.label, for: .normal)
         return button
     }()
     
@@ -86,7 +86,7 @@ class AddressInfoViewController: UIViewController {
 private extension AddressInfoViewController {
     func configureViewAppearance() {
         navigationItem.largeTitleDisplayMode = .never
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = R.Colors.background
         infoHeader = AddressInfoHeaderView()
     }
     
@@ -157,18 +157,24 @@ extension AddressInfoViewController: AddressInfoView {
         title = name
         navigationItem.rightBarButtonItems = [shareBarButton, renameBarButton]
         
-        trackingStateButton.setTitle(" Delete tracking", for: .normal)
+        trackingStateButton.setTitle(" Unfollow", for: .normal)
         trackingStateButton.setImage(UIImage(systemName: "eye.slash.fill"), for: .normal)
-        trackingStateButton.backgroundColor = .systemRed
+        
+        trackingStateButton.backgroundColor = R.Colors.uiElement
+        trackingStateButton.setTitleColor(.label, for: .normal)
+        trackingStateButton.tintColor = .label
     }
     
     func configureIfAddressNotTracked(shortenAddress: String) {
         title = shortenAddress
         navigationItem.rightBarButtonItems = [shareBarButton]
         
-        trackingStateButton.setTitle(" Add tracking", for: .normal)
+        trackingStateButton.setTitle(" Follow", for: .normal)
         trackingStateButton.setImage(UIImage(systemName: "eye.fill"), for: .normal)
+        
         trackingStateButton.backgroundColor = .systemBlue
+        trackingStateButton.setTitleColor(.white, for: .normal)
+        trackingStateButton.tintColor = .white
     }
     
     func animateCentralLoader(_ isAnimated: Bool) {

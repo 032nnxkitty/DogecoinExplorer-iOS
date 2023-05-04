@@ -17,6 +17,7 @@ enum R {
     
     enum Colors {
         static let background: UIColor = .systemBackground
+        static let uiElement: UIColor  = .systemGray6
     }
     
     enum Keys {

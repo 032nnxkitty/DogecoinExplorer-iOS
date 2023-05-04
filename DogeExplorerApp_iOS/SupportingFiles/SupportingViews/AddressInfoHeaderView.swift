@@ -43,8 +43,9 @@ class AddressInfoHeaderView: UIView {
 // MARK: - Private Methods
 private extension AddressInfoHeaderView {
     func configureAppearance() {
-        backgroundColor = .systemGray6
+        backgroundColor =  R.Colors.uiElement
         layer.cornerRadius = 10
+        layer.masksToBounds = true
         
         addSubview(containerStack)
         NSLayoutConstraint.activate([
@@ -57,21 +58,35 @@ private extension AddressInfoHeaderView {
         addressLabel = configureValueLabel()
         
         balanceLabel = configureValueLabel()
-        balanceLabel.font = .preferredFont(forTextStyle: .headline)
-        balanceLabel.textColor = .label
         
         transactionsLabel = configureValueLabel()
         
         containerStack.addArrangedSubview(createSection(sectionTitle: "Address", valueLabel: addressLabel))
         containerStack.addArrangedSubview(createSection(sectionTitle: "Balance", valueLabel: balanceLabel))
+//        containerStack.addArrangedSubview(createSection(sectionTitle: "Amount sent", valueLabel: configureValueLabel()))
+//        containerStack.addArrangedSubview(createSection(sectionTitle: "Amount received", valueLabel: configureValueLabel()))
         containerStack.addArrangedSubview(createSection(sectionTitle: "Transactions", valueLabel: transactionsLabel))
+        
+        let iv = UIImageView(image: UIImage(named: "dogeLogo"))
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.contentMode = .scaleAspectFit
+        addSubview(iv)
+        NSLayoutConstraint.activate([
+            iv.trailingAnchor.constraint(equalTo: trailingAnchor),
+            iv.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 80),
+            iv.heightAnchor.constraint(equalToConstant: 150),
+            iv.widthAnchor.constraint(equalToConstant: 150)
+        ])
+        
     }
     
     func configureValueLabel() -> UILabel {
         let label = UILabel()
-        label.textColor = .secondaryLabel
         label.text = "..."
-        label.textAlignment = .right
+        label.numberOfLines = 0
+        //label.textAlignment = .right
+        //label.font = .preferredFont(forTextStyle: .headline)
+        label.textColor = .label
         return label
     }
     
@@ -82,7 +97,8 @@ private extension AddressInfoHeaderView {
         sectionTitleLabel.textColor = .secondaryLabel
         
         let stack = UIStackView()
-        stack.axis = .horizontal
+        stack.axis = .vertical
+        stack.spacing = 4
         stack.addArrangedSubview(sectionTitleLabel)
         stack.addArrangedSubview(valueLabel)
         
