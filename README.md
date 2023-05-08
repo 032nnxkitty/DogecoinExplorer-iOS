@@ -1,5 +1,9 @@
 # Dogecoin Explorer App (Development in progress)
 
+```diff
+! Looking for a designer !
+```
+
 iOS application for viewing information about addresses and transactions in the dogecoin crypto network, with the ability to add addresses to favorites (for quick viewing).
 
 ![Platform iOS](https://img.shields.io/badge/platform-iOS-blue.svg)
