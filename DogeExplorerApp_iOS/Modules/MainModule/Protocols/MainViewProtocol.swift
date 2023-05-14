@@ -8,7 +8,6 @@
 import Foundation
 
 protocol MainView: AnyObject {
-    func showSettingsViewController()
     func showInfoViewController(for address: String)
     func showOkActionSheet(title: String, message: String)
     func reloadData()

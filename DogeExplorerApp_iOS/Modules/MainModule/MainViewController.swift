@@ -37,14 +37,6 @@ class MainViewController: UIViewController {
         return refreshControl
     }()
     
-    private lazy var settingsButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(systemName: "ellipsis"),
-                                     style: .plain,
-                                     target: self,
-                                     action: #selector(settingsButtonDidTap))
-        return button
-    }()
-    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,10 +53,6 @@ class MainViewController: UIViewController {
 
 // MARK: - Actions
 @objc private extension MainViewController {
-    func settingsButtonDidTap() {
-        presenter?.settingsButtonDidTap()
-    }
-    
     func refresh() {
         presenter.refresh()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -79,9 +67,7 @@ private extension MainViewController {
         title = "Doge explorer🔎👀"
         view.backgroundColor =  R.Colors.background
         navigationController?.navigationBar.prefersLargeTitles = true
-        //navigationController?.navigationBar.tintColor = .label
         navigationItem.backButtonDisplayMode = .minimal
-        navigationItem.rightBarButtonItem = settingsButton
     }
     
     func configureSearchBar() {
@@ -128,11 +114,6 @@ private extension MainViewController {
 
 // MARK: - MainView Protocol
 extension MainViewController: MainView {
-    func showSettingsViewController() {
-        let settingsVC = ModuleBuilder.createSettingsModule()
-        navigationController?.pushViewController(settingsVC, animated: true)
-    }
-    
     func showInfoViewController(for address: String) {
         let addressInfoVC = ModuleBuilder.createAddressInfoModule(address)
         navigationController?.pushViewController(addressInfoVC, animated: true)
@@ -224,15 +205,7 @@ extension MainViewController: UITableViewDelegate {
         }
         renameAction.image = UIImage(systemName: "pencil")
         renameAction.backgroundColor = .systemBlue
-        
-        let shareAction = UIContextualAction(style: .normal, title: "") { [weak self] _, _, completion in
-            //guard let self else { return }
-            print("share")
-            completion(true)
-        }
-        shareAction.image = UIImage(systemName: "square.and.arrow.up")
-        shareAction.backgroundColor = .systemPurple
-        return UISwipeActionsConfiguration(actions: [deleteAction, shareAction, renameAction])
+        return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

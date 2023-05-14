@@ -26,10 +26,6 @@ class InternetConnectionObserverImp: InternetConnectionObserver {
         
         startMonitoring()
     }
-    
-    deinit {
-        stopMonitoring()
-    }
 }
 
 // MARK: - Private Methods

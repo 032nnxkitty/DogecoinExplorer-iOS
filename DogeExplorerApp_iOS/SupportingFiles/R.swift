@@ -20,11 +20,6 @@ enum R {
         static let uiElement: UIColor  = .systemGray6
     }
     
-    enum Keys {
-        static let theme = "themeKey"
-        static let trackingAddresses = "trackedAddressesKey"
-    }
-    
     enum LocalizableStrings {
         static let searchBar     = NSLocalizedString("addressSearchBar", comment: "")
         

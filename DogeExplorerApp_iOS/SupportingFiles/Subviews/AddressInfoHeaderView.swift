@@ -66,25 +66,13 @@ private extension AddressInfoHeaderView {
 //        containerStack.addArrangedSubview(createSection(sectionTitle: "Amount sent", valueLabel: configureValueLabel()))
 //        containerStack.addArrangedSubview(createSection(sectionTitle: "Amount received", valueLabel: configureValueLabel()))
         containerStack.addArrangedSubview(createSection(sectionTitle: "Transactions", valueLabel: transactionsLabel))
-        
-        let iv = UIImageView(image: UIImage(named: "dogeLogo"))
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.contentMode = .scaleAspectFit
-        addSubview(iv)
-        NSLayoutConstraint.activate([
-            iv.trailingAnchor.constraint(equalTo: trailingAnchor),
-            iv.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 80),
-            iv.heightAnchor.constraint(equalToConstant: 150),
-            iv.widthAnchor.constraint(equalToConstant: 150)
-        ])
-        
     }
     
     func configureValueLabel() -> UILabel {
         let label = UILabel()
         label.text = "..."
         label.numberOfLines = 0
-        //label.textAlignment = .right
+        label.textAlignment = .left
         //label.font = .preferredFont(forTextStyle: .headline)
         label.textColor = .label
         return label

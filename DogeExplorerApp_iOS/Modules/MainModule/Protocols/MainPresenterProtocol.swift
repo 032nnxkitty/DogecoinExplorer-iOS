@@ -12,7 +12,6 @@ typealias MainPresenter = MainPresenterEventHandling & MainPresenterViewConfigur
 protocol MainPresenterEventHandling {
     func refresh()
     func viewWillAppear()
-    func settingsButtonDidTap()
     func didSelectAddress(at indexPath: IndexPath)
     func searchButtonDidTap(with text: String?)
 }

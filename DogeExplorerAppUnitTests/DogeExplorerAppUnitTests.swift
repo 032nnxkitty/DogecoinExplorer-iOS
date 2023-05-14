@@ -53,28 +53,4 @@ final class DogeExplorerAppUnitTests: XCTestCase {
         // Then
         XCTAssertEqual(result, expectedResult)
     }
-    
-    func testBalanceEndpointCreating() throws {
-        // Given
-        let givenAddress = "D5RpQhaVkpHHT4n8HrPahoVWbwmSohNpEt"
-        let expectedResult = URL(string: "address/balance/D5RpQhaVkpHHT4n8HrPahoVWbwmSohNpEt", relativeTo: URL(string: "https://dogechain.info/api/v1/"))
-        
-        // When
-        let result = DogechainAPIEndpoint.balance(address: givenAddress).url
-        
-        // Then
-        XCTAssertEqual(result, expectedResult)
-    }
-    
-    func testTransactionInfoEndpointCreating() throws {
-        // Given
-        let givenHash = "ade40b69b9d9cebedfb006f5dea3e83cdd5be2d5d8a659e8906278b3441be064"
-        let expectedResult = URL(string: "transaction/ade40b69b9d9cebedfb006f5dea3e83cdd5be2d5d8a659e8906278b3441be064", relativeTo: URL(string: "https://dogechain.info/api/v1/"))
-        
-        // When
-        let result = DogechainAPIEndpoint.transactionInfo(hash: givenHash).url
-        
-        // Then
-        XCTAssertEqual(result, expectedResult)
-    }
 }

@@ -232,16 +232,6 @@ extension AddressInfoViewController: AddressInfoView {
     func hideLoadTransactionsButton() {
         loadTransactionsButton.isHidden = true
     }
-    
-    func showTransactionInfoViewController() {
-        let transactionVC = UINavigationController(rootViewController: ModuleBuilder.createTransactionModule())
-        if let sheetController = transactionVC.sheetPresentationController {
-            sheetController.detents = [.medium()]
-            sheetController.prefersGrabberVisible = true
-            sheetController.preferredCornerRadius = 20
-        }
-        present(transactionVC, animated: true)
-    }
 }
 
 // MARK: - UITableViewDataSource

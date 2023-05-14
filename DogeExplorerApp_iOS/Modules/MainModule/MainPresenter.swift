@@ -24,10 +24,6 @@ class MainPresenterImp: MainPresenter {
     }
     
     // MARK: - Public Methods
-    func settingsButtonDidTap() {
-        view?.showSettingsViewController()
-    }
-    
     func getNumberOfTrackedAddresses() -> Int {
         return trackingService.getAllTrackedAddresses().count
     }

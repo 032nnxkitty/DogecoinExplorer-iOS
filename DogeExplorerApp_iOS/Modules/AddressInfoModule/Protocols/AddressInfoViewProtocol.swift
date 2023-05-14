@@ -10,7 +10,6 @@ import Foundation
 typealias AddressInfoView = AddressInfoViewRouting & AddressInfoViewSettingData & AddressInfoViewAlertsPresenting & AddressInfoViewAnimating
 
 protocol AddressInfoViewRouting: AnyObject {
-    func showTransactionInfoViewController()
 }
 
 protocol AddressInfoViewSettingData: AnyObject {

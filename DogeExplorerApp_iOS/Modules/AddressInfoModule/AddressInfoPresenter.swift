@@ -138,7 +138,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
     }
     
     func didSelectTransaction(at indexPath: IndexPath) {
-        view?.showTransactionInfoViewController()
+        print("transaction tapped")
     }
     
     func getAddressInfoToShare() -> [String] {
