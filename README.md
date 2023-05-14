@@ -1,6 +1,6 @@
 # Dogecoin Explorer App (Development in progress)
 
-iOS application for viewing information about addresses and transactions in the dogecoin crypto network, with the ability to add addresses to favorites (for quick viewing).
+iOS application for viewing information about addresses and transactions in the Dogecoin crypto network, with the ability to add addresses to favourites (for quick viewing).
 
 ![Platform iOS](https://img.shields.io/badge/platform-iOS-blue.svg)
 ![Swift](https://img.shields.io/badge/-Swift-orange.svg)
@@ -12,9 +12,7 @@ iOS application for viewing information about addresses and transactions in the 
 ## Features
 - MVP (Model View Presenter) architecture
 - Concurrent Network Calls
-- UserDefaults
 - CoreData
-- Support light & dark mode
 - English & Russian localisation 
 - No storyboards
 - Without third-party libraries
@@ -22,7 +20,6 @@ iOS application for viewing information about addresses and transactions in the 
 
 #### TODO
 - Add conversion from DOGE to USD
-- Add UI tests
 - ...
 
 
