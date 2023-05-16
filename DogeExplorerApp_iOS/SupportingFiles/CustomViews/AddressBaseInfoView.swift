@@ -13,7 +13,7 @@ class AddressBaseInfoView: UIView {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
-        stack.spacing = 8
+        stack.spacing = 10
         return stack
     }()
     
@@ -54,15 +54,17 @@ private extension AddressBaseInfoView {
             containerStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20)
         ])
         
-        addressLabel = configureValueLabel()
-        
         balanceLabel = configureValueLabel()
         balanceLabel.font = .dogeSans(size: 25, style: .largeTitle)
-        transactionsLabel = configureValueLabel()
         
+        addressLabel = configureValueLabel()
+        transactionsLabel = configureValueLabel()
+    
         containerStack.addArrangedSubview(createSection(sectionTitle: "Balance", valueLabel: balanceLabel))
         containerStack.addArrangedSubview(createSection(sectionTitle: "Address", valueLabel: addressLabel))
         containerStack.addArrangedSubview(createSection(sectionTitle: "Transactions", valueLabel: transactionsLabel))
+        
+        containerStack.addHorizontalSeparators(of: R.Colors.lightGray)
     }
     
     func configureValueLabel() -> UILabel {
@@ -89,4 +91,5 @@ private extension AddressBaseInfoView {
         
         return stack
     }
+    
 }

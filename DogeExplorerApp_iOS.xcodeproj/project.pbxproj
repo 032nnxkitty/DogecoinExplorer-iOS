@@ -37,6 +37,7 @@
 		10BA60EC29EC63E5005FCE80 /* InternetConnectionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */; };
 		10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */; };
 		10BAD4102A14179000D4BAAF /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BAD40F2A14179000D4BAAF /* UIBarButtonItem.swift */; };
+		10BAD4122A14280700D4BAAF /* UIStackView+Separators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BAD4112A14280700D4BAAF /* UIStackView+Separators.swift */; };
 		10ED20AD29F1DFFD008302EA /* LoadTransactionsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED20AC29F1DFFD008302EA /* LoadTransactionsButton.swift */; };
 		10ED211329F33270008302EA /* BalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211229F33270008302EA /* BalanceModel.swift */; };
 		10ED211729F332B3008302EA /* TransactionsCountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211629F332B3008302EA /* TransactionsCountModel.swift */; };
@@ -100,6 +101,7 @@
 		10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionObserver.swift; sourceTree = "<group>"; };
 		10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+UnixTime.swift"; sourceTree = "<group>"; };
 		10BAD40F2A14179000D4BAAF /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
+		10BAD4112A14280700D4BAAF /* UIStackView+Separators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Separators.swift"; sourceTree = "<group>"; };
 		10ED20AC29F1DFFD008302EA /* LoadTransactionsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadTransactionsButton.swift; sourceTree = "<group>"; };
 		10ED211229F33270008302EA /* BalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceModel.swift; sourceTree = "<group>"; };
 		10ED211629F332B3008302EA /* TransactionsCountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsCountModel.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */,
 				107C7CB52A13D066004DFB06 /* UIFont+DogeSans.swift */,
 				10BAD40F2A14179000D4BAAF /* UIBarButtonItem.swift */,
+				10BAD4112A14280700D4BAAF /* UIStackView+Separators.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -465,6 +468,7 @@
 				10A42D5A29E9B18C00BE04B9 /* MainPresenter.swift in Sources */,
 				107C7CE22A13F08D004DFB06 /* SelfSizedCollectionView.swift in Sources */,
 				10A42D6529E9B2D400BE04B9 /* AddressInfoPresenter.swift in Sources */,
+				10BAD4122A14280700D4BAAF /* UIStackView+Separators.swift in Sources */,
 				1047F75F29FAD85500B46708 /* MainViewProtocol.swift in Sources */,
 				10A42D6C29E9B9E400BE04B9 /* ModuleBuilder.swift in Sources */,
 				1047F76829FAD99700B46708 /* AddressInfoPresenterProtocol.swift in Sources */,
