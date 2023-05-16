@@ -7,18 +7,19 @@
 
 import UIKit
 
-class LoaderButton: UIButton {
+class LoadTransactionsButton: UIButton {
     private let loader = UIActivityIndicatorView()
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        configureAppearance()
+        configureLoader()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        configure()
+        fatalError("storyboards are incompatible with truth and beauty")
     }
     
     // MARK: - Public Methods
@@ -35,7 +36,15 @@ class LoaderButton: UIButton {
     }
     
     // MARK: - Private Methods
-    private func configure() {
+    private func configureAppearance() {
+        backgroundColor = R.Colors.backgroundGray
+        layer.cornerRadius = 20
+        setTitle("Load moreeee", for: .normal)
+        setTitleColor(.white, for: .normal)
+        titleLabel?.font = .dogeSans(size: 17, style: .body)
+    }
+    
+    private func configureLoader() {
         loader.hidesWhenStopped = true
         loader.translatesAutoresizingMaskIntoConstraints = false
         

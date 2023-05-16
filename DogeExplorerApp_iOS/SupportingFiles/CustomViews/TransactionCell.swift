@@ -16,11 +16,9 @@ class TransactionCell: UITableViewCell {
     private let containerStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.isLayoutMarginsRelativeArrangement = true
-        stack.layoutMargins = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
         stack.distribution = .fillEqually
         stack.axis = .vertical
-        stack.spacing = 4
+        stack.spacing = 12
         return stack
     }()
     
@@ -39,21 +37,21 @@ class TransactionCell: UITableViewCell {
     private let stateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = .preferredFont(forTextStyle: .headline)
+        label.font = .dogeSans(size: 17, style: .headline)
         return label
     }()
     
     private let sumLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.font = .preferredFont(forTextStyle: .headline)
+        label.font = .dogeSans(size: 17, style: .headline)
         return label
     }()
     
     private let fromToLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = .preferredFont(forTextStyle: .footnote)
+        label.font = .dogeSans(size: 14, style: .footnote)
         label.textColor = .secondaryLabel
         return label
     }()
@@ -61,7 +59,7 @@ class TransactionCell: UITableViewCell {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.font = .preferredFont(forTextStyle: .footnote)
+        label.font = .dogeSans(size: 14, style: .footnote)
         label.textColor = .secondaryLabel
         return label
     }()
@@ -73,18 +71,18 @@ class TransactionCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("storyboards are incompatible with truth and beauty")
     }
     
     // MARK: - Public Methods
     func configure(style: TransactionStyle, value: String, date: String, hash: String) {
         switch style {
         case .sent:
-            stateLabel.text = R.LocalizableStrings.sent
+            stateLabel.text = "↑ Sent"
             sumLabel.textColor = .label
         case .received:
-            stateLabel.text = R.LocalizableStrings.received
-            sumLabel.textColor = .systemGreen
+            stateLabel.text = "↓ Received"
+            sumLabel.textColor = R.Colors.accent
         }
         sumLabel.text = value
         timeLabel.text = date
@@ -95,16 +93,17 @@ class TransactionCell: UITableViewCell {
 // MARK: - Private Methods
 private extension TransactionCell {
     func configureAppearance() {
-        backgroundColor = R.Colors.uiElement
+        backgroundColor = R.Colors.backgroundGray
+        layer.cornerRadius = 20
         
         addSubview(containerStack)
         NSLayoutConstraint.activate([
-            
-            containerStack.topAnchor.constraint(equalTo: self.topAnchor),
-            containerStack.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            containerStack.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            containerStack.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            containerStack.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            containerStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            containerStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            containerStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
         ])
+        
         containerStack.addArrangedSubview(topStack)
         containerStack.addArrangedSubview(bottomStack)
         

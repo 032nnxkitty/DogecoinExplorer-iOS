@@ -15,26 +15,27 @@ class MainViewController: UIViewController {
         let bar = UISearchBar()
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.placeholder = R.LocalizableStrings.searchBar
-        bar.searchTextField.layer.masksToBounds = true
-        bar.searchTextField.layer.cornerRadius = 18
+        bar.layer.cornerRadius = 20
         bar.backgroundImage = UIImage()
+        bar.backgroundColor = R.Colors.backgroundGray
+        bar.searchTextField.font = .dogeSans(size: 17, style: .body)
+        bar.searchTextField.backgroundColor = .clear
         return bar
     }()
     
-    private let trackedAddressesTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: R.Identifiers.trackingCell)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.showsVerticalScrollIndicator = false
-        tableView.keyboardDismissMode = .onDrag
-        tableView.backgroundColor = .clear
-        return tableView
-    }()
-    
-    private lazy var tableViewRefreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        return refreshControl
+    private lazy var trackedAddressesCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(TrackedAddressCell.self, forCellWithReuseIdentifier: R.Identifiers.trackedCell)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.keyboardDismissMode = .onDrag
+        collectionView.backgroundColor = .clear
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        return collectionView
     }()
     
     // MARK: - View Life Cycle
@@ -42,7 +43,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         configureAppearance()
         configureSearchBar()
-        configureTableView()
+        configureCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,49 +54,44 @@ class MainViewController: UIViewController {
 
 // MARK: - Actions
 @objc private extension MainViewController {
-    func refresh() {
-        presenter.refresh()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.tableViewRefreshControl.endRefreshing()
-        }
-    }
+    
 }
 
 // MARK: - Private Methods
 private extension MainViewController {
     func configureAppearance() {
-        title = "Doge explorer🔎👀"
-        view.backgroundColor =  R.Colors.background
-        navigationController?.navigationBar.prefersLargeTitles = true
+        title = "Dogeexplorer"
+        view.backgroundColor = R.Colors.background
+        navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.backButtonDisplayMode = .minimal
+        
+        navigationController?.navigationBar.titleTextAttributes = [
+            .font: UIFont.dogeSans(size: 17, style: .body)
+        ]
     }
     
     func configureSearchBar() {
         addressSearchBar.delegate = self
-        
         view.addSubview(addressSearchBar)
         NSLayoutConstraint.activate([
-            addressSearchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            addressSearchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            addressSearchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+            addressSearchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            addressSearchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            addressSearchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            addressSearchBar.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
-    func configureTableView() {
-        trackedAddressesTableView.refreshControl = tableViewRefreshControl
-        
-        trackedAddressesTableView.dataSource = self
-        trackedAddressesTableView.delegate = self
-        
-        view.addSubview(trackedAddressesTableView)
+    func configureCollectionView() {
+        view.addSubview(trackedAddressesCollectionView)
         NSLayoutConstraint.activate([
-            trackedAddressesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            trackedAddressesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            trackedAddressesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            trackedAddressesTableView.topAnchor.constraint(equalTo: addressSearchBar.bottomAnchor)
+            
+            trackedAddressesCollectionView.topAnchor.constraint(equalTo: addressSearchBar.bottomAnchor, constant: 10),
+            trackedAddressesCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            trackedAddressesCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            trackedAddressesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-
+    
     func showRenameAlertForAddress(at indexPath: IndexPath) {
         let renameAlert = UIAlertController(title: "Enter new name", message: "If field will be empty..", preferredStyle: .alert)
         renameAlert.addTextField { textField in
@@ -120,7 +116,7 @@ extension MainViewController: MainView {
     }
     
     func reloadData() {
-        trackedAddressesTableView.reloadData()
+        trackedAddressesCollectionView.reloadData()
     }
     
     func showOkActionSheet(title: String, message: String) {
@@ -140,75 +136,39 @@ extension MainViewController: UISearchBarDelegate {
         searchBar.text = nil
     }
     
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(true, animated: true)
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(false, animated: true)
-    }
-    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         searchBar.text = nil
     }
 }
 
-// MARK: - UITableViewDataSource
-extension MainViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+// MARK: - UICollectionViewDataSource
+extension MainViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter.getNumberOfTrackedAddresses()
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.trackingCell, for: indexPath)
-        var cellContent = cell.defaultContentConfiguration()
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: R.Identifiers.trackedCell, for: indexPath) as! TrackedAddressCell
         presenter.configureCell(at: indexPath) { name, address in
-            cellContent.text = name
-            cellContent.secondaryText = address
+            cell.configure(name: name, address: address)
         }
-        cellContent.image = UIImage(systemName: "eyes")
-        cellContent.imageProperties.maximumSize = CGSize(width: 40, height: 40)
         
-        cellContent.textProperties.numberOfLines = 1
-        cellContent.textProperties.font = .preferredFont(forTextStyle: .body)
-        cellContent.secondaryTextProperties.color = .darkGray
-        
-        cell.contentConfiguration = cellContent
-        cell.backgroundColor = .clear
-        cell.accessoryType = .disclosureIndicator
+    
         return cell
     }
 }
 
-// MARK: - UITableViewDelegate
-extension MainViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+// MARK: - UICollectionViewDelegate & UICollectionViewDelegateFlowLayout
+extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.size.width - 32
+        let height = collectionView.frame.size.height / 7
+        return .init(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presenter.didSelectAddress(at: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completion in
-            guard let self else { return }
-            self.presenter.deleteTrackingForAddress(at: indexPath)
-            tableView.deleteRows(at: [indexPath], with: .right)
-            completion(true)
-        }
-        deleteAction.image = UIImage(systemName: "trash")
-        deleteAction.backgroundColor = .systemRed
-        
-        let renameAction = UIContextualAction(style: .normal, title: "") { [weak self] _, _, completion in
-            guard let self else { return }
-            self.showRenameAlertForAddress(at: indexPath)
-            completion(true)
-        }
-        renameAction.image = UIImage(systemName: "pencil")
-        renameAction.backgroundColor = .systemBlue
-        return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        presenter.getTitleFoHeader(in: section)
-    }
 }

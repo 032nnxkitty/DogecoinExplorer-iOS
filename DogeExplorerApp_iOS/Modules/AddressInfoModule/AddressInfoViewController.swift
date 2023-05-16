@@ -11,7 +11,7 @@ class AddressInfoViewController: UIViewController {
     var presenter: AddressInfoPresenter!
     
     // MARK: - UI Elements
-    private var infoHeader: AddressInfoHeaderView!
+    private var infoHeader: AddressBaseInfoView!
     
     private lazy var transactionsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -38,38 +38,41 @@ class AddressInfoViewController: UIViewController {
     }()
     
     private lazy var shareBarButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .action,
-                                     target: self,
-                                     action: #selector(share))
-        return button
+        let button = UIButton(configuration: .filled())
+        button.configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        button.tintColor = .white
+        button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+        button.addTarget(self, action: #selector(share), for: .touchUpInside)
+        return UIBarButtonItem(customView: button)
     }()
     
     private lazy var renameBarButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(systemName: "pencil"),
-                                     style: .plain,
-                                     target: self,
-                                     action: #selector(renameButtonDidTap))
-        return button
+        let button = UIButton(configuration: .filled())
+        button.configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        button.tintColor = .white
+        button.setImage(UIImage(systemName: "pencil"), for: .normal)
+        button.addTarget(self, action: #selector(renameButtonDidTap), for: .touchUpInside)
+        return UIBarButtonItem(customView: button)
     }()
     
-    private lazy var trackingStateButton: UIButton = {
-        let button = UIButton()
+    private lazy var backBarButton: UIBarButtonItem = {
+        let button = UIButton(configuration: .filled())
+        button.configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        button.tintColor = .white
+        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        button.addTarget(self, action: #selector(popBack), for: .touchUpInside)
+        return UIBarButtonItem(customView: button)
+    }()
+    
+    private lazy var trackingStateButton: TrackingStateButton = {
+        let button = TrackingStateButton()
         button.addTarget(self, action: #selector(trackingStateDidChange), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        button.layer.cornerRadius = 10
         return button
     }()
     
-    private lazy var loadTransactionsButton: LoaderButton = {
-        let button = LoaderButton(configuration: .plain())
-        button.setTitle(R.LocalizableStrings.loadMore, for: .normal)
-//        button.setImage(UIImage(systemName: "plus"), for: .normal)
+    private lazy var loadTransactionsButton: LoadTransactionsButton = {
+        let button = LoadTransactionsButton(configuration: .plain())
         button.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
-        button.backgroundColor =  R.Colors.uiElement
-        button.layer.cornerRadius = 10
-        button.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
-        button.setTitleColor(.label, for: .normal)
         return button
     }()
     
@@ -86,8 +89,9 @@ class AddressInfoViewController: UIViewController {
 private extension AddressInfoViewController {
     func configureViewAppearance() {
         navigationItem.largeTitleDisplayMode = .never
+        navigationItem.leftBarButtonItem = backBarButton
         view.backgroundColor = R.Colors.background
-        infoHeader = AddressInfoHeaderView()
+        infoHeader = AddressBaseInfoView()
     }
     
     func configureLoader() {
@@ -128,6 +132,10 @@ private extension AddressInfoViewController {
         }
     }
     
+    func popBack() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     func trackingStateDidChange() {
         presenter.trackingStateDidChange()
     }
@@ -156,25 +164,13 @@ extension AddressInfoViewController: AddressInfoView {
     func configureIfAddressTracked(name: String) {
         title = name
         navigationItem.rightBarButtonItems = [shareBarButton, renameBarButton]
-        
-        trackingStateButton.setTitle(" Unfollow", for: .normal)
-        trackingStateButton.setImage(UIImage(systemName: "eye.slash.fill"), for: .normal)
-        
-        trackingStateButton.backgroundColor = R.Colors.uiElement
-        trackingStateButton.setTitleColor(.label, for: .normal)
-        trackingStateButton.tintColor = .label
+        trackingStateButton.setTrackingState()
     }
     
     func configureIfAddressNotTracked(shortenAddress: String) {
         title = shortenAddress
         navigationItem.rightBarButtonItems = [shareBarButton]
-        
-        trackingStateButton.setTitle(" Follow", for: .normal)
-        trackingStateButton.setImage(UIImage(systemName: "eye.fill"), for: .normal)
-        
-        trackingStateButton.backgroundColor = .systemBlue
-        trackingStateButton.setTitleColor(.white, for: .normal)
-        trackingStateButton.tintColor = .white
+        trackingStateButton.setNonTrackingState()
     }
     
     func animateCentralLoader(_ isAnimated: Bool) {
@@ -253,9 +249,9 @@ extension AddressInfoViewController: UITableViewDataSource {
         containerStack.axis = .vertical
         containerStack.spacing = 10
         containerStack.isLayoutMarginsRelativeArrangement = true
-        containerStack.layoutMargins = UIEdgeInsets(top: 8, left: 0, bottom: 10, right: 0)
-        containerStack.addArrangedSubview(infoHeader)
+        containerStack.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
         
+        containerStack.addArrangedSubview(infoHeader)
         containerStack.addArrangedSubview(trackingStateButton)
         return containerStack
     }

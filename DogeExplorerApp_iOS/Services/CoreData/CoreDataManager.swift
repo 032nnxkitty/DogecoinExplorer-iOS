@@ -116,6 +116,6 @@ extension CoreDataManager: AddressTrackingService {
         addNewTrackedAddress(address: "9wYpKfWNaWFtZ3KCqgoZM5AyYCz7S7juLV", name: "Pablo")
         addNewTrackedAddress(address: "DAwJBoNqkHoT523p9h8gUjWJYSPc4RdDsr", name: "Tesla California")
         addNewTrackedAddress(address: "DNqos1BcjPSZGxQn51nhcKydjA73nxohwC", name: "Eliška")
-        addNewTrackedAddress(address: "D5RpQhaVkpHHT4n8HrPahoVWbwmSohNpEt", name: "My wallet👾")
+        addNewTrackedAddress(address: "D5RpQhaVkpHHT4n8HrPahoVWbwmSohNpEt", name: "My wallet")
     }
 }

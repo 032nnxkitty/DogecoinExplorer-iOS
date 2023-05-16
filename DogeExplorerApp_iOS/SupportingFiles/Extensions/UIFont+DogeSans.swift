@@ -8,8 +8,8 @@
 import UIKit
 
 extension UIFont {
-    class func dogeSans(style: UIFont.TextStyle) -> UIFont {
-        guard let customFont = UIFont(name: "DogeSans-Regular", size: 17) else {
+    class func dogeSans(size: CGFloat, style: UIFont.TextStyle) -> UIFont {
+        guard let customFont = UIFont(name: "DogeSans-Regular", size: size) else {
             return .preferredFont(forTextStyle: style)
         }
         return UIFontMetrics(forTextStyle: style).scaledFont(for: customFont)

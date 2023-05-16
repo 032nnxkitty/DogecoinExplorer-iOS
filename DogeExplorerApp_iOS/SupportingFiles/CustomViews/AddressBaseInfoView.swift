@@ -7,8 +7,7 @@
 
 import UIKit
 
-class AddressInfoHeaderView: UIView {
-    
+class AddressBaseInfoView: UIView {
     // MARK: - UI Elements
     private let containerStack: UIStackView = {
         let stack = UIStackView()
@@ -29,7 +28,7 @@ class AddressInfoHeaderView: UIView {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("storyboards are incompatible with truth and beauty")
     }
     
     // MARK: - Public Methods
@@ -41,30 +40,28 @@ class AddressInfoHeaderView: UIView {
 }
 
 // MARK: - Private Methods
-private extension AddressInfoHeaderView {
+private extension AddressBaseInfoView {
     func configureAppearance() {
-        backgroundColor =  R.Colors.uiElement
-        layer.cornerRadius = 10
+        backgroundColor =  R.Colors.accent
+        layer.cornerRadius = 20
         layer.masksToBounds = true
         
         addSubview(containerStack)
         NSLayoutConstraint.activate([
-            containerStack.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            containerStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            containerStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            containerStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
+            containerStack.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            containerStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            containerStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            containerStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20)
         ])
         
         addressLabel = configureValueLabel()
         
         balanceLabel = configureValueLabel()
-        
+        balanceLabel.font = .dogeSans(size: 25, style: .largeTitle)
         transactionsLabel = configureValueLabel()
         
-        containerStack.addArrangedSubview(createSection(sectionTitle: "Address", valueLabel: addressLabel))
         containerStack.addArrangedSubview(createSection(sectionTitle: "Balance", valueLabel: balanceLabel))
-//        containerStack.addArrangedSubview(createSection(sectionTitle: "Amount sent", valueLabel: configureValueLabel()))
-//        containerStack.addArrangedSubview(createSection(sectionTitle: "Amount received", valueLabel: configureValueLabel()))
+        containerStack.addArrangedSubview(createSection(sectionTitle: "Address", valueLabel: addressLabel))
         containerStack.addArrangedSubview(createSection(sectionTitle: "Transactions", valueLabel: transactionsLabel))
     }
     
@@ -73,20 +70,20 @@ private extension AddressInfoHeaderView {
         label.text = "..."
         label.numberOfLines = 0
         label.textAlignment = .left
-        //label.font = .preferredFont(forTextStyle: .headline)
-        label.textColor = .label
+        label.font = .dogeSans(size: 17, style: .body)
+        label.textColor = .black
         return label
     }
     
     func createSection(sectionTitle: String, valueLabel: UILabel) -> UIStackView {
         let sectionTitleLabel = UILabel()
-        sectionTitleLabel.font = .preferredFont(forTextStyle: .footnote)
-        sectionTitleLabel.text = sectionTitle + ":"
-        sectionTitleLabel.textColor = .secondaryLabel
+        sectionTitleLabel.font = .dogeSans(size: 14, style: .footnote)
+        sectionTitleLabel.text = sectionTitle
+        sectionTitleLabel.textColor = .black
         
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = 4
+        stack.spacing = 6
         stack.addArrangedSubview(sectionTitleLabel)
         stack.addArrangedSubview(valueLabel)
         
