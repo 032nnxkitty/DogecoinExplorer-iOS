@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1047F6CE29F86C6100B46708 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1047F6D029F86C6100B46708 /* Localizable.strings */; };
 		1047F73129F9897D00B46708 /* DogeExplorerAppUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1047F73029F9897D00B46708 /* DogeExplorerAppUnitTests.swift */; };
 		1047F75F29FAD85500B46708 /* MainViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1047F75D29FAD85500B46708 /* MainViewProtocol.swift */; };
 		1047F76029FAD85500B46708 /* MainPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1047F75E29FAD85500B46708 /* MainPresenterProtocol.swift */; };
@@ -66,8 +65,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1047F6CF29F86C6100B46708 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1047F6D129F86C9A00B46708 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1047F72E29F9897D00B46708 /* DogeExplorerAppUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DogeExplorerAppUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1047F73029F9897D00B46708 /* DogeExplorerAppUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogeExplorerAppUnitTests.swift; sourceTree = "<group>"; };
 		1047F73B29F9899300B46708 /* DogeExplorerAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DogeExplorerAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,7 +226,6 @@
 				10A42D6A29E9B78900BE04B9 /* Extensions */,
 				109FB83929EC270900D5929F /* Models */,
 				10ED211129F31DF6008302EA /* CustomViews */,
-				1055B6B12A114B650083E0D6 /* Localization */,
 				10A42D6829E9B76700BE04B9 /* R.swift */,
 				10529EE429E87CC700E73212 /* Assets.xcassets */,
 				10529EE629E87CC700E73212 /* LaunchScreen.storyboard */,
@@ -237,14 +233,6 @@
 				107C7CB32A13D04B004DFB06 /* DogeSansVF.ttf */,
 			);
 			path = SupportingFiles;
-			sourceTree = "<group>";
-		};
-		1055B6B12A114B650083E0D6 /* Localization */ = {
-			isa = PBXGroup;
-			children = (
-				1047F6D029F86C6100B46708 /* Localizable.strings */,
-			);
-			path = Localization;
 			sourceTree = "<group>";
 		};
 		109FB83929EC270900D5929F /* Models */ = {
@@ -400,7 +388,6 @@
 			knownRegions = (
 				en,
 				Base,
-				ru,
 			);
 			mainGroup = 10529ECF29E87CC600E73212;
 			productRefGroup = 10529ED929E87CC600E73212 /* Products */;
@@ -434,7 +421,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				10529EE829E87CC700E73212 /* LaunchScreen.storyboard in Resources */,
-				1047F6CE29F86C6100B46708 /* Localizable.strings in Resources */,
 				107C7CB42A13D04B004DFB06 /* DogeSansVF.ttf in Resources */,
 				10529EE529E87CC700E73212 /* Assets.xcassets in Resources */,
 			);
@@ -515,15 +501,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		1047F6D029F86C6100B46708 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1047F6CF29F86C6100B46708 /* en */,
-				1047F6D129F86C9A00B46708 /* ru */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
 		10529EE629E87CC700E73212 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

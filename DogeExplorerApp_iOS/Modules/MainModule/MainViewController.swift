@@ -17,7 +17,7 @@ class MainViewController: UIViewController {
         bar.searchTextField.font = .dogeSans(size: 17, style: .body)
         bar.searchTextField.backgroundColor = .clear
         bar.backgroundColor = R.Colors.backgroundGray
-        bar.placeholder = R.LocalizableStrings.searchBar
+        bar.placeholder = "Enter the address to search"
         bar.backgroundImage = UIImage()
         bar.layer.cornerRadius = 20
         return bar
