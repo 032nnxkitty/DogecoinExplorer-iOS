@@ -37,10 +37,12 @@ class LoadTransactionsButton: UIButton {
     
     // MARK: - Private Methods
     private func configureAppearance() {
-        backgroundColor = R.Colors.backgroundGray
-        layer.cornerRadius = 20
-        setTitle("Load moreeee", for: .normal)
-        setTitleColor(.white, for: .normal)
+        configuration = UIButton.Configuration.filled()
+        configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        configuration?.baseForegroundColor = .white
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
+        configuration?.background.cornerRadius = 20
+        setTitle("Load more", for: .normal)
         titleLabel?.font = .dogeSans(size: 17, style: .body)
     }
     

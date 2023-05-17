@@ -1,13 +1,13 @@
 //
-//  SelfSizedCollectionView.swift
+//  SelfSizedTableView.swift
 //  DogeExplorerApp_iOS
 //
-//  Created by Arseniy Zolotarev on 16.05.2023.
+//  Created by Arseniy Zolotarev on 17.05.2023.
 //
 
 import UIKit
 
-class SelfSizedCollectionView: UICollectionView {
+class SelfSizedTableView: UITableView {
     override var contentSize:CGSize {
         didSet {
             invalidateIntrinsicContentSize()

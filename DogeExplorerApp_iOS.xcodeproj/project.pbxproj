@@ -20,8 +20,6 @@
 		107C7CB42A13D04B004DFB06 /* DogeSansVF.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 107C7CB32A13D04B004DFB06 /* DogeSansVF.ttf */; };
 		107C7CB62A13D066004DFB06 /* UIFont+DogeSans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107C7CB52A13D066004DFB06 /* UIFont+DogeSans.swift */; };
 		107C7CB82A13D5BB004DFB06 /* TrackedAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107C7CB72A13D5BB004DFB06 /* TrackedAddressCell.swift */; };
-		107C7CE02A13EAE4004DFB06 /* ScrollableStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107C7CDF2A13EAE4004DFB06 /* ScrollableStack.swift */; };
-		107C7CE22A13F08D004DFB06 /* SelfSizedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107C7CE12A13F08D004DFB06 /* SelfSizedCollectionView.swift */; };
 		107C7CE42A13F81A004DFB06 /* TrackingStateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107C7CE32A13F81A004DFB06 /* TrackingStateButton.swift */; };
 		108CA9F629F5CB86003582B6 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108CA9F529F5CB86003582B6 /* TransactionCell.swift */; };
 		108CA9FC29F6B92B003582B6 /* AddressBaseInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108CA9FB29F6B92B003582B6 /* AddressBaseInfoView.swift */; };
@@ -38,6 +36,8 @@
 		10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */; };
 		10BAD4102A14179000D4BAAF /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BAD40F2A14179000D4BAAF /* UIBarButtonItem.swift */; };
 		10BAD4122A14280700D4BAAF /* UIStackView+Separators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BAD4112A14280700D4BAAF /* UIStackView+Separators.swift */; };
+		10CF63072A155F91003C124E /* ScrollableStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF63062A155F91003C124E /* ScrollableStackView.swift */; };
+		10CF630B2A156A67003C124E /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF630A2A156A67003C124E /* SelfSizedTableView.swift */; };
 		10ED20AD29F1DFFD008302EA /* LoadTransactionsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED20AC29F1DFFD008302EA /* LoadTransactionsButton.swift */; };
 		10ED211329F33270008302EA /* BalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211229F33270008302EA /* BalanceModel.swift */; };
 		10ED211729F332B3008302EA /* TransactionsCountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211629F332B3008302EA /* TransactionsCountModel.swift */; };
@@ -84,8 +84,6 @@
 		107C7CB32A13D04B004DFB06 /* DogeSansVF.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DogeSansVF.ttf; sourceTree = "<group>"; };
 		107C7CB52A13D066004DFB06 /* UIFont+DogeSans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+DogeSans.swift"; sourceTree = "<group>"; };
 		107C7CB72A13D5BB004DFB06 /* TrackedAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedAddressCell.swift; sourceTree = "<group>"; };
-		107C7CDF2A13EAE4004DFB06 /* ScrollableStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableStack.swift; sourceTree = "<group>"; };
-		107C7CE12A13F08D004DFB06 /* SelfSizedCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizedCollectionView.swift; sourceTree = "<group>"; };
 		107C7CE32A13F81A004DFB06 /* TrackingStateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingStateButton.swift; sourceTree = "<group>"; };
 		108CA9F529F5CB86003582B6 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		108CA9FB29F6B92B003582B6 /* AddressBaseInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressBaseInfoView.swift; sourceTree = "<group>"; };
@@ -102,6 +100,8 @@
 		10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+UnixTime.swift"; sourceTree = "<group>"; };
 		10BAD40F2A14179000D4BAAF /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		10BAD4112A14280700D4BAAF /* UIStackView+Separators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Separators.swift"; sourceTree = "<group>"; };
+		10CF63062A155F91003C124E /* ScrollableStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableStackView.swift; sourceTree = "<group>"; };
+		10CF630A2A156A67003C124E /* SelfSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
 		10ED20AC29F1DFFD008302EA /* LoadTransactionsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadTransactionsButton.swift; sourceTree = "<group>"; };
 		10ED211229F33270008302EA /* BalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceModel.swift; sourceTree = "<group>"; };
 		10ED211629F332B3008302EA /* TransactionsCountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsCountModel.swift; sourceTree = "<group>"; };
@@ -295,11 +295,11 @@
 			children = (
 				107C7CB72A13D5BB004DFB06 /* TrackedAddressCell.swift */,
 				108CA9F529F5CB86003582B6 /* TransactionCell.swift */,
-				10ED20AC29F1DFFD008302EA /* LoadTransactionsButton.swift */,
 				108CA9FB29F6B92B003582B6 /* AddressBaseInfoView.swift */,
-				107C7CDF2A13EAE4004DFB06 /* ScrollableStack.swift */,
-				107C7CE12A13F08D004DFB06 /* SelfSizedCollectionView.swift */,
+				10ED20AC29F1DFFD008302EA /* LoadTransactionsButton.swift */,
 				107C7CE32A13F81A004DFB06 /* TrackingStateButton.swift */,
+				10CF63062A155F91003C124E /* ScrollableStackView.swift */,
+				10CF630A2A156A67003C124E /* SelfSizedTableView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -466,12 +466,12 @@
 				107C7CE42A13F81A004DFB06 /* TrackingStateButton.swift in Sources */,
 				10529EDC29E87CC600E73212 /* AppDelegate.swift in Sources */,
 				10A42D5A29E9B18C00BE04B9 /* MainPresenter.swift in Sources */,
-				107C7CE22A13F08D004DFB06 /* SelfSizedCollectionView.swift in Sources */,
 				10A42D6529E9B2D400BE04B9 /* AddressInfoPresenter.swift in Sources */,
 				10BAD4122A14280700D4BAAF /* UIStackView+Separators.swift in Sources */,
 				1047F75F29FAD85500B46708 /* MainViewProtocol.swift in Sources */,
 				10A42D6C29E9B9E400BE04B9 /* ModuleBuilder.swift in Sources */,
 				1047F76829FAD99700B46708 /* AddressInfoPresenterProtocol.swift in Sources */,
+				10CF63072A155F91003C124E /* ScrollableStackView.swift in Sources */,
 				10ED211329F33270008302EA /* BalanceModel.swift in Sources */,
 				10ED211929F332C1008302EA /* TransactionsPageModel.swift in Sources */,
 				10ED20AD29F1DFFD008302EA /* LoadTransactionsButton.swift in Sources */,
@@ -485,7 +485,6 @@
 				108CA9FC29F6B92B003582B6 /* AddressBaseInfoView.swift in Sources */,
 				10BA60EC29EC63E5005FCE80 /* InternetConnectionObserver.swift in Sources */,
 				10ED211B29F332D5008302EA /* DetailedTransactionInfoModel.swift in Sources */,
-				107C7CE02A13EAE4004DFB06 /* ScrollableStack.swift in Sources */,
 				10A42D6729E9B2E800BE04B9 /* AddressInfoViewController.swift in Sources */,
 				10ED216529F40A15008302EA /* AddressesTrackingDataModel.xcdatamodeld in Sources */,
 				10A42D7229EB1D5300BE04B9 /* String+Formatting.swift in Sources */,
@@ -493,6 +492,7 @@
 				10A42D5C29E9B19F00BE04B9 /* MainViewController.swift in Sources */,
 				10A42D7829EB532A00BE04B9 /* NetworkManager.swift in Sources */,
 				10ED216829F40A64008302EA /* TrackedAddressEntity+CoreDataClass.swift in Sources */,
+				10CF630B2A156A67003C124E /* SelfSizedTableView.swift in Sources */,
 				107C7CB62A13D066004DFB06 /* UIFont+DogeSans.swift in Sources */,
 				10ED211729F332B3008302EA /* TransactionsCountModel.swift in Sources */,
 				10ED216C29F40AFF008302EA /* CoreDataManager.swift in Sources */,
@@ -732,6 +732,7 @@
 				DEVELOPMENT_TEAM = RYP579LK57;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DogeExplorerApp_iOS/SupportingFiles/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DogeExplorer;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -765,6 +766,7 @@
 				DEVELOPMENT_TEAM = RYP579LK57;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DogeExplorerApp_iOS/SupportingFiles/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DogeExplorer;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

@@ -171,7 +171,7 @@ private extension AddressInfoPresenterImp {
                 addressInfo = try await info
                 
                 if addressInfo!.1.info.total <= 10 { view?.hideLoadTransactionsButton() }
-                view?.setAddressInfo(address: address.shorten(prefix: 7, suffix: 7),
+                view?.setAddressInfo(address: address,
                                      dogeBalance: "\(addressInfo!.0.balance.formatNumberString()) DOGE",
                                      transactionsCount: "\(addressInfo!.1.info.total)")
                 

@@ -14,28 +14,31 @@ class MainViewController: UIViewController {
     private let addressSearchBar: UISearchBar = {
         let bar = UISearchBar()
         bar.translatesAutoresizingMaskIntoConstraints = false
-        bar.placeholder = R.LocalizableStrings.searchBar
-        bar.layer.cornerRadius = 20
-        bar.backgroundImage = UIImage()
-        bar.backgroundColor = R.Colors.backgroundGray
         bar.searchTextField.font = .dogeSans(size: 17, style: .body)
         bar.searchTextField.backgroundColor = .clear
+        bar.backgroundColor = R.Colors.backgroundGray
+        bar.placeholder = R.LocalizableStrings.searchBar
+        bar.backgroundImage = UIImage()
+        bar.layer.cornerRadius = 20
         return bar
     }()
     
-    private lazy var trackedAddressesCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(TrackedAddressCell.self, forCellWithReuseIdentifier: R.Identifiers.trackedCell)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.keyboardDismissMode = .onDrag
-        collectionView.backgroundColor = .clear
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        return collectionView
+    private lazy var trackedAddressesTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.register(TrackedAddressCell.self, forCellReuseIdentifier: R.Identifiers.trackedCell)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.showsVerticalScrollIndicator = false
+        tableView.keyboardDismissMode = .onDrag
+        tableView.backgroundColor = .clear
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.separatorStyle = .none
+        tableView.sectionFooterHeight = 10
+        return tableView
+    }()
+    
+    private lazy var supportButton: UIBarButtonItem = {
+        return UIBarButtonItem(image: UIImage(systemName: "heart"))
     }()
     
     // MARK: - View Life Cycle
@@ -43,7 +46,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         configureAppearance()
         configureSearchBar()
-        configureCollectionView()
+        configureTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,6 +67,7 @@ private extension MainViewController {
         view.backgroundColor = R.Colors.background
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.backButtonDisplayMode = .minimal
+        navigationItem.rightBarButtonItem = supportButton
         
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.dogeSans(size: 17, style: .body)
@@ -72,23 +76,23 @@ private extension MainViewController {
     
     func configureSearchBar() {
         addressSearchBar.delegate = self
+        
         view.addSubview(addressSearchBar)
         NSLayoutConstraint.activate([
             addressSearchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            addressSearchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            addressSearchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            addressSearchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            addressSearchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             addressSearchBar.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
-    func configureCollectionView() {
-        view.addSubview(trackedAddressesCollectionView)
+    func configureTableView() {
+        view.addSubview(trackedAddressesTableView)
         NSLayoutConstraint.activate([
-            
-            trackedAddressesCollectionView.topAnchor.constraint(equalTo: addressSearchBar.bottomAnchor, constant: 10),
-            trackedAddressesCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            trackedAddressesCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            trackedAddressesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            trackedAddressesTableView.topAnchor.constraint(equalTo: addressSearchBar.bottomAnchor, constant: 10),
+            trackedAddressesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            trackedAddressesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            trackedAddressesTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
@@ -116,7 +120,7 @@ extension MainViewController: MainView {
     }
     
     func reloadData() {
-        trackedAddressesCollectionView.reloadData()
+        trackedAddressesTableView.reloadData()
     }
     
     func showOkActionSheet(title: String, message: String) {
@@ -135,40 +139,60 @@ extension MainViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
         searchBar.text = nil
     }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        searchBar.text = nil
-    }
 }
 
-// MARK: - UICollectionViewDataSource
-extension MainViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+// MARK: - UITableViewDataSource
+extension MainViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.getNumberOfTrackedAddresses()
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: R.Identifiers.trackedCell, for: indexPath) as! TrackedAddressCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.trackedCell, for: indexPath) as! TrackedAddressCell
         presenter.configureCell(at: indexPath) { name, address in
             cell.configure(name: name, address: address)
         }
-        
-    
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = "Tracked addresses"
+        label.textAlignment = .center
+        label.font = .dogeSans(size: 17, style: .body)
+        label.textColor = R.Colors.lightGray
+        
+        return label
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "") { _, _, completion in
+            self.presenter.deleteTrackingForAddress(at: indexPath)
+            tableView.deleteRows(at: [indexPath], with: .right)
+            completion(true)
+        }
+        deleteAction.image = UIImage(named: "delete")
+        deleteAction.backgroundColor = R.Colors.background
+        
+        let renameAction = UIContextualAction(style: .normal, title: "") { _, _, completion in
+            self.showRenameAlertForAddress(at: indexPath)
+            completion(true)
+        }
+        renameAction.image = UIImage(named: "rename")
+        renameAction.backgroundColor = R.Colors.background
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
     }
 }
 
-// MARK: - UICollectionViewDelegate & UICollectionViewDelegateFlowLayout
-extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.size.width - 32
-        let height = collectionView.frame.size.height / 7
-        return .init(width: width, height: height)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+// MARK: - UITableViewDelegate
+extension MainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter.didSelectAddress(at: indexPath)
     }
-    
 }

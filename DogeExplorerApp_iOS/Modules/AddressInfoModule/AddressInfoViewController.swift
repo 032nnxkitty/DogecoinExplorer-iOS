@@ -11,147 +11,84 @@ class AddressInfoViewController: UIViewController {
     var presenter: AddressInfoPresenter!
     
     // MARK: - UI Elements
-    private var infoHeader: AddressBaseInfoView!
+    private lazy var refreshControl: UIRefreshControl = {
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(refreshUI), for: .valueChanged)
+        return refresh
+    }()
     
-    private lazy var transactionsTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.register(TransactionCell.self, forCellReuseIdentifier: R.Identifiers.addressInfoCell)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+    private let containerStack: ScrollableStackView = {
+        let stack = ScrollableStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.showsVerticalScrollIndicator = false
+        stack.axis = .vertical
+        stack.spacing = 10
+        stack.alpha = 0
+        return stack
+    }()
+    
+    private lazy var transactionsTableView: SelfSizedTableView = {
+        let tableView = SelfSizedTableView()
+        tableView.register(TransactionCell.self, forCellReuseIdentifier: R.Identifiers.transactionInfoCell)
         tableView.showsVerticalScrollIndicator = false
-        tableView.backgroundColor = R.Colors.background
-        tableView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        tableView.alpha = 0
+        tableView.isScrollEnabled = false
         tableView.dataSource = self
         tableView.delegate = self
         return tableView
     }()
     
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        return refreshControl
-    }()
+    private let baseAddressInfoView = AddressBaseInfoView()
+    private let trackingStateButton = TrackingStateButton()
+    private let loadTransactionButton = LoadTransactionsButton()
     
-    private let loader: UIActivityIndicatorView = {
-        let loader = UIActivityIndicatorView()
-        return loader
-    }()
-    
-    private lazy var shareBarButton: UIBarButtonItem = {
-        let button = UIButton(configuration: .filled())
-        button.configuration?.baseBackgroundColor = R.Colors.backgroundGray
-        button.tintColor = .white
-        button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
-        button.addTarget(self, action: #selector(share), for: .touchUpInside)
-        return UIBarButtonItem(customView: button)
-    }()
-    
-    private lazy var renameBarButton: UIBarButtonItem = {
-        let button = UIButton(configuration: .filled())
-        button.configuration?.baseBackgroundColor = R.Colors.backgroundGray
-        button.tintColor = .white
-        button.setImage(UIImage(systemName: "pencil"), for: .normal)
-        button.addTarget(self, action: #selector(renameButtonDidTap), for: .touchUpInside)
-        return UIBarButtonItem(customView: button)
-    }()
-    
-    private lazy var backBarButton: UIBarButtonItem = {
-        let button = UIButton(configuration: .filled())
-        button.configuration?.baseBackgroundColor = R.Colors.backgroundGray
-        button.tintColor = .white
-        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
-        button.addTarget(self, action: #selector(popBack), for: .touchUpInside)
-        return UIBarButtonItem(customView: button)
-    }()
-    
-    private lazy var trackingStateButton: TrackingStateButton = {
-        let button = TrackingStateButton()
-        button.addTarget(self, action: #selector(trackingStateDidChange), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var loadTransactionsButton: LoadTransactionsButton = {
-        let button = LoadTransactionsButton(configuration: .plain())
-        button.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
-        return button
-    }()
+    private lazy var loader = UIActivityIndicatorView()
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureViewAppearance()
-        configureLoader()
-        configureTableView()
+        configureAppearance()
+        configureScrollableStack()
     }
 }
 
 // MARK: - Private Methods
 private extension AddressInfoViewController {
-    func configureViewAppearance() {
-        navigationItem.largeTitleDisplayMode = .never
-        navigationItem.leftBarButtonItem = backBarButton
+    func configureAppearance() {
         view.backgroundColor = R.Colors.background
-        infoHeader = AddressBaseInfoView()
-    }
-    
-    func configureLoader() {
+        
         view.addSubview(loader)
         loader.center = view.center
-    }
-    
-    func configureTableView() {
-        transactionsTableView.refreshControl = refreshControl
         
-        view.addSubview(transactionsTableView)
-        NSLayoutConstraint.activate([
-            transactionsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            transactionsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            transactionsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            transactionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
+        loadTransactionButton.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
     }
     
-    func createTextFieldAlert(title: String, message: String, placeHolder: String, completion: @escaping (String?) -> Void) -> UIAlertController  {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addTextField { textField in textField.placeholder = placeHolder }
-        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { action in
-            completion(alert.textFields?[0].text)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        alert.addAction(confirmAction)
-        alert.addAction(cancelAction)
-        return alert
+    func configureScrollableStack() {
+        containerStack.refreshControl = refreshControl
+        
+        view.addSubview(containerStack)
+        NSLayoutConstraint.activate([
+            containerStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            containerStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            containerStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            containerStack.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        containerStack.addArrangedSubview(baseAddressInfoView)
+        containerStack.addArrangedSubview(trackingStateButton)
+        containerStack.addArrangedSubview(transactionsTableView)
+        containerStack.addArrangedSubview(loadTransactionButton)
     }
 }
 
-// MARK: - Actions
 @objc private extension AddressInfoViewController {
-    func refresh() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.refreshControl.endRefreshing()
+    func refreshUI() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            self?.refreshControl.endRefreshing()
         }
-    }
-    
-    func popBack() {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    func trackingStateDidChange() {
-        presenter.trackingStateDidChange()
-    }
-    
-    func renameButtonDidTap() {
-        presenter.renameButtonDidTap()
     }
     
     func loadTransactionsButtonDidTap() {
         presenter.loadTransactionsButtonDidTap()
-    }
-    
-    func share() {
-        let textToShare = presenter.getAddressInfoToShare()
-        let avc = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
-        present(avc, animated: true)
     }
 }
 
@@ -163,14 +100,36 @@ extension AddressInfoViewController: AddressInfoView {
     
     func configureIfAddressTracked(name: String) {
         title = name
-        navigationItem.rightBarButtonItems = [shareBarButton, renameBarButton]
         trackingStateButton.setTrackingState()
     }
     
     func configureIfAddressNotTracked(shortenAddress: String) {
         title = shortenAddress
-        navigationItem.rightBarButtonItems = [shareBarButton]
         trackingStateButton.setNonTrackingState()
+    }
+    
+    func setAddressInfo(address: String, dogeBalance: String, transactionsCount: String) {
+        transactionsTableView.reloadData()
+        baseAddressInfoView.setInfo(address: address, dogeBalance: dogeBalance, transactionsCount: transactionsCount)
+        UIView.animate(withDuration: 0.3) {
+            self.containerStack.alpha = 1
+        }
+    }
+    
+    func showOkActionSheet(title: String, message: String) {
+        
+    }
+    
+    func showAddTrackingAlert() {
+        
+    }
+    
+    func showDeleteAlert() {
+        
+    }
+    
+    func showRenameAlert() {
+        
     }
     
     func animateCentralLoader(_ isAnimated: Bool) {
@@ -178,55 +137,11 @@ extension AddressInfoViewController: AddressInfoView {
     }
     
     func animateLoadTransactionLoader(_ isAnimated: Bool) {
-        isAnimated ? loadTransactionsButton.startLoading() : loadTransactionsButton.stopLoading()
-    }
-    
-    func setAddressInfo(address: String, dogeBalance: String, transactionsCount: String) {
-        transactionsTableView.reloadData()
-        UIView.animate(withDuration: 0.5) {
-            self.transactionsTableView.alpha = 1
-        }
-        infoHeader.setInfo(address: address, dogeBalance: dogeBalance, transactionsCount: transactionsCount)
-    }
-    
-    func showOkActionSheet(title: String, message: String) {
-        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        let action = UIAlertAction(title: "Ok", style: .cancel)
-        actionSheet.addAction(action)
-        present(actionSheet, animated: true)
-    }
-    
-    func showAddTrackingAlert() {
-        let trackingAlert = createTextFieldAlert(title: "Add name to address",
-                                                 message:  "If field will be empty..",
-                                                 placeHolder: "Enter name") { name in
-            self.presenter.addTracking(with: name)
-        }
-        present(trackingAlert, animated: true)
-    }
-    
-    func showDeleteAlert() {
-        let deleteAlert = UIAlertController(title: "Are u sure?", message: "", preferredStyle: .actionSheet)
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
-            self.presenter.deleteTracking()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        deleteAlert.addAction(deleteAction)
-        deleteAlert.addAction(cancelAction)
-        present(deleteAlert, animated: true)
-    }
-    
-    func showRenameAlert() {
-        let renameAlert = createTextFieldAlert(title: "Enter new name",
-                                               message: "If field will be empty..",
-                                               placeHolder: "Enter new name") { name in
-            self.presenter.renameAddress(newName: name)
-        }
-        present(renameAlert, animated: true)
+        isAnimated ? loadTransactionButton.startLoading() : loadTransactionButton.stopLoading()
     }
     
     func hideLoadTransactionsButton() {
-        loadTransactionsButton.isHidden = true
+        loadTransactionButton.isHidden = true
     }
 }
 
@@ -237,32 +152,12 @@ extension AddressInfoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.addressInfoCell, for: indexPath) as! TransactionCell
+        // change on view model !!
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.transactionInfoCell, for: indexPath) as! TransactionCell
         presenter.configureTransactionCell(at: indexPath) { style, value, time, hash in
             cell.configure(style: style, value: value, date: time, hash: hash)
         }
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let containerStack = UIStackView()
-        containerStack.axis = .vertical
-        containerStack.spacing = 10
-        containerStack.isLayoutMarginsRelativeArrangement = true
-        containerStack.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
-        
-        containerStack.addArrangedSubview(infoHeader)
-        containerStack.addArrangedSubview(trackingStateButton)
-        return containerStack
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let containerStack = UIStackView()
-        containerStack.alignment = .center
-        containerStack.isLayoutMarginsRelativeArrangement = true
-        containerStack.layoutMargins = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
-        containerStack.addArrangedSubview(loadTransactionsButton)
-        return containerStack
     }
 }
 
@@ -270,6 +165,15 @@ extension AddressInfoViewController: UITableViewDataSource {
 extension AddressInfoViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        presenter.didSelectTransaction(at: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = "Transactions"
+        label.textAlignment = .center
+        label.font = .dogeSans(size: 17, style: .body)
+        return label
     }
 }
+
+

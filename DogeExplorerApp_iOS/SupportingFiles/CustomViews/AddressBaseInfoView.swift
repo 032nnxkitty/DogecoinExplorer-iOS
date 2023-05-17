@@ -84,6 +84,7 @@ private extension AddressBaseInfoView {
         sectionTitleLabel.textColor = .black
         
         let stack = UIStackView()
+        stack.distribution = .equalSpacing
         stack.axis = .vertical
         stack.spacing = 6
         stack.addArrangedSubview(sectionTitleLabel)

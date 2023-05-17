@@ -37,14 +37,14 @@ class TransactionCell: UITableViewCell {
     private let stateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = .dogeSans(size: 17, style: .headline)
+        label.font = .dogeSans(size: 20, style: .headline)
         return label
     }()
     
     private let sumLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.font = .dogeSans(size: 17, style: .headline)
+        label.font = .dogeSans(size: 20, style: .headline)
         return label
     }()
     
@@ -78,10 +78,10 @@ class TransactionCell: UITableViewCell {
     func configure(style: TransactionStyle, value: String, date: String, hash: String) {
         switch style {
         case .sent:
-            stateLabel.text = "↑ Sent"
+            stateLabel.text = "Sent"
             sumLabel.textColor = .label
         case .received:
-            stateLabel.text = "↓ Received"
+            stateLabel.text = "Received"
             sumLabel.textColor = R.Colors.accent
         }
         sumLabel.text = value

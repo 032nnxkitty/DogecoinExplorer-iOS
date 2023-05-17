@@ -7,13 +7,21 @@
 
 import UIKit
 
-class TrackedAddressCell: UICollectionViewCell {
+class TrackedAddressCell: UITableViewCell {
     // MARK: - UI Elements
-    private let containerStack: UIStackView = {
+    private let containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = R.Colors.backgroundGray
+        view.layer.cornerRadius = 20
+        return view
+    }()
+    
+    private let labelsStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
         stack.distribution = .fillEqually
+        stack.axis = .vertical
         stack.spacing = 8
         return stack
     }()
@@ -36,8 +44,8 @@ class TrackedAddressCell: UICollectionViewCell {
     }()
     
     // MARK: - Init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureAppearance()
     }
     
@@ -55,18 +63,26 @@ class TrackedAddressCell: UICollectionViewCell {
 // MARK: - Private Methods
 private extension TrackedAddressCell {
     func configureAppearance() {
-        backgroundColor = R.Colors.backgroundGray
-        layer.cornerRadius = 20
+        backgroundColor = .clear
+        selectionStyle = .none
         
-        addSubview(containerStack)
+        addSubview(containerView)
         NSLayoutConstraint.activate([
-            containerStack.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            containerStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            containerStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            containerStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         
-        containerStack.addArrangedSubview(nameLabel)
-        containerStack.addArrangedSubview(addressLabel)
+        addSubview(labelsStack)
+        NSLayoutConstraint.activate([
+            labelsStack.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
+            labelsStack.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            labelsStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            labelsStack.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
+        ])
+        
+        labelsStack.addArrangedSubview(nameLabel)
+        labelsStack.addArrangedSubview(addressLabel)
     }
 }

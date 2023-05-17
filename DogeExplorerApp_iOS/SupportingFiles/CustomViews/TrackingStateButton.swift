@@ -22,29 +22,34 @@ class TrackingStateButton: UIButton {
     // MARK: - Public Methods
     func setTrackingState() {
         setImage(UIImage(systemName: "eye.slash.fill"), for: .normal)
-        setTitle(" Delete tracking", for: .normal)
-        setTitleColor(.white, for: .normal)
+        setTitle("Delete tracking", for: .normal)
         
-        backgroundColor = R.Colors.backgroundGray
-        tintColor = .label
+        setTitleColor(.white, for: .normal)
+        tintColor = .white
+        
+        configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        configuration?.baseForegroundColor = .white
     }
     
     func setNonTrackingState() {
-        setTitle(" Add tracking", for: .normal)
+        setTitle("Add tracking", for: .normal)
         setImage(UIImage(systemName: "eye.fill"), for: .normal)
-        setTitleColor(.black, for: .normal)
         
-        backgroundColor = R.Colors.accent
+        setTitleColor(.black, for: .normal)
         tintColor = .black
+        
+        configuration?.baseBackgroundColor = R.Colors.accent
+        configuration?.baseForegroundColor = .black
     }
     
     // MARK: - Private Methods
     private func configureAppearance() {
-        backgroundColor = R.Colors.backgroundGray
-        layer.cornerRadius = 20
-        setTitle("Load more", for: .normal)
-        setTitleColor(.white, for: .normal)
+        configuration = UIButton.Configuration.filled()
+        configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        configuration?.baseForegroundColor = .white
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
+        configuration?.background.cornerRadius = 20
+        configuration?.imagePadding = 5
         titleLabel?.font = .dogeSans(size: 17, style: .body)
-        contentEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
     }
 }

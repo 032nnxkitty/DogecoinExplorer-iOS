@@ -1,8 +1,8 @@
 //
-//  ScrollableStack.swift
-//  DogeExplorerApp_iOS
+//  ScrollableStackView.swift
+//  Swift Snippets
 //
-//  Created by Arseniy Zolotarev on 16.05.2023.
+//  github.com/032nnxkitty
 //
 
 import UIKit
@@ -17,11 +17,12 @@ class ScrollableStackView: UIScrollView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: self.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: self.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: self.widthAnchor)
         ])
@@ -40,15 +41,6 @@ extension ScrollableStackView {
         }
         set {
             stackView.spacing = newValue
-        }
-    }
-    
-    public var distribution: UIStackView.Distribution {
-        get {
-            return stackView.distribution
-        }
-        set {
-            stackView.distribution = newValue
         }
     }
     
