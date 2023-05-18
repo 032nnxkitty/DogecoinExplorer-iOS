@@ -42,7 +42,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
         guard indexPath.row < loadedTransactions.count else { return }
         let currentTransaction = loadedTransactions[indexPath.row].transaction
         
-        let time = currentTransaction.time.formatUnixTime(style: .short)
+        let time = currentTransaction.time.formatUnixTime()
         let hash = currentTransaction.hash.shorten(prefix: 6, suffix: 6)
         
         var balanceChange: Double = 0.0

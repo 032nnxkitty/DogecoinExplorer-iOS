@@ -7,23 +7,12 @@
 
 import Foundation
 
-enum TimeStyle {
-    case full
-    case short
-}
-
 extension Int {
-    func formatUnixTime(style: TimeStyle) -> String {
+    func formatUnixTime() -> String {
         let date = Date(timeIntervalSince1970: Double(self))
-        
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone.current
-        switch style {
-        case .full:
-            dateFormatter.dateFormat = "E, d MMM yyyy, HH:mm:ss"
-        case .short:
-            dateFormatter.dateFormat = "d MMM yyyy"
-        }
+        dateFormatter.dateFormat = "d MMM yyyy"
         return dateFormatter.string(from: date)
     }
 }

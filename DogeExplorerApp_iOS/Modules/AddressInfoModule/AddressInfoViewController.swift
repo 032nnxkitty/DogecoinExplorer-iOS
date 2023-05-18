@@ -24,6 +24,7 @@ class AddressInfoViewController: UIViewController {
         stack.axis = .vertical
         stack.spacing = 10
         stack.alpha = 0
+        stack.delaysContentTouches = false
         return stack
     }()
     
@@ -32,9 +33,18 @@ class AddressInfoViewController: UIViewController {
         tableView.register(TransactionCell.self, forCellReuseIdentifier: R.Identifiers.transactionInfoCell)
         tableView.showsVerticalScrollIndicator = false
         tableView.isScrollEnabled = false
+        tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
         return tableView
+    }()
+    
+    private let renameButton: UIBarButtonItem = {
+        let button = UIButton(configuration: .filled())
+        button.configuration?.background.cornerRadius = 5
+        button.configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        button.setTitle("Rename", for: .normal)
+        return UIBarButtonItem(customView: button)
     }()
     
     private let baseAddressInfoView = AddressBaseInfoView()
@@ -55,6 +65,7 @@ class AddressInfoViewController: UIViewController {
 private extension AddressInfoViewController {
     func configureAppearance() {
         view.backgroundColor = R.Colors.background
+        navigationItem.rightBarButtonItem = renameButton
         
         view.addSubview(loader)
         loader.center = view.center
@@ -67,7 +78,7 @@ private extension AddressInfoViewController {
         
         view.addSubview(containerStack)
         NSLayoutConstraint.activate([
-            containerStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            containerStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             containerStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             containerStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             containerStack.bottomAnchor.constraint(equalTo: view.bottomAnchor)

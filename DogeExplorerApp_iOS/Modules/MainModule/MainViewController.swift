@@ -38,7 +38,9 @@ class MainViewController: UIViewController {
     }()
     
     private lazy var supportButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: UIImage(systemName: "heart"))
+        let button = UIBarButtonItem(image: UIImage(systemName: "heart"))
+        button.tintColor = R.Colors.backgroundGray
+        return button
     }()
     
     // MARK: - View Life Cycle
@@ -90,8 +92,8 @@ private extension MainViewController {
         view.addSubview(trackedAddressesTableView)
         NSLayoutConstraint.activate([
             trackedAddressesTableView.topAnchor.constraint(equalTo: addressSearchBar.bottomAnchor, constant: 10),
-            trackedAddressesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            trackedAddressesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            trackedAddressesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            trackedAddressesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             trackedAddressesTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }

@@ -76,14 +76,6 @@ class MainPresenterImp: MainPresenter {
         view?.reloadData()
     }
     
-    func getTitleFoHeader(in section: Int) -> String? {
-        return section == 0 ? "Tracked addresses:" : nil
-    }
-    
-    func refresh() {
-        
-    }
-    
     func didSelectAddress(at indexPath: IndexPath) {
         guard internetConnectionObserver.isReachable else {
             view?.showOkActionSheet(title: "No internet connection", message: ":/")

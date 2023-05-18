@@ -7,10 +7,8 @@
 
 import Foundation
 
-typealias AddressInfoView = AddressInfoViewRouting & AddressInfoViewSettingData & AddressInfoViewAlertsPresenting & AddressInfoViewAnimating
+typealias AddressInfoView = AddressInfoViewSettingData & AddressInfoViewAlertsPresenting & AddressInfoViewAnimating
 
-protocol AddressInfoViewRouting: AnyObject {
-}
 
 protocol AddressInfoViewSettingData: AnyObject {
     func reloadData()
