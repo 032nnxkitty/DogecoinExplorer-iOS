@@ -13,6 +13,10 @@ class MainPresenterImp: MainPresenter {
     private let networkManager: NetworkManager
     private let internetConnectionObserver: InternetConnectionObserver
     
+    private var trackedAddresses: [(address: String, name: String)] {
+        return trackingService.getAllTrackedAddresses()
+    }
+    
     // MARK: - Init
     init(view: MainView, networkManager: NetworkManager, trackingService: AddressTrackingService) {
         self.view = view
@@ -25,11 +29,11 @@ class MainPresenterImp: MainPresenter {
     
     // MARK: - Public Methods
     func getNumberOfTrackedAddresses() -> Int {
-        return trackingService.getAllTrackedAddresses().count
+        return trackedAddresses.count
     }
     
     func configureCell(at indexPath: IndexPath, completion: @escaping (_ name: String, _ address: String) -> Void) {
-        let currentAddress = trackingService.getAllTrackedAddresses()[indexPath.row]
+        let currentAddress = trackedAddresses[indexPath.row]
         let shortenAddress = currentAddress.address.shorten(prefix: 8, suffix: 5)
         completion(currentAddress.name, shortenAddress)
     }
@@ -41,19 +45,19 @@ class MainPresenterImp: MainPresenter {
         }
         
         guard let text else {
-            view?.showOkActionSheet(title: "Title", message: "Something went wrong")
+            view?.showOkActionSheet(title: "Something went wrong", message: ":/")
             return
         }
         
         let address = text.trimmingCharacters(in: .whitespaces)
         guard address.count == 34 else {
-            view?.showOkActionSheet(title: "Title", message: "Address should contains 34 symbols")
+            view?.showOkActionSheet(title: "Address should contains 34 symbols", message: ":/")
             return
         }
         
         Task { @MainActor in
             guard try await networkManager.checkAddressExistence(address) else {
-                view?.showOkActionSheet(title: "Address not found", message: ":(")
+                view?.showOkActionSheet(title: "Address no found", message: ":'(")
                 return
             }
             view?.showInfoViewController(for: address)
@@ -61,13 +65,13 @@ class MainPresenterImp: MainPresenter {
     }
     
     func deleteTrackingForAddress(at indexPath: IndexPath) {
-        let addressToDelete = trackingService.getAllTrackedAddresses()[indexPath.row].address
+        let addressToDelete = trackedAddresses[indexPath.row].address
         trackingService.deleteTracking(addressToDelete)
     }
     
     func renameAddress(at indexPath: IndexPath, newName: String?) {
         guard let newName else { return }
-        let addressToRename = trackingService.getAllTrackedAddresses()[indexPath.row].address
+        let addressToRename = trackedAddresses[indexPath.row].address
         trackingService.renameAddress(addressToRename, to: newName)
         view?.reloadData()
     }
@@ -82,7 +86,11 @@ class MainPresenterImp: MainPresenter {
             return
         }
         
-        let selectedAddress = trackingService.getAllTrackedAddresses()[indexPath.row].address
+        let selectedAddress = trackedAddresses[indexPath.row].address
         view?.showInfoViewController(for: selectedAddress)
+    }
+    
+    func getNameForAddress(at indexPath: IndexPath) -> String? {
+        return trackedAddresses[indexPath.row].name
     }
 }

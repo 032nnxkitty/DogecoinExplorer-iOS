@@ -17,14 +17,15 @@ class AddressBaseInfoView: UIView {
         return stack
     }()
     
-    private var addressLabel: UILabel!
-    private var balanceLabel: UILabel!
-    private var transactionsLabel: UILabel!
+    private lazy var addressLabel: UILabel = setupValueLabel()
+    private lazy var balanceLabel: UILabel = setupValueLabel()
+    private lazy var transactionsLabel: UILabel = setupValueLabel()
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureAppearance()
+        configureStack()
     }
     
     required init?(coder: NSCoder) {
@@ -45,7 +46,9 @@ private extension AddressBaseInfoView {
         backgroundColor =  R.Colors.accent
         layer.cornerRadius = 20
         layer.masksToBounds = true
-        
+    }
+    
+    func configureStack() {
         addSubview(containerStack)
         NSLayoutConstraint.activate([
             containerStack.topAnchor.constraint(equalTo: topAnchor, constant: 20),
@@ -53,21 +56,16 @@ private extension AddressBaseInfoView {
             containerStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             containerStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20)
         ])
-        
-        balanceLabel = configureValueLabel()
         balanceLabel.font = .dogeSans(size: 25, style: .largeTitle)
-        
-        addressLabel = configureValueLabel()
-        transactionsLabel = configureValueLabel()
     
-        containerStack.addArrangedSubview(createSection(sectionTitle: "Balance", valueLabel: balanceLabel))
-        containerStack.addArrangedSubview(createSection(sectionTitle: "Address", valueLabel: addressLabel))
-        containerStack.addArrangedSubview(createSection(sectionTitle: "Transactions", valueLabel: transactionsLabel))
+        containerStack.addArrangedSubview(section(title: "Balance", valueView: balanceLabel))
+        containerStack.addArrangedSubview(section(title: "Address", valueView: addressLabel))
+        containerStack.addArrangedSubview(section(title: "Transactions", valueView: transactionsLabel))
         
         containerStack.addHorizontalSeparators(of: R.Colors.lightGray)
     }
     
-    func configureValueLabel() -> UILabel {
+    func setupValueLabel() -> UILabel {
         let label = UILabel()
         label.text = "..."
         label.numberOfLines = 0
@@ -77,10 +75,10 @@ private extension AddressBaseInfoView {
         return label
     }
     
-    func createSection(sectionTitle: String, valueLabel: UILabel) -> UIStackView {
+    func section(title: String, valueView: UIView) -> UIStackView {
         let sectionTitleLabel = UILabel()
         sectionTitleLabel.font = .dogeSans(size: 14, style: .footnote)
-        sectionTitleLabel.text = sectionTitle
+        sectionTitleLabel.text = title
         sectionTitleLabel.textColor = .black
         
         let stack = UIStackView()
@@ -88,9 +86,8 @@ private extension AddressBaseInfoView {
         stack.axis = .vertical
         stack.spacing = 6
         stack.addArrangedSubview(sectionTitleLabel)
-        stack.addArrangedSubview(valueLabel)
+        stack.addArrangedSubview(valueView)
         
         return stack
     }
-    
 }

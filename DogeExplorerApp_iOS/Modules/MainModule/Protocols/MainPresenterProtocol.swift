@@ -18,6 +18,7 @@ protocol MainPresenterEventHandling {
 protocol MainPresenterViewConfiguring {
     func getNumberOfTrackedAddresses() -> Int
     func configureCell(at indexPath: IndexPath, completion: @escaping (_ name: String, _ address: String) -> Void)
+    func getNameForAddress(at indexPath: IndexPath) -> String?
 }
 
 protocol MainPresenterActions {

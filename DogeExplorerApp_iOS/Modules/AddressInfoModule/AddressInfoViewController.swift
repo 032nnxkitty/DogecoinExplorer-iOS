@@ -50,7 +50,7 @@ class AddressInfoViewController: UIViewController {
     private let baseAddressInfoView = AddressBaseInfoView()
     private let trackingStateButton = TrackingStateButton()
     private let loadTransactionButton = LoadTransactionsButton()
-    
+    private let titleView = TitleView(title: "Transactions")
     private lazy var loader = UIActivityIndicatorView()
     
     // MARK: - View Life Cycle
@@ -86,6 +86,7 @@ private extension AddressInfoViewController {
         
         containerStack.addArrangedSubview(baseAddressInfoView)
         containerStack.addArrangedSubview(trackingStateButton)
+        containerStack.addArrangedSubview(titleView)
         containerStack.addArrangedSubview(transactionsTableView)
         containerStack.addArrangedSubview(loadTransactionButton)
     }
@@ -176,14 +177,6 @@ extension AddressInfoViewController: UITableViewDataSource {
 extension AddressInfoViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let label = UILabel()
-        label.text = "Transactions"
-        label.textAlignment = .center
-        label.font = .dogeSans(size: 17, style: .body)
-        return label
     }
 }
 

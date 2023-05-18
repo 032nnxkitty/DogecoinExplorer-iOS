@@ -33,7 +33,6 @@ class MainViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
-        tableView.sectionFooterHeight = 10
         return tableView
     }()
     
@@ -67,10 +66,11 @@ private extension MainViewController {
     func configureAppearance() {
         title = "Dogeexplorer"
         view.backgroundColor = R.Colors.background
-        navigationController?.navigationBar.prefersLargeTitles = false
+        
         navigationItem.backButtonDisplayMode = .minimal
         navigationItem.rightBarButtonItem = supportButton
         
+        navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.dogeSans(size: 17, style: .body)
         ]
@@ -99,13 +99,13 @@ private extension MainViewController {
     }
     
     func showRenameAlertForAddress(at indexPath: IndexPath) {
-        let renameAlert = UIAlertController(title: "Enter new name", message: "If field will be empty..", preferredStyle: .alert)
-        renameAlert.addTextField { textField in
-            textField.placeholder = "Enter new name"
+        let renameAlert = UIAlertController(title: "Enter new name", message: "", preferredStyle: .alert)
+        renameAlert.addTextField { [weak self] textField in
+            textField.text = self?.presenter?.getNameForAddress(at: indexPath)
         }
-        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { action in
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] action in
             let name = renameAlert.textFields?[0].text
-            self.presenter.renameAddress(at: indexPath, newName: name)
+            self?.presenter?.renameAddress(at: indexPath, newName: name)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         renameAlert.addAction(confirmAction)
@@ -158,17 +158,7 @@ extension MainViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let label = UILabel()
-        label.text = "Tracked addresses"
-        label.textAlignment = .center
-        label.font = .dogeSans(size: 17, style: .body)
-        label.textColor = R.Colors.lightGray
-        
-        return label
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return TitleView(title: "Tracked addresses")
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

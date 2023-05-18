@@ -36,6 +36,7 @@
 		10BAD4122A14280700D4BAAF /* UIStackView+Separators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BAD4112A14280700D4BAAF /* UIStackView+Separators.swift */; };
 		10CF63072A155F91003C124E /* ScrollableStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF63062A155F91003C124E /* ScrollableStackView.swift */; };
 		10CF630B2A156A67003C124E /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF630A2A156A67003C124E /* SelfSizedTableView.swift */; };
+		10CF630D2A163C24003C124E /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF630C2A163C24003C124E /* TitleView.swift */; };
 		10ED20AD29F1DFFD008302EA /* LoadTransactionsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED20AC29F1DFFD008302EA /* LoadTransactionsButton.swift */; };
 		10ED211329F33270008302EA /* BalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211229F33270008302EA /* BalanceModel.swift */; };
 		10ED211729F332B3008302EA /* TransactionsCountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211629F332B3008302EA /* TransactionsCountModel.swift */; };
@@ -97,6 +98,7 @@
 		10BAD4112A14280700D4BAAF /* UIStackView+Separators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Separators.swift"; sourceTree = "<group>"; };
 		10CF63062A155F91003C124E /* ScrollableStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableStackView.swift; sourceTree = "<group>"; };
 		10CF630A2A156A67003C124E /* SelfSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
+		10CF630C2A163C24003C124E /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		10ED20AC29F1DFFD008302EA /* LoadTransactionsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadTransactionsButton.swift; sourceTree = "<group>"; };
 		10ED211229F33270008302EA /* BalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceModel.swift; sourceTree = "<group>"; };
 		10ED211629F332B3008302EA /* TransactionsCountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsCountModel.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 				107C7CE32A13F81A004DFB06 /* TrackingStateButton.swift */,
 				10CF63062A155F91003C124E /* ScrollableStackView.swift */,
 				10CF630A2A156A67003C124E /* SelfSizedTableView.swift */,
+				10CF630C2A163C24003C124E /* TitleView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 				1047F75F29FAD85500B46708 /* MainViewProtocol.swift in Sources */,
 				10A42D6C29E9B9E400BE04B9 /* ModuleBuilder.swift in Sources */,
 				1047F76829FAD99700B46708 /* AddressInfoPresenterProtocol.swift in Sources */,
+				10CF630D2A163C24003C124E /* TitleView.swift in Sources */,
 				10CF63072A155F91003C124E /* ScrollableStackView.swift in Sources */,
 				10ED211329F33270008302EA /* BalanceModel.swift in Sources */,
 				10ED211929F332C1008302EA /* TransactionsPageModel.swift in Sources */,

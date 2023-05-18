@@ -48,7 +48,7 @@ class TransactionCell: UITableViewCell {
         return label
     }()
     
-    private let fromToLabel: UILabel = {
+    private let destinationLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .dogeSans(size: 14, style: .footnote)
@@ -86,7 +86,7 @@ class TransactionCell: UITableViewCell {
         }
         sumLabel.text = value
         timeLabel.text = date
-        fromToLabel.text = hash
+        destinationLabel.text = hash
     }
 }
 
@@ -103,14 +103,13 @@ private extension TransactionCell {
             containerStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             containerStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
         ])
-        
-        containerStack.addArrangedSubview(topStack)
-        containerStack.addArrangedSubview(bottomStack)
-        
         topStack.addArrangedSubview(stateLabel)
         topStack.addArrangedSubview(sumLabel)
         
-        bottomStack.addArrangedSubview(fromToLabel)
+        bottomStack.addArrangedSubview(destinationLabel)
         bottomStack.addArrangedSubview(timeLabel)
+        
+        containerStack.addArrangedSubview(topStack)
+        containerStack.addArrangedSubview(bottomStack)
     }
 }
