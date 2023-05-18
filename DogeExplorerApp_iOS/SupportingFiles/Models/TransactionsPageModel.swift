@@ -17,6 +17,6 @@ struct TransactionBaseInfo: Codable {
     let hash: String
     let value: String
     let time: Int
-    let block: Int
+    let block: Int?
     let price: String
 }

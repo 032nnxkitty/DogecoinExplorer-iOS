@@ -84,7 +84,7 @@ private extension MainViewController {
             addressSearchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             addressSearchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             addressSearchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            addressSearchBar.heightAnchor.constraint(equalToConstant: 50)
+            addressSearchBar.heightAnchor.constraint(equalToConstant: 55)
         ])
     }
     
@@ -160,7 +160,7 @@ extension MainViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return TitleView(title: "Tracked addresses")
+        return TitleView(title: "Tracked addresses", height: 55)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

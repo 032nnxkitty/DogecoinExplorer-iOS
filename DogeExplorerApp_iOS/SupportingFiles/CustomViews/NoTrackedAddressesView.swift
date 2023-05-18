@@ -9,14 +9,14 @@ import UIKit
 
 class NoTrackedAddressesView: UIView {
     // MARK: - UI Elements
-    private let containerStack: UIStackView = {
+    fileprivate let containerStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 15
         return stack
     }()
     
-    private let noAddressesLabel: UILabel = {
+    fileprivate let noAddressesLabel: UILabel = {
         let label = UILabel()
         label.text = "No tracked addresses :("
         label.textColor = R.Colors.accent
@@ -25,7 +25,7 @@ class NoTrackedAddressesView: UIView {
         return label
     }()
     
-    private let sadDogImageView: UIImageView = {
+    fileprivate let sadDogImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "sadDog")
         imageView.contentMode = .scaleAspectFit
@@ -43,7 +43,7 @@ class NoTrackedAddressesView: UIView {
     }
     
     // MARK: - Private Methods
-    private func configureAppearance() {
+    fileprivate func configureAppearance() {
         addSubview(containerStack)
         containerStack.frame = self.bounds
         containerStack.addArrangedSubview(sadDogImageView)

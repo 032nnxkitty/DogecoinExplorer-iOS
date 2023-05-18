@@ -43,7 +43,7 @@ class TrackingStateButton: UIButton {
     }
     
     // MARK: - Private Methods
-    private func configureAppearance() {
+    fileprivate func configureAppearance() {
         configuration = UIButton.Configuration.filled()
         configuration?.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
         configuration?.background.cornerRadius = 20

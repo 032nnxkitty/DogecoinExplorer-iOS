@@ -39,11 +39,21 @@ class AddressInfoViewController: UIViewController {
         return tableView
     }()
     
-    private let renameButton: UIBarButtonItem = {
+    private lazy var backButton: UIBarButtonItem = {
         let button = UIButton(configuration: .filled())
-        button.configuration?.background.cornerRadius = 5
+        button.configuration?.background.cornerRadius = 10
         button.configuration?.baseBackgroundColor = R.Colors.backgroundGray
-        button.setTitle("Rename", for: .normal)
+        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        button.addTarget(self, action: #selector(popToPrevious), for: .touchUpInside)
+        return UIBarButtonItem(customView: button)
+    }()
+    
+    private lazy var renameButton: UIBarButtonItem = {
+        let button = UIButton(configuration: .filled())
+        button.configuration?.background.cornerRadius = 10
+        button.configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        button.setImage(UIImage(systemName: "pencil"), for: .normal)
+        button.addTarget(self, action: #selector(renameButtonDidTap), for: .touchUpInside)
         return UIBarButtonItem(customView: button)
     }()
     
@@ -64,7 +74,8 @@ class AddressInfoViewController: UIViewController {
 private extension AddressInfoViewController {
     func configureAppearance() {
         view.backgroundColor = R.Colors.background
-        navigationItem.rightBarButtonItem = renameButton
+        navigationItem.leftBarButtonItem = backButton
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         view.addSubview(loader)
         loader.center = view.center
@@ -89,6 +100,24 @@ private extension AddressInfoViewController {
         containerStack.addArrangedSubview(transactionsTableView)
         containerStack.addArrangedSubview(loadTransactionButton)
     }
+    
+    func createTextFieldAlert(title: String, placeHolder: String? = nil, text: String? = nil, completion: @escaping (String?) -> Void) -> UIAlertController  {
+        let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
+        alert.view.tintColor = R.Colors.accent
+        alert.addTextField { textField in
+            textField.placeholder = placeHolder
+            textField.text = text
+        }
+        
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { action in
+            completion(alert.textFields?[0].text)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        return alert
+    }
 }
 
 @objc private extension AddressInfoViewController {
@@ -105,6 +134,14 @@ private extension AddressInfoViewController {
     func loadTransactionsButtonDidTap() {
         presenter.loadTransactionsButtonDidTap()
     }
+    
+    func renameButtonDidTap() {
+        presenter.renameButtonDidTap()
+    }
+    
+    func popToPrevious() {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 // MARK: - AddressInfoView Protocol
@@ -115,13 +152,13 @@ extension AddressInfoViewController: AddressInfoView {
     
     func configureIfAddressTracked(name: String) {
         title = name
-        navigationItem.rightBarButtonItem = renameButton
+        navigationItem.rightBarButtonItems = [renameButton]
         trackingStateButton.setTrackingState()
     }
     
     func configureIfAddressNotTracked(shortenAddress: String) {
         title = shortenAddress
-        navigationItem.rightBarButtonItem = nil
+        navigationItem.rightBarButtonItems = []
         trackingStateButton.setNonTrackingState()
     }
     
@@ -135,21 +172,37 @@ extension AddressInfoViewController: AddressInfoView {
     
     func showOkActionSheet(title: String, message: String) {
         let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        actionSheet.view.tintColor = R.Colors.accent
         let action = UIAlertAction(title: "Ok", style: .cancel)
         actionSheet.addAction(action)
         present(actionSheet, animated: true)
     }
     
     func showAddTrackingAlert() {
-        
+        let trackingAlert = createTextFieldAlert(title: "Add name to the address", placeHolder: "Enter name") { name in
+            self.presenter.addTracking(with: name)
+        }
+        present(trackingAlert, animated: true)
     }
     
     func showDeleteAlert() {
-        
+        let deleteAlert = UIAlertController(title: "Are u sure?", message: "", preferredStyle: .alert)
+        deleteAlert.view.tintColor = R.Colors.accent
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+            self.presenter.deleteTracking()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        deleteAlert.addAction(deleteAction)
+        deleteAlert.addAction(cancelAction)
+        present(deleteAlert, animated: true)
     }
     
     func showRenameAlert() {
-        
+        let previousName = presenter.getAddressName()
+        let renameAlert = createTextFieldAlert(title: "Enter new name", text: previousName) { name in
+            self.presenter.renameAddress(newName: name)
+        }
+        present(renameAlert, animated: true)
     }
     
     func animateCentralLoader(_ isAnimated: Bool) {
@@ -188,7 +241,14 @@ extension AddressInfoViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return TitleView(title: "Transactions")
+        return TitleView(title: "Transactions", height: 20)
+    }
+}
+
+// MARK: - Swipe back
+extension AddressInfoViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
 

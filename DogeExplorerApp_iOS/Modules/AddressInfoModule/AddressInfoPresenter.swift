@@ -126,18 +126,22 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
                 let pageToLoad = (loadedTransactions.count / 10) + 1
                 try await loadTransactionsPage(pageToLoad)
                 if difference <= 10 { view?.hideLoadTransactionsButton() }
-                view?.animateLoadTransactionLoader(false)
                 view?.reloadData()
                 
                 print("full transaction page loading time: \(Date().timeIntervalSince(start))")
             } catch {
                 print(error, #function)
             }
+            view?.animateLoadTransactionLoader(false)
         }
     }
     
     func didSelectTransaction(at indexPath: IndexPath) {
         print("transaction tapped")
+    }
+    
+    func getAddressName() -> String? {
+        return trackingService.getTrackingName(for: address)
     }
 }
 

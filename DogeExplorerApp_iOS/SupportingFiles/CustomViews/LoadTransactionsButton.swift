@@ -36,7 +36,7 @@ class LoadTransactionsButton: UIButton {
     }
     
     // MARK: - Private Methods
-    private func configureAppearance() {
+    fileprivate func configureAppearance() {
         configuration = UIButton.Configuration.filled()
         configuration?.baseBackgroundColor = R.Colors.backgroundGray
         configuration?.baseForegroundColor = .white
@@ -46,7 +46,7 @@ class LoadTransactionsButton: UIButton {
         titleLabel?.font = .dogeSans(size: 17, style: .body)
     }
     
-    private func configureLoader() {
+    fileprivate func configureLoader() {
         loader.hidesWhenStopped = true
         loader.translatesAutoresizingMaskIntoConstraints = false
         
