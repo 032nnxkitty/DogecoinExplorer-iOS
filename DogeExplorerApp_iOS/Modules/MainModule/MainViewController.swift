@@ -68,7 +68,7 @@ private extension MainViewController {
         view.backgroundColor = R.Colors.background
         
         navigationItem.backButtonDisplayMode = .minimal
-        navigationItem.rightBarButtonItem = supportButton
+        //navigationItem.rightBarButtonItem = supportButton
         
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.titleTextAttributes = [

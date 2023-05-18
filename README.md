@@ -7,13 +7,12 @@ iOS application for viewing information about addresses and transactions in the 
 ![UIKit](https://img.shields.io/badge/-UIKit-purple.svg)
 ![Dogecoin](https://img.shields.io/badge/-Dogecoin-yellow.svg)
 
-<img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/main.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/address.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/transaction.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/settings.png" width="200"> 
+<img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/1.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/2.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/3.png" width="200"> 
 
 ## Features
 - MVP (Model View Presenter) architecture
 - Concurrent Network Calls
 - CoreData
-- English & Russian localisation 
 - No storyboards
 - Without third-party libraries
 - UNIT tests
@@ -21,5 +20,9 @@ iOS application for viewing information about addresses and transactions in the 
 #### TODO
 - Add conversion from DOGE to USD
 - ...
+
+###### Screenshots: [App Store Screenshots Generator](https://screenshots.pro), Font: [Doge Sans](https://github.com/sebastiangraz/dogesans)
+
+
 
 
