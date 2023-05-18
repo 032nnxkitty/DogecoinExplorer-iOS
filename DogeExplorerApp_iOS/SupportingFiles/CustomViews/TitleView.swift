@@ -29,7 +29,7 @@ class TitleView: UIView {
         NSLayoutConstraint.activate([
             self.heightAnchor.constraint(equalToConstant: 50),
             titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5)
+            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }

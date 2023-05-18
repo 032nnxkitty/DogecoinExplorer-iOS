@@ -20,7 +20,6 @@ protocol AddressInfoPresenterActions {
     func addTracking(with name: String?)
     func renameAddress(newName: String?)
     func deleteTracking()
-    func getAddressInfoToShare() -> [String]
 }
 
 protocol AddressInfoPresenterViewConfiguring {

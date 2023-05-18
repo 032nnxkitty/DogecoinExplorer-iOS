@@ -13,12 +13,21 @@ enum TransactionStyle {
 }
 
 class TransactionCell: UITableViewCell {
+    // MARK: - UI Elements
+    private let containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = R.Colors.backgroundGray
+        view.layer.cornerRadius = 20
+        return view
+    }()
+    
     private let containerStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.distribution = .fillEqually
         stack.axis = .vertical
-        stack.spacing = 12
+        stack.spacing = 4
         return stack
     }()
     
@@ -93,16 +102,25 @@ class TransactionCell: UITableViewCell {
 // MARK: - Private Methods
 private extension TransactionCell {
     func configureAppearance() {
-        backgroundColor = R.Colors.backgroundGray
-        layer.cornerRadius = 20
+        backgroundColor = .clear
+        selectionStyle = .none
+        
+        addSubview(containerView)
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
         
         addSubview(containerStack)
         NSLayoutConstraint.activate([
-            containerStack.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
-            containerStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            containerStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            containerStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
+            containerStack.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
+            containerStack.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            containerStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            containerStack.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
         ])
+        
         topStack.addArrangedSubview(stateLabel)
         topStack.addArrangedSubview(sumLabel)
         

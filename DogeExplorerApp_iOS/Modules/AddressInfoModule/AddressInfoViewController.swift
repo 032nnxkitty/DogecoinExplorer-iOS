@@ -50,8 +50,7 @@ class AddressInfoViewController: UIViewController {
     private let baseAddressInfoView = AddressBaseInfoView()
     private let trackingStateButton = TrackingStateButton()
     private let loadTransactionButton = LoadTransactionsButton()
-    private let titleView = TitleView(title: "Transactions")
-    private lazy var loader = UIActivityIndicatorView()
+    private let loader = UIActivityIndicatorView()
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -70,6 +69,7 @@ private extension AddressInfoViewController {
         view.addSubview(loader)
         loader.center = view.center
         
+        trackingStateButton.addTarget(self, action: #selector(trackingStateDidChange), for: .touchUpInside)
         loadTransactionButton.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
     }
     
@@ -86,7 +86,6 @@ private extension AddressInfoViewController {
         
         containerStack.addArrangedSubview(baseAddressInfoView)
         containerStack.addArrangedSubview(trackingStateButton)
-        containerStack.addArrangedSubview(titleView)
         containerStack.addArrangedSubview(transactionsTableView)
         containerStack.addArrangedSubview(loadTransactionButton)
     }
@@ -97,6 +96,10 @@ private extension AddressInfoViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             self?.refreshControl.endRefreshing()
         }
+    }
+    
+    func trackingStateDidChange() {
+        presenter.trackingStateDidChange()
     }
     
     func loadTransactionsButtonDidTap() {
@@ -112,11 +115,13 @@ extension AddressInfoViewController: AddressInfoView {
     
     func configureIfAddressTracked(name: String) {
         title = name
+        navigationItem.rightBarButtonItem = renameButton
         trackingStateButton.setTrackingState()
     }
     
     func configureIfAddressNotTracked(shortenAddress: String) {
         title = shortenAddress
+        navigationItem.rightBarButtonItem = nil
         trackingStateButton.setNonTrackingState()
     }
     
@@ -129,7 +134,10 @@ extension AddressInfoViewController: AddressInfoView {
     }
     
     func showOkActionSheet(title: String, message: String) {
-        
+        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: "Ok", style: .cancel)
+        actionSheet.addAction(action)
+        present(actionSheet, animated: true)
     }
     
     func showAddTrackingAlert() {
@@ -177,6 +185,10 @@ extension AddressInfoViewController: UITableViewDataSource {
 extension AddressInfoViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return TitleView(title: "Transactions")
     }
 }
 

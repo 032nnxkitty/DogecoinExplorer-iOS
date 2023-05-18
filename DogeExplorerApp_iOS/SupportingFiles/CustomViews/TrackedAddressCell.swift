@@ -38,7 +38,6 @@ class TrackedAddressCell: UITableViewCell {
         let label = UILabel()
         label.text = "..."
         label.font = .dogeSans(size: 17, style: .body)
-        label.adjustsFontForContentSizeCategory = true
         label.textColor = R.Colors.lightGray
         return label
     }()
@@ -68,10 +67,10 @@ private extension TrackedAddressCell {
         
         addSubview(containerView)
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         
         addSubview(labelsStack)

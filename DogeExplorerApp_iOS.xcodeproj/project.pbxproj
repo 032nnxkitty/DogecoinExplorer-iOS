@@ -37,6 +37,8 @@
 		10CF63072A155F91003C124E /* ScrollableStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF63062A155F91003C124E /* ScrollableStackView.swift */; };
 		10CF630B2A156A67003C124E /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF630A2A156A67003C124E /* SelfSizedTableView.swift */; };
 		10CF630D2A163C24003C124E /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF630C2A163C24003C124E /* TitleView.swift */; };
+		10CF630F2A16415E003C124E /* UIColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF630E2A16415E003C124E /* UIColor+RGB.swift */; };
+		10CF63112A166BCA003C124E /* NoTrackedAddressesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF63102A166BCA003C124E /* NoTrackedAddressesView.swift */; };
 		10ED20AD29F1DFFD008302EA /* LoadTransactionsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED20AC29F1DFFD008302EA /* LoadTransactionsButton.swift */; };
 		10ED211329F33270008302EA /* BalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211229F33270008302EA /* BalanceModel.swift */; };
 		10ED211729F332B3008302EA /* TransactionsCountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ED211629F332B3008302EA /* TransactionsCountModel.swift */; };
@@ -99,6 +101,8 @@
 		10CF63062A155F91003C124E /* ScrollableStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableStackView.swift; sourceTree = "<group>"; };
 		10CF630A2A156A67003C124E /* SelfSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
 		10CF630C2A163C24003C124E /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
+		10CF630E2A16415E003C124E /* UIColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+RGB.swift"; sourceTree = "<group>"; };
+		10CF63102A166BCA003C124E /* NoTrackedAddressesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTrackedAddressesView.swift; sourceTree = "<group>"; };
 		10ED20AC29F1DFFD008302EA /* LoadTransactionsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadTransactionsButton.swift; sourceTree = "<group>"; };
 		10ED211229F33270008302EA /* BalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceModel.swift; sourceTree = "<group>"; };
 		10ED211629F332B3008302EA /* TransactionsCountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsCountModel.swift; sourceTree = "<group>"; };
@@ -273,6 +277,7 @@
 				10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */,
 				107C7CB52A13D066004DFB06 /* UIFont+DogeSans.swift */,
 				10BAD4112A14280700D4BAAF /* UIStackView+Separators.swift */,
+				10CF630E2A16415E003C124E /* UIColor+RGB.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 				10CF63062A155F91003C124E /* ScrollableStackView.swift */,
 				10CF630A2A156A67003C124E /* SelfSizedTableView.swift */,
 				10CF630C2A163C24003C124E /* TitleView.swift */,
+				10CF63102A166BCA003C124E /* NoTrackedAddressesView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -464,6 +470,7 @@
 				10ED20AD29F1DFFD008302EA /* LoadTransactionsButton.swift in Sources */,
 				1047F76029FAD85500B46708 /* MainPresenterProtocol.swift in Sources */,
 				1047F76A29FADA4E00B46708 /* AddressInfoViewProtocol.swift in Sources */,
+				10CF63112A166BCA003C124E /* NoTrackedAddressesView.swift in Sources */,
 				107C7CB82A13D5BB004DFB06 /* TrackedAddressCell.swift in Sources */,
 				108CA9F629F5CB86003582B6 /* TransactionCell.swift in Sources */,
 				10A42D6929E9B76700BE04B9 /* R.swift in Sources */,
@@ -472,6 +479,7 @@
 				10BA60EC29EC63E5005FCE80 /* InternetConnectionObserver.swift in Sources */,
 				10ED211B29F332D5008302EA /* DetailedTransactionInfoModel.swift in Sources */,
 				10A42D6729E9B2E800BE04B9 /* AddressInfoViewController.swift in Sources */,
+				10CF630F2A16415E003C124E /* UIColor+RGB.swift in Sources */,
 				10ED216529F40A15008302EA /* AddressesTrackingDataModel.xcdatamodeld in Sources */,
 				10A42D7229EB1D5300BE04B9 /* String+Formatting.swift in Sources */,
 				10529EDE29E87CC600E73212 /* SceneDelegate.swift in Sources */,

@@ -15,9 +15,9 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
     
     // MARK: - Info About Address
     private let address: String
-    private var isAddressTracked: Bool!
     private var addressInfo: (BalanceModel, TransactionsCountModel)?
-    private var loadedTransactions: [DetailedTransactionModel]
+    private var isAddressTracked: Bool = false
+    private var loadedTransactions: [DetailedTransactionModel] = []
     
     // MARK: - Init
     init(address: String, view: AddressInfoView, networkManager: NetworkManager, trackingService: AddressTrackingService) {
@@ -27,7 +27,6 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
         self.internetConnectionObserver = InternetConnectionObserverImp()
         
         self.address = address
-        self.loadedTransactions = []
         
         configureTrackingState()
         getBaseAddressInfo()
@@ -76,7 +75,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
             view?.showDeleteAlert()
         } else {
             guard trackingService.getAllTrackedAddresses().count < 10 else {
-                view?.showOkActionSheet(title: "Limit", message: "You can track only 10 addresses")
+                view?.showOkActionSheet(title: "You can track only 10 addresses", message: "")
                 return
             }
             view?.showAddTrackingAlert()
@@ -139,12 +138,6 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
     
     func didSelectTransaction(at indexPath: IndexPath) {
         print("transaction tapped")
-    }
-    
-    func getAddressInfoToShare() -> [String] {
-        guard let addressInfo else { return ["Something went wrong"] }
-        let textToShare = "Address: \(address)\nBalance: \(addressInfo.0.balance.formatNumberString()) DOGE\nTransactions count: \(addressInfo.1.info.total)"
-        return [textToShare]
     }
 }
 

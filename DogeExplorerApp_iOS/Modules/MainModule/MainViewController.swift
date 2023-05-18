@@ -100,6 +100,7 @@ private extension MainViewController {
     
     func showRenameAlertForAddress(at indexPath: IndexPath) {
         let renameAlert = UIAlertController(title: "Enter new name", message: "", preferredStyle: .alert)
+        renameAlert.view.tintColor = R.Colors.accent
         renameAlert.addTextField { [weak self] textField in
             textField.text = self?.presenter?.getNameForAddress(at: indexPath)
         }
@@ -128,6 +129,7 @@ extension MainViewController: MainView {
     func showOkActionSheet(title: String, message: String) {
         addressSearchBar.resignFirstResponder()
         let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        actionSheet.view.tintColor = R.Colors.accent
         let action = UIAlertAction(title: "Ok", style: .cancel)
         actionSheet.addAction(action)
         present(actionSheet, animated: true)

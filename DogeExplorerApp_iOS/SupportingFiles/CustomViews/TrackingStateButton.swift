@@ -48,6 +48,5 @@ class TrackingStateButton: UIButton {
         configuration?.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
         configuration?.background.cornerRadius = 20
         configuration?.imagePadding = 5
-        titleLabel?.font = .dogeSans(size: 17, style: .body)
     }
 }
