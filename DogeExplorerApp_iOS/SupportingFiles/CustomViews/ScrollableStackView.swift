@@ -8,7 +8,7 @@
 import UIKit
 
 class ScrollableStackView: UIScrollView {
-    fileprivate let stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack

@@ -14,7 +14,7 @@ enum TransactionStyle {
 
 class TransactionCell: UITableViewCell {
     // MARK: - UI Elements
-    fileprivate let containerView: UIView = {
+    private let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = R.Colors.backgroundGray
@@ -22,7 +22,7 @@ class TransactionCell: UITableViewCell {
         return view
     }()
     
-    fileprivate let containerStack: UIStackView = {
+    private let containerStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.distribution = .fillEqually
@@ -31,33 +31,33 @@ class TransactionCell: UITableViewCell {
         return stack
     }()
     
-    fileprivate let topStack: UIStackView = {
+    private let topStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
         return stack
     }()
     
-    fileprivate let bottomStack: UIStackView = {
+    private let bottomStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
         return stack
     }()
     
-    fileprivate let stateLabel: UILabel = {
+    private let stateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .dogeSans(size: 20, style: .headline)
         return label
     }()
     
-    fileprivate let sumLabel: UILabel = {
+    private let sumLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
         label.font = .dogeSans(size: 20, style: .headline)
         return label
     }()
     
-    fileprivate let destinationLabel: UILabel = {
+    private let destinationLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .dogeSans(size: 14, style: .footnote)
@@ -65,7 +65,7 @@ class TransactionCell: UITableViewCell {
         return label
     }()
     
-    fileprivate let timeLabel: UILabel = {
+    private let timeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
         label.font = .dogeSans(size: 14, style: .footnote)
@@ -100,7 +100,7 @@ class TransactionCell: UITableViewCell {
 }
 
 // MARK: - Private Methods
-fileprivate extension TransactionCell {
+private extension TransactionCell {
     func configureAppearance() {
         backgroundColor = .clear
         selectionStyle = .none

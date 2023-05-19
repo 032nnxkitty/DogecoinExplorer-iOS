@@ -9,23 +9,25 @@ import UIKit
 
 class NoTrackedAddressesView: UIView {
     // MARK: - UI Elements
-    fileprivate let containerStack: UIStackView = {
+    private let containerStack: UIStackView = {
         let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.spacing = 15
         return stack
     }()
     
-    fileprivate let noAddressesLabel: UILabel = {
+    private let noAddressesLabel: UILabel = {
         let label = UILabel()
-        label.text = "No tracked addresses :("
+        label.text = "No addresses yet :("
         label.textColor = R.Colors.accent
         label.font = .dogeSans(size: 25, style: .largeTitle)
         label.textAlignment = .center
+        label.numberOfLines = 0
         return label
     }()
     
-    fileprivate let sadDogImageView: UIImageView = {
+    private let sadDogImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "sadDog")
         imageView.contentMode = .scaleAspectFit
@@ -43,9 +45,14 @@ class NoTrackedAddressesView: UIView {
     }
     
     // MARK: - Private Methods
-    fileprivate func configureAppearance() {
+    private func configureAppearance() {
         addSubview(containerStack)
-        containerStack.frame = self.bounds
+        NSLayoutConstraint.activate([
+            containerStack.topAnchor.constraint(equalTo: topAnchor),
+            containerStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
         containerStack.addArrangedSubview(sadDogImageView)
         containerStack.addArrangedSubview(noAddressesLabel)
     }

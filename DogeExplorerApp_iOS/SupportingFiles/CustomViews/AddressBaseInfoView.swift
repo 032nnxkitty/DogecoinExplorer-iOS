@@ -9,7 +9,7 @@ import UIKit
 
 class AddressBaseInfoView: UIView {
     // MARK: - UI Elements
-    fileprivate let containerStack: UIStackView = {
+    private let containerStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
@@ -17,9 +17,9 @@ class AddressBaseInfoView: UIView {
         return stack
     }()
     
-    fileprivate lazy var addressLabel: UILabel = setupValueLabel()
-    fileprivate lazy var balanceLabel: UILabel = setupValueLabel()
-    fileprivate lazy var transactionsLabel: UILabel = setupValueLabel()
+    private lazy var addressLabel: UILabel = setupValueLabel()
+    private lazy var balanceLabel: UILabel = setupValueLabel()
+    private lazy var transactionsLabel: UILabel = setupValueLabel()
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -41,7 +41,7 @@ class AddressBaseInfoView: UIView {
 }
 
 // MARK: - Private Methods
-fileprivate extension AddressBaseInfoView {
+private extension AddressBaseInfoView {
     func configureAppearance() {
         backgroundColor =  R.Colors.accent
         layer.cornerRadius = 20

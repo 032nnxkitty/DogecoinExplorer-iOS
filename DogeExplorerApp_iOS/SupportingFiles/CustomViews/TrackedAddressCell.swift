@@ -9,7 +9,7 @@ import UIKit
 
 class TrackedAddressCell: UITableViewCell {
     // MARK: - UI Elements
-    fileprivate let containerView: UIView = {
+    private let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = R.Colors.backgroundGray
@@ -17,7 +17,7 @@ class TrackedAddressCell: UITableViewCell {
         return view
     }()
     
-    fileprivate let labelsStack: UIStackView = {
+    private let labelsStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.distribution = .fillEqually
@@ -26,7 +26,7 @@ class TrackedAddressCell: UITableViewCell {
         return stack
     }()
     
-    fileprivate let nameLabel: UILabel = {
+    private let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "..."
         label.font = .dogeSans(size: 25, style: .largeTitle)
@@ -34,7 +34,7 @@ class TrackedAddressCell: UITableViewCell {
         return label
     }()
     
-    fileprivate let addressLabel: UILabel = {
+    private let addressLabel: UILabel = {
         let label = UILabel()
         label.text = "..."
         label.font = .dogeSans(size: 17, style: .body)
@@ -60,7 +60,7 @@ class TrackedAddressCell: UITableViewCell {
 }
 
 // MARK: - Private Methods
-fileprivate extension TrackedAddressCell {
+private extension TrackedAddressCell {
     func configureAppearance() {
         backgroundColor = .clear
         selectionStyle = .none

@@ -11,4 +11,6 @@ protocol MainView: AnyObject {
     func showInfoViewController(for address: String)
     func showOkActionSheet(title: String, message: String)
     func reloadData()
+    func showNoTrackedAddressesView()
+    func hideNoTrackedAddressesView()
 }

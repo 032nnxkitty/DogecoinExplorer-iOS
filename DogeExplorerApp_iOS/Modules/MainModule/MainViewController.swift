@@ -42,17 +42,26 @@ class MainViewController: UIViewController {
         return button
     }()
     
+    private let noTrackedAddressesView = NoTrackedAddressesView()
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureAppearance()
         configureSearchBar()
+        configureNoAddressesView()
         configureTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         presenter.viewWillAppear()
+    }
+    
+    // MARK: - Event Hadling
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
     }
 }
 
@@ -85,6 +94,17 @@ private extension MainViewController {
             addressSearchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             addressSearchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             addressSearchBar.heightAnchor.constraint(equalToConstant: 55)
+        ])
+    }
+    
+    func configureNoAddressesView() {
+        noTrackedAddressesView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(noTrackedAddressesView)
+        NSLayoutConstraint.activate([
+            noTrackedAddressesView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -50),
+            noTrackedAddressesView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            noTrackedAddressesView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            noTrackedAddressesView.heightAnchor.constraint(equalToConstant: 200)
         ])
     }
     
@@ -133,6 +153,16 @@ extension MainViewController: MainView {
         let action = UIAlertAction(title: "Ok", style: .cancel)
         actionSheet.addAction(action)
         present(actionSheet, animated: true)
+    }
+    
+    func showNoTrackedAddressesView() {
+        noTrackedAddressesView.isHidden = false
+        trackedAddressesTableView.isHidden = true
+    }
+    
+    func hideNoTrackedAddressesView() {
+        noTrackedAddressesView.isHidden = true
+        trackedAddressesTableView.isHidden = false
     }
 }
 

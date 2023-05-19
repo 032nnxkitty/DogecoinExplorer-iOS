@@ -8,8 +8,8 @@
 import UIKit
 
 class TitleView: UIView {
-    fileprivate let titleLabel = UILabel()
-    fileprivate var height: CGFloat!
+    private let titleLabel = UILabel()
+    private var height: CGFloat!
     
     // MARK: - Init
     convenience init(title: String, height: CGFloat) {
@@ -20,7 +20,7 @@ class TitleView: UIView {
     }
     
     // MARK: - Private Methods
-    fileprivate func configureAppearance() {
+    private func configureAppearance() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = .dogeSans(size: 17, style: .body)
         titleLabel.textColor = .white

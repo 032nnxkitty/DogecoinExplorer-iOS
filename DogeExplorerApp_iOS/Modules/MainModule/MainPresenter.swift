@@ -23,7 +23,7 @@ class MainPresenterImp: MainPresenter {
         self.networkManager = networkManager
         self.trackingService = trackingService
         self.internetConnectionObserver = InternetConnectionObserverImp()
-        
+        checkAddressesCount()
         trackingService.addMockData()
     }
     
@@ -67,6 +67,8 @@ class MainPresenterImp: MainPresenter {
     func deleteTrackingForAddress(at indexPath: IndexPath) {
         let addressToDelete = trackedAddresses[indexPath.row].address
         trackingService.deleteTracking(addressToDelete)
+        
+        checkAddressesCount()
     }
     
     func renameAddress(at indexPath: IndexPath, newName: String?) {
@@ -78,6 +80,7 @@ class MainPresenterImp: MainPresenter {
     
     func viewWillAppear() {
         view?.reloadData()
+        checkAddressesCount()
     }
     
     func didSelectAddress(at indexPath: IndexPath) {
@@ -92,5 +95,16 @@ class MainPresenterImp: MainPresenter {
     
     func getNameForAddress(at indexPath: IndexPath) -> String? {
         return trackedAddresses[indexPath.row].name
+    }
+}
+
+// MARK: - Private Methods
+private extension MainPresenterImp {
+    func checkAddressesCount() {
+        if trackedAddresses.count == 0 {
+            view?.showNoTrackedAddressesView()
+        } else {
+            view?.hideNoTrackedAddressesView()
+        }
     }
 }
