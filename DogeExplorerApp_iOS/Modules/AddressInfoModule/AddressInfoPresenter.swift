@@ -75,7 +75,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
             view?.showDeleteAlert()
         } else {
             guard trackingService.getAllTrackedAddresses().count < 10 else {
-                view?.showOkActionSheet(title: "You can track only 10 addresses", message: "")
+                view?.showOkActionSheet(title: "You can track only 10 addresses", message: ":/")
                 return
             }
             view?.showAddTrackingAlert()

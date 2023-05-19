@@ -13,4 +13,5 @@ protocol MainView: AnyObject {
     func reloadData()
     func showNoTrackedAddressesView()
     func hideNoTrackedAddressesView()
+    func animateLoader(_ isAnimated: Bool)
 }

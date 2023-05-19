@@ -55,12 +55,16 @@ class MainPresenterImp: MainPresenter {
             return
         }
         
+        view?.animateLoader(true)
+        
         Task { @MainActor in
             guard try await networkManager.checkAddressExistence(address) else {
                 view?.showOkActionSheet(title: "Address no found", message: ":'(")
+                view?.animateLoader(false)
                 return
             }
             view?.showInfoViewController(for: address)
+            view?.animateLoader(false)
         }
     }
     

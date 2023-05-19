@@ -11,8 +11,8 @@ class MainViewController: UIViewController {
     public var presenter: MainPresenter!
     
     // MARK: - UI Elements
-    private let addressSearchBar: UISearchBar = {
-        let bar = UISearchBar()
+    private let addressSearchBar: LoaderSearchBar = {
+        let bar = LoaderSearchBar()
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.searchTextField.font = .dogeSans(size: 17, style: .body)
         bar.searchTextField.backgroundColor = .clear
@@ -34,12 +34,6 @@ class MainViewController: UIViewController {
         tableView.delegate = self
         tableView.separatorStyle = .none
         return tableView
-    }()
-    
-    private lazy var supportButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(systemName: "heart"))
-        button.tintColor = R.Colors.backgroundGray
-        return button
     }()
     
     private let noTrackedAddressesView = NoTrackedAddressesView()
@@ -67,7 +61,7 @@ class MainViewController: UIViewController {
 
 // MARK: - Actions
 @objc private extension MainViewController {
-    
+   
 }
 
 // MARK: - Private Methods
@@ -77,7 +71,6 @@ private extension MainViewController {
         view.backgroundColor = R.Colors.background
         
         navigationItem.backButtonDisplayMode = .minimal
-        //navigationItem.rightBarButtonItem = supportButton
         
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.titleTextAttributes = [
@@ -164,6 +157,10 @@ extension MainViewController: MainView {
         noTrackedAddressesView.isHidden = true
         trackedAddressesTableView.isHidden = false
     }
+    
+    func animateLoader(_ isAnimated: Bool) {
+        isAnimated ? addressSearchBar.startAnimating() : addressSearchBar.stopAnimating()
+    }
 }
 
 // MARK: - UISearchBarDelegate
@@ -195,16 +192,16 @@ extension MainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let deleteAction = UIContextualAction(style: .destructive, title: "") { _, _, completion in
-            self.presenter.deleteTrackingForAddress(at: indexPath)
+        let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completion in
+            self?.presenter.deleteTrackingForAddress(at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .right)
             completion(true)
         }
         deleteAction.image = UIImage(named: "delete")
         deleteAction.backgroundColor = R.Colors.background
         
-        let renameAction = UIContextualAction(style: .normal, title: "") { _, _, completion in
-            self.showRenameAlertForAddress(at: indexPath)
+        let renameAction = UIContextualAction(style: .normal, title: "") { [weak self] _, _, completion in
+            self?.showRenameAlertForAddress(at: indexPath)
             completion(true)
         }
         renameAction.image = UIImage(named: "rename")

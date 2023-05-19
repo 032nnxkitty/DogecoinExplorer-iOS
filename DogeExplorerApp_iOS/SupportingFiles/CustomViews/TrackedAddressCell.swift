@@ -67,10 +67,10 @@ private extension TrackedAddressCell {
         
         addSubview(containerView)
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
         ])
         
         addSubview(labelsStack)
