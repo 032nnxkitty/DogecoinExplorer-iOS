@@ -59,7 +59,7 @@ class MainPresenterImp: MainPresenter {
         
         Task { @MainActor in
             guard try await networkManager.checkAddressExistence(address) else {
-                view?.showOkActionSheet(title: "Address no found", message: ":'(")
+                view?.showOkActionSheet(title: "Address not found", message: ":'(")
                 view?.animateLoader(false)
                 return
             }
