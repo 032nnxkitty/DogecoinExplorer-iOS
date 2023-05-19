@@ -20,8 +20,8 @@ protocol AddressInfoViewSettingData: AnyObject {
 protocol AddressInfoViewAlertsPresenting: AnyObject {
     func showOkActionSheet(title: String, message: String)
     func showAddTrackingAlert()
-    func showDeleteAlert()
     func showRenameAlert()
+    func makeHapticFeedback()
 }
 
 protocol AddressInfoViewAnimating: AnyObject {

@@ -196,6 +196,9 @@ extension MainViewController: UITableViewDataSource {
             self?.presenter.deleteTrackingForAddress(at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .right)
             completion(true)
+            
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
         }
         deleteAction.image = UIImage(named: "delete")
         deleteAction.backgroundColor = R.Colors.background

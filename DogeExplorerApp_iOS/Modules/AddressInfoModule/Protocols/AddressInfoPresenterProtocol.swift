@@ -19,7 +19,6 @@ protocol AddressInfoPresenterEventHandling {
 protocol AddressInfoPresenterActions {
     func addTracking(with name: String?)
     func renameAddress(newName: String?)
-    func deleteTracking()
 }
 
 protocol AddressInfoPresenterViewConfiguring {

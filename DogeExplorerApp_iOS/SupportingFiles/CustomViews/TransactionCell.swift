@@ -107,10 +107,10 @@ private extension TransactionCell {
         
         addSubview(containerView)
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
         ])
         
         addSubview(containerStack)

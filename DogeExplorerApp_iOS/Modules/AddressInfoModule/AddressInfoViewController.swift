@@ -30,7 +30,7 @@ class AddressInfoViewController: UIViewController {
     
     private lazy var transactionsTableView: SelfSizedTableView = {
         let tableView = SelfSizedTableView()
-        tableView.register(TransactionCell.self, forCellReuseIdentifier: R.Identifiers.transactionInfoCell)
+        tableView.register(TransactionCell.self, forCellReuseIdentifier: R.Identifiers.transactionCell)
         tableView.showsVerticalScrollIndicator = false
         tableView.isScrollEnabled = false
         tableView.separatorStyle = .none
@@ -185,18 +185,6 @@ extension AddressInfoViewController: AddressInfoView {
         present(trackingAlert, animated: true)
     }
     
-    func showDeleteAlert() {
-        let deleteAlert = UIAlertController(title: "Are u sure?", message: "", preferredStyle: .alert)
-        deleteAlert.view.tintColor = R.Colors.accent
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
-            self.presenter.deleteTracking()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        deleteAlert.addAction(deleteAction)
-        deleteAlert.addAction(cancelAction)
-        present(deleteAlert, animated: true)
-    }
-    
     func showRenameAlert() {
         let previousName = presenter.getAddressName()
         let renameAlert = createTextFieldAlert(title: "Enter new name", text: previousName) { name in
@@ -216,6 +204,11 @@ extension AddressInfoViewController: AddressInfoView {
     func hideLoadTransactionsButton() {
         loadTransactionButton.isHidden = true
     }
+    
+    func makeHapticFeedback() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -226,7 +219,7 @@ extension AddressInfoViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // change on view model !!
-        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.transactionInfoCell, for: indexPath) as! TransactionCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.transactionCell, for: indexPath) as! TransactionCell
         presenter.configureTransactionCell(at: indexPath) { style, value, time, hash in
             cell.configure(style: style, value: value, date: time, hash: hash)
         }

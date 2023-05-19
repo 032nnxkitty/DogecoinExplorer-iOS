@@ -72,7 +72,8 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
     // MARK: - Tracking Methods
     func trackingStateDidChange() {
         if isAddressTracked {
-            view?.showDeleteAlert()
+            trackingService.deleteTracking(address)
+            configureTrackingState()
         } else {
             guard trackingService.getAllTrackedAddresses().count < 10 else {
                 view?.showOkActionSheet(title: "You can track only 10 addresses", message: ":/")
@@ -89,11 +90,6 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
             return
         }
         trackingService.addNewTrackedAddress(address: address, name: name)
-        configureTrackingState()
-    }
-    
-    func deleteTracking() {
-        trackingService.deleteTracking(address)
         configureTrackingState()
     }
     
@@ -126,7 +122,9 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
                 let pageToLoad = (loadedTransactions.count / 10) + 1
                 try await loadTransactionsPage(pageToLoad)
                 if difference <= 10 { view?.hideLoadTransactionsButton() }
+                
                 view?.reloadData()
+                view?.makeHapticFeedback()
                 
                 print("full transaction page loading time: \(Date().timeIntervalSince(start))")
             } catch {

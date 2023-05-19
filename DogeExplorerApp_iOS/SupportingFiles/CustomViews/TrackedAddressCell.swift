@@ -65,15 +65,10 @@ private extension TrackedAddressCell {
         backgroundColor = .clear
         selectionStyle = .none
         
-        addSubview(containerView)
-        NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
-        ])
+        labelsStack.addArrangedSubview(nameLabel)
+        labelsStack.addArrangedSubview(addressLabel)
         
-        addSubview(labelsStack)
+        containerView.addSubview(labelsStack)
         NSLayoutConstraint.activate([
             labelsStack.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
             labelsStack.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
@@ -81,7 +76,13 @@ private extension TrackedAddressCell {
             labelsStack.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
         ])
         
-        labelsStack.addArrangedSubview(nameLabel)
-        labelsStack.addArrangedSubview(addressLabel)
+        contentView.addSubview(containerView)
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
+            
+        ])
     }
 }

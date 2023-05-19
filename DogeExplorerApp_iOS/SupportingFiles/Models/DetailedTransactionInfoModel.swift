@@ -17,7 +17,7 @@ struct Transaction: Codable {
     let confirmations: Int?
     let size: Int?
     let vsize: Int?
-    let weight: Int? // weight can be nil
+    let weight: Int? 
     let version: Int?
     let locktime: Int?
     let blockHash: String?
