@@ -14,14 +14,6 @@ enum TransactionStyle {
 
 class TransactionCell: UITableViewCell {
     // MARK: - UI Elements
-    private let containerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = R.Colors.backgroundGray
-        view.layer.cornerRadius = 20
-        return view
-    }()
-    
     private let containerStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -105,20 +97,18 @@ private extension TransactionCell {
         backgroundColor = .clear
         selectionStyle = .none
         
-        addSubview(containerView)
-        NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
-        ])
+        var configuration = UIBackgroundConfiguration.listPlainCell()
+        configuration.backgroundInsets = NSDirectionalEdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
+        configuration.backgroundColor = R.Colors.backgroundGray
+        configuration.cornerRadius = 20
+        backgroundConfiguration =  configuration
         
-        addSubview(containerStack)
+        contentView.addSubview(containerStack)
         NSLayoutConstraint.activate([
-            containerStack.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
-            containerStack.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
-            containerStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            containerStack.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
+            containerStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),
+            containerStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            containerStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            containerStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25)
         ])
         
         topStack.addArrangedSubview(stateLabel)

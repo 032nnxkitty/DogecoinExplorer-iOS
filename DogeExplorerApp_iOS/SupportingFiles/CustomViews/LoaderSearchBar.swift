@@ -11,6 +11,7 @@ class LoaderSearchBar: UISearchBar {
     private var leftView: UIView?
     private let loader = UIActivityIndicatorView()
     
+    // MARK: - Public Methods
     func startAnimating() {
         leftView = self.searchTextField.leftView
         self.searchTextField.leftView = loader

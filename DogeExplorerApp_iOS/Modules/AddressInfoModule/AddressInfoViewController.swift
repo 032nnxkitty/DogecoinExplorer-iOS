@@ -109,13 +109,14 @@ private extension AddressInfoViewController {
             textField.text = text
         }
         
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { action in
             completion(alert.textFields?[0].text)
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        alert.addAction(confirmAction)
         alert.addAction(cancelAction)
+        alert.addAction(confirmAction)
+        
         return alert
     }
 }
@@ -217,9 +218,7 @@ extension AddressInfoViewController: UITableViewDataSource {
         return presenter.getNumberOfTransactions()
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // change on view model !!
-        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.transactionCell, for: indexPath) as! TransactionCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.transactionCell, for: indexPath) as! TransactionCell
         presenter.configureTransactionCell(at: indexPath) { style, value, time, hash in
             cell.configure(style: style, value: value, date: time, hash: hash)
         }

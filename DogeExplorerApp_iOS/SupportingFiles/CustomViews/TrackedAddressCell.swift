@@ -9,14 +9,6 @@ import UIKit
 
 class TrackedAddressCell: UITableViewCell {
     // MARK: - UI Elements
-    private let containerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = R.Colors.backgroundGray
-        view.layer.cornerRadius = 20
-        return view
-    }()
-    
     private let labelsStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -65,24 +57,20 @@ private extension TrackedAddressCell {
         backgroundColor = .clear
         selectionStyle = .none
         
-        labelsStack.addArrangedSubview(nameLabel)
-        labelsStack.addArrangedSubview(addressLabel)
+        var configuration = UIBackgroundConfiguration.listPlainCell()
+        configuration.backgroundInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
+        configuration.backgroundColor = R.Colors.backgroundGray
+        configuration.cornerRadius = 20
+        backgroundConfiguration =  configuration
         
-        containerView.addSubview(labelsStack)
-        NSLayoutConstraint.activate([
-            labelsStack.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
-            labelsStack.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
-            labelsStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            labelsStack.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
-        ])
+        [nameLabel, addressLabel].forEach { labelsStack.addArrangedSubview($0) }
         
-        contentView.addSubview(containerView)
+        contentView.addSubview(labelsStack)
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
-            
+            labelsStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),
+            labelsStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
+            labelsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
+            labelsStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25)
         ])
     }
 }

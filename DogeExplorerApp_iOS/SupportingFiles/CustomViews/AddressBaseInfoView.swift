@@ -56,6 +56,7 @@ private extension AddressBaseInfoView {
             containerStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             containerStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20)
         ])
+        
         balanceLabel.font = .dogeSans(size: 25, style: .largeTitle)
     
         containerStack.addArrangedSubview(section(title: "Balance", valueView: balanceLabel))

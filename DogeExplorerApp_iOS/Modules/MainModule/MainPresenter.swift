@@ -63,8 +63,8 @@ class MainPresenterImp: MainPresenter {
                 view?.animateLoader(false)
                 return
             }
-            view?.showInfoViewController(for: address)
             view?.animateLoader(false)
+            view?.showInfoViewController(for: address)
         }
     }
     

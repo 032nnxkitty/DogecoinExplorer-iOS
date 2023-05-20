@@ -28,8 +28,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
         
         self.address = address
         
-        configureTrackingState()
-        getBaseAddressInfo()
+        initialize()
     }
     
     // MARK: - Table View Configuring Methods
@@ -117,25 +116,25 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
         view?.animateLoadTransactionLoader(true)
         Task { @MainActor in
             do {
-                let start = Date()
-                
                 let pageToLoad = (loadedTransactions.count / 10) + 1
+                
                 try await loadTransactionsPage(pageToLoad)
-                if difference <= 10 { view?.hideLoadTransactionsButton() }
                 
                 view?.reloadData()
                 view?.makeHapticFeedback()
                 
-                print("full transaction page loading time: \(Date().timeIntervalSince(start))")
+                if difference <= 10 {
+                    view?.hideLoadTransactionsButton()
+                }
             } catch {
-                print(error, #function)
+                view?.showOkActionSheet(title: "Something went wrong", message: ":/")
             }
             view?.animateLoadTransactionLoader(false)
         }
     }
     
     func didSelectTransaction(at indexPath: IndexPath) {
-        print("transaction tapped")
+        // ..
     }
     
     func getAddressName() -> String? {
@@ -155,25 +154,24 @@ private extension AddressInfoPresenterImp {
         }
     }
     
-    func getBaseAddressInfo() {
+    func initialize() {
         view?.animateCentralLoader(true)
         Task { @MainActor in
             do {
-                let start = Date()
-                
                 async let info = networkManager.getAddressInfo(address)
                 try await loadTransactionsPage(1)
                 addressInfo = try await info
                 
-                if addressInfo!.1.info.total <= 10 { view?.hideLoadTransactionsButton() }
+                configureTrackingState()
                 view?.setAddressInfo(address: address,
                                      dogeBalance: "\(addressInfo!.0.balance.formatNumberString()) DOGE",
                                      transactionsCount: "\(addressInfo!.1.info.total)")
                 
-                
-                print("base info loading time: \(Date().timeIntervalSince(start))")
+                if addressInfo!.1.info.total <= 10 {
+                    view?.hideLoadTransactionsButton()
+                }
             } catch {
-                view?.showOkActionSheet(title: ":/", message: error.localizedDescription)
+                view?.showOkActionSheet(title: "Something went wrong", message: ":/")
             }
             view?.animateCentralLoader(false)
         }

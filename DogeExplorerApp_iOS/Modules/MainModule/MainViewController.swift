@@ -191,7 +191,6 @@ extension MainViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
         let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completion in
             self?.presenter.deleteTrackingForAddress(at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .right)

@@ -18,7 +18,7 @@ extension UIStackView {
         }
     }
     
-    private func createSeparator(of color: UIColor) -> UIView {
+    fileprivate func createSeparator(of color: UIColor) -> UIView {
         let separator = UIView()
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         separator.backgroundColor = color
