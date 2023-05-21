@@ -29,6 +29,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
         self.address = address
         
         initialize()
+        configureTrackingState()
     }
     
     // MARK: - Table View Configuring Methods
@@ -75,7 +76,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
             configureTrackingState()
         } else {
             guard trackingService.getAllTrackedAddresses().count < 10 else {
-                view?.showOkActionSheet(title: "You can track only 10 addresses", message: ":/")
+                view?.showOkActionSheet(title: "Limit", message: "You can track only 10 addresses.")
                 return
             }
             view?.showAddTrackingAlert()
@@ -105,7 +106,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
     // MARK: - Load Transactions Methods
     func loadTransactionsButtonDidTap() {
         guard internetConnectionObserver.isReachable else {
-            view?.showOkActionSheet(title: ":/", message: "No internet connection")
+            view?.showOkActionSheet(title: "No Internet Connection", message: "Please check your connection and try again.")
             return
         }
         
@@ -127,7 +128,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
                     view?.hideLoadTransactionsButton()
                 }
             } catch {
-                view?.showOkActionSheet(title: "Something went wrong", message: ":/")
+                view?.showOkActionSheet(title: "Something went wrong", message: "Please try again later")
             }
             view?.animateLoadTransactionLoader(false)
         }
@@ -162,7 +163,6 @@ private extension AddressInfoPresenterImp {
                 try await loadTransactionsPage(1)
                 addressInfo = try await info
                 
-                configureTrackingState()
                 view?.setAddressInfo(address: address,
                                      dogeBalance: "\(addressInfo!.0.balance.formatNumberString()) DOGE",
                                      transactionsCount: "\(addressInfo!.1.info.total)")
@@ -171,7 +171,7 @@ private extension AddressInfoPresenterImp {
                     view?.hideLoadTransactionsButton()
                 }
             } catch {
-                view?.showOkActionSheet(title: "Something went wrong", message: ":/")
+                view?.showOkActionSheet(title: "Something went wrong", message: "Please try again later")
             }
             view?.animateCentralLoader(false)
         }

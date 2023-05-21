@@ -188,7 +188,7 @@ extension AddressInfoViewController: AddressInfoView {
     
     func showRenameAlert() {
         let previousName = presenter.getAddressName()
-        let renameAlert = createTextFieldAlert(title: "Enter new name", text: previousName) { name in
+        let renameAlert = createTextFieldAlert(title: "Enter a new name", text: previousName) { name in
             self.presenter.renameAddress(newName: name)
         }
         present(renameAlert, animated: true)
@@ -218,7 +218,8 @@ extension AddressInfoViewController: UITableViewDataSource {
         return presenter.getNumberOfTransactions()
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.transactionCell, for: indexPath) as! TransactionCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.transactionCell, for: indexPath) as! TransactionCell
         presenter.configureTransactionCell(at: indexPath) { style, value, time, hash in
             cell.configure(style: style, value: value, date: time, hash: hash)
         }

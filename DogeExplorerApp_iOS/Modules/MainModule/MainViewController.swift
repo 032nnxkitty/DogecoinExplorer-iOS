@@ -70,7 +70,7 @@ private extension MainViewController {
         title = "Dogeexplorer"
         view.backgroundColor = R.Colors.background
         
-        navigationItem.backButtonDisplayMode = .minimal
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"))
         
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.titleTextAttributes = [
@@ -94,7 +94,7 @@ private extension MainViewController {
         noTrackedAddressesView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(noTrackedAddressesView)
         NSLayoutConstraint.activate([
-            noTrackedAddressesView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -50),
+            noTrackedAddressesView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -30),
             noTrackedAddressesView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             noTrackedAddressesView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             noTrackedAddressesView.heightAnchor.constraint(equalToConstant: 200)
@@ -112,7 +112,7 @@ private extension MainViewController {
     }
     
     func showRenameAlertForAddress(at indexPath: IndexPath) {
-        let renameAlert = UIAlertController(title: "Enter new name", message: "", preferredStyle: .alert)
+        let renameAlert = UIAlertController(title: "Enter a new name", message: "", preferredStyle: .alert)
         renameAlert.view.tintColor = R.Colors.accent
         renameAlert.addTextField { [weak self] textField in
             textField.text = self?.presenter?.getNameForAddress(at: indexPath)

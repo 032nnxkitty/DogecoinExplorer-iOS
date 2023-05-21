@@ -40,18 +40,18 @@ class MainPresenterImp: MainPresenter {
     
     func searchButtonDidTap(with text: String?) {
         guard internetConnectionObserver.isReachable else {
-            view?.showOkActionSheet(title: "No internet connection", message: ":/")
+            view?.showOkActionSheet(title: "No Internet Connection", message: "Please check your connection and try again.")
             return
         }
         
         guard let text else {
-            view?.showOkActionSheet(title: "Something went wrong", message: ":/")
+            view?.showOkActionSheet(title: "Wrong Dogecoin Address", message: "Please check the entered address and try again.")
             return
         }
         
         let address = text.trimmingCharacters(in: .whitespaces)
         guard address.count == 34 else {
-            view?.showOkActionSheet(title: "Address should contains 34 symbols", message: ":/")
+            view?.showOkActionSheet(title: "Wrong Dogecoin Address", message: "Please check the entered address and try again.")
             return
         }
         
@@ -59,7 +59,7 @@ class MainPresenterImp: MainPresenter {
         
         Task { @MainActor in
             guard try await networkManager.checkAddressExistence(address) else {
-                view?.showOkActionSheet(title: "Address not found", message: ":'(")
+                view?.showOkActionSheet(title: "Address not found", message: "Please check the entered address and try again.")
                 view?.animateLoader(false)
                 return
             }
@@ -89,7 +89,7 @@ class MainPresenterImp: MainPresenter {
     
     func didSelectAddress(at indexPath: IndexPath) {
         guard internetConnectionObserver.isReachable else {
-            view?.showOkActionSheet(title: "No internet connection", message: ":/")
+            view?.showOkActionSheet(title: "No Internet Connection", message: "Please check your connection and try again.")
             return
         }
         

@@ -19,7 +19,7 @@ class NoTrackedAddressesView: UIView {
     
     private let noAddressesLabel: UILabel = {
         let label = UILabel()
-        label.text = "No addresses yet :("
+        label.text = "No tracked addresses :("
         label.textColor = R.Colors.accent
         label.font = .dogeSans(size: 25, style: .largeTitle)
         label.textAlignment = .center
