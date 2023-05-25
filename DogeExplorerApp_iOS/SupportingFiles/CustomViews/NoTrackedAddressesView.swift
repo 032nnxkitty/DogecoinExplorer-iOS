@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NoTrackedAddressesView: UIView {
+final class NoTrackedAddressesView: UIView {
     // MARK: - UI Elements
     private let containerStack: UIStackView = {
         let stack = UIStackView()

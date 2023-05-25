@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
     public var presenter: MainPresenter!
     
     // MARK: - UI Elements

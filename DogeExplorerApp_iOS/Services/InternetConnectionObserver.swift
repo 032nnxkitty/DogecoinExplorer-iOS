@@ -6,30 +6,35 @@
 //
 
 import Network
+import Foundation
 
 protocol InternetConnectionObserver {
     var isReachable: Bool { get }
 }
 
-class InternetConnectionObserverImp: InternetConnectionObserver {
-    private let monitor: NWPathMonitor
-    private var status: NWPath.Status
+final class InternetConnectionObserverImpl: InternetConnectionObserver {
+    static let shared = InternetConnectionObserverImpl()
+    
+    private let monitor = NWPathMonitor()
+    private var status: NWPath.Status = .requiresConnection
+    private let lock = NSLock()
     
     var isReachable: Bool {
+        lock.lock()
+        defer {
+            lock.unlock()
+        }
         return status == .satisfied
     }
     
-    // MARK: - Init & Deinit
-    init() {
-        self.monitor = NWPathMonitor()
-        self.status = .requiresConnection
-        
+    // MARK: - Init
+    private init() {
         startMonitoring()
     }
 }
 
 // MARK: - Private Methods
-private extension InternetConnectionObserverImp {
+private extension InternetConnectionObserverImpl {
     func startMonitoring() {
         monitor.pathUpdateHandler = { [weak self] path in
             self?.status = path.status
@@ -37,10 +42,6 @@ private extension InternetConnectionObserverImp {
         
         let queue = DispatchQueue(label: "NetworkMonitor")
         monitor.start(queue: queue)
-    }
-    
-    private func stopMonitoring() {
-        monitor.cancel()
     }
 }
 

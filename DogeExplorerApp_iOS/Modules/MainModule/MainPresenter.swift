@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MainPresenterImp: MainPresenter {
+final class MainPresenterImp: MainPresenter {
     private weak var view: MainView?
     private let trackingService: AddressTrackingService
     private let networkManager: NetworkManager
@@ -22,7 +22,7 @@ class MainPresenterImp: MainPresenter {
         self.view = view
         self.networkManager = networkManager
         self.trackingService = trackingService
-        self.internetConnectionObserver = InternetConnectionObserverImp()
+        self.internetConnectionObserver = InternetConnectionObserverImpl.shared
         checkAddressesCount()
         trackingService.addMockData()
     }

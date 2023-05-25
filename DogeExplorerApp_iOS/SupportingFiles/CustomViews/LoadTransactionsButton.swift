@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoadTransactionsButton: UIButton {
+final class LoadTransactionsButton: UIButton {
     private let loader = UIActivityIndicatorView()
     
     // MARK: - Init

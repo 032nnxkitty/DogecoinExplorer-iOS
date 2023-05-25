@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AddressInfoPresenterImp: AddressInfoPresenter {
+final class AddressInfoPresenterImp: AddressInfoPresenter {
     private weak var view: AddressInfoView?
     private let networkManager: NetworkManager
     private let trackingService: AddressTrackingService
@@ -24,7 +24,7 @@ class AddressInfoPresenterImp: AddressInfoPresenter {
         self.view = view
         self.networkManager = networkManager
         self.trackingService = trackingService
-        self.internetConnectionObserver = InternetConnectionObserverImp()
+        self.internetConnectionObserver = InternetConnectionObserverImpl.shared
         
         self.address = address
         

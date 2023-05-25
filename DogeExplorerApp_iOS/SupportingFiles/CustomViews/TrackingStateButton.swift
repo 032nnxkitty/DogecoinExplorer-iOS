@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrackingStateButton: UIButton {
+final class TrackingStateButton: UIButton {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)

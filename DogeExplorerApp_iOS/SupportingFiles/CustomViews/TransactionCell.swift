@@ -12,7 +12,7 @@ enum TransactionStyle {
     case received
 }
 
-class TransactionCell: UITableViewCell {
+final class TransactionCell: UITableViewCell {
     // MARK: - UI Elements
     private let containerStack: UIStackView = {
         let stack = UIStackView()

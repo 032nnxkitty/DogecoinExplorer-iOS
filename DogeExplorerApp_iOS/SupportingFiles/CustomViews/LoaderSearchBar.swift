@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoaderSearchBar: UISearchBar {
+final class LoaderSearchBar: UISearchBar {
     private var leftView: UIView?
     private let loader = UIActivityIndicatorView()
     

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrackedAddressCell: UITableViewCell {
+final class TrackedAddressCell: UITableViewCell {
     // MARK: - UI Elements
     private let labelsStack: UIStackView = {
         let stack = UIStackView()

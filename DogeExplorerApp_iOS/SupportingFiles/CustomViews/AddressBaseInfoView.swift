@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddressBaseInfoView: UIView {
+final class AddressBaseInfoView: UIView {
     // MARK: - UI Elements
     private let containerStack: UIStackView = {
         let stack = UIStackView()

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddressInfoViewController: UIViewController {
+final class AddressInfoViewController: UIViewController {
     var presenter: AddressInfoPresenter!
     
     // MARK: - UI Elements

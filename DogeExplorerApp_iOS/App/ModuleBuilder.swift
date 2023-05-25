@@ -7,21 +7,21 @@
 
 import UIKit
 
-class ModuleBuilder {
+final class ModuleBuilder {
     private init() {}
     
-    class func createMainModule() -> UIViewController {
+    static func createMainModule() -> UIViewController {
         let view = MainViewController()
-        let networkManager = NetworkManagerImp()
+        let networkManager = URLSessionNetworkManager.shared
         let trackingService = CoreDataManager.shared
         let presenter = MainPresenterImp(view: view, networkManager: networkManager, trackingService: trackingService)
         view.presenter = presenter
         return view
     }
     
-    class func createAddressInfoModule(_ address: String) -> UIViewController {
+    static func createAddressInfoModule(_ address: String) -> UIViewController {
         let view = AddressInfoViewController()
-        let networkManager = NetworkManagerImp()
+        let networkManager = URLSessionNetworkManager.shared
         let trackingService = CoreDataManager.shared
         let presenter = AddressInfoPresenterImp(address: address, view: view, networkManager: networkManager, trackingService: trackingService)
         view.presenter = presenter
