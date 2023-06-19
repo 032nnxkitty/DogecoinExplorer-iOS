@@ -53,7 +53,7 @@ final class NoTrackedAddressesView: UIView {
             containerStack.trailingAnchor.constraint(equalTo: trailingAnchor),
             containerStack.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-        containerStack.addArrangedSubview(sadDogImageView)
-        containerStack.addArrangedSubview(noAddressesLabel)
+        
+        [sadDogImageView, noAddressesLabel].forEach { containerStack.addArrangedSubview($0) }
     }
 }

@@ -63,8 +63,6 @@ private extension TrackedAddressCell {
         configuration.cornerRadius = 20
         backgroundConfiguration =  configuration
         
-        [nameLabel, addressLabel].forEach { labelsStack.addArrangedSubview($0) }
-        
         contentView.addSubview(labelsStack)
         NSLayoutConstraint.activate([
             labelsStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),
@@ -72,5 +70,9 @@ private extension TrackedAddressCell {
             labelsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
             labelsStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25)
         ])
+        
+        [nameLabel, addressLabel].forEach {
+            labelsStack.addArrangedSubview($0)
+        }
     }
 }

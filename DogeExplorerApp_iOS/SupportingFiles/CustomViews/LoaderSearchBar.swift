@@ -15,7 +15,6 @@ final class LoaderSearchBar: UISearchBar {
     func startAnimating() {
         leftView = self.searchTextField.leftView
         self.searchTextField.leftView = loader
-        loader.startAnimating()
     }
     
     func stopAnimating() {

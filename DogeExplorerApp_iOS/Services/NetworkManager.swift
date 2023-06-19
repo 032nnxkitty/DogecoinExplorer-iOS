@@ -50,7 +50,8 @@ final class URLSessionNetworkManager: NetworkManager {
         let transactionPage = try await request(url: pageUrl, decodeTo: TransactionsPageModel.self)
         
         var detailedTransactionsPage: [DetailedTransactionModel] = []
-        return try await withThrowingTaskGroup(of: DetailedTransactionModel.self, returning: [DetailedTransactionModel].self) { taskGroup in
+        return try await withThrowingTaskGroup(of: DetailedTransactionModel.self,
+                                               returning: [DetailedTransactionModel].self) { taskGroup in
             for transaction in transactionPage.transactions {
                 
                 let hash = transaction.hash
@@ -62,8 +63,8 @@ final class URLSessionNetworkManager: NetworkManager {
                 }
             }
             
-            for try await transaction in taskGroup {
-                detailedTransactionsPage.append(transaction)
+            for try await res in taskGroup {
+                detailedTransactionsPage.append(res)
             }
             
             return detailedTransactionsPage

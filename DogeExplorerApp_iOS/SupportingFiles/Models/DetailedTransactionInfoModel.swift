@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct DetailedTransactionModel: Codable {
+struct DetailedTransactionModel: Decodable {
     let success: Int
     let transaction: Transaction
 }
 
-struct Transaction: Codable {
+struct Transaction: Decodable {
     let hash: String
     let confirmations: Int?
     let size: Int?
@@ -44,7 +44,7 @@ struct Transaction: Codable {
     }
 }
 
-struct Input: Codable {
+struct Input: Decodable {
     let pos: Int?
     let value: String
     let address: String
@@ -57,16 +57,16 @@ struct Input: Codable {
     }
 }
 
-struct PreviousOutput: Codable {
+struct PreviousOutput: Decodable {
     let hash: String?
     let pos: Int?
 }
 
-struct ScriptSig: Codable {
+struct ScriptSig: Decodable {
     let hex: String?
 }
 
-struct Output: Codable {
+struct Output: Decodable {
     let pos: Int?
     let value: String
     let type: String?
@@ -75,7 +75,7 @@ struct Output: Codable {
     let spent: PreviousOutput?
 }
 
-struct Script: Codable {
+struct Script: Decodable {
     let hex: String
     let asm: String?
 }

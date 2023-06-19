@@ -59,7 +59,7 @@ final class AddressInfoViewController: UIViewController {
     
     private let baseAddressInfoView = AddressBaseInfoView()
     private let trackingStateButton = TrackingStateButton()
-    private let loadTransactionButton = LoadTransactionsButton()
+    private let loadTransactionButton = LoaderButton()
     private let loader = UIActivityIndicatorView()
     
     // MARK: - View Life Cycle

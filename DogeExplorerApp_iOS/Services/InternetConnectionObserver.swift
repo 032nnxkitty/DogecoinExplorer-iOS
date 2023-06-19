@@ -37,7 +37,8 @@ final class InternetConnectionObserverImpl: InternetConnectionObserver {
 private extension InternetConnectionObserverImpl {
     func startMonitoring() {
         monitor.pathUpdateHandler = { [weak self] path in
-            self?.status = path.status
+            guard let self else { return }
+            self.status = path.status
         }
         
         let queue = DispatchQueue(label: "NetworkMonitor")

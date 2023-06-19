@@ -57,7 +57,7 @@ final class TransactionCell: UITableViewCell {
         return label
     }()
     
-    private let timeLabel: UILabel = {
+    private let dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
         label.font = .dogeSans(size: 14, style: .footnote)
@@ -80,13 +80,13 @@ final class TransactionCell: UITableViewCell {
         switch style {
         case .sent:
             stateLabel.text = "Sent"
-            sumLabel.textColor = .label
+            sumLabel.textColor = .white
         case .received:
             stateLabel.text = "Received"
             sumLabel.textColor = R.Colors.accent
         }
         sumLabel.text = value
-        timeLabel.text = date
+        dateLabel.text = date
         destinationLabel.text = hash
     }
 }
@@ -111,13 +111,8 @@ private extension TransactionCell {
             containerStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25)
         ])
         
-        topStack.addArrangedSubview(stateLabel)
-        topStack.addArrangedSubview(sumLabel)
-        
-        bottomStack.addArrangedSubview(destinationLabel)
-        bottomStack.addArrangedSubview(timeLabel)
-        
-        containerStack.addArrangedSubview(topStack)
-        containerStack.addArrangedSubview(bottomStack)
+        [stateLabel, sumLabel].forEach { topStack.addArrangedSubview($0) }
+        [destinationLabel, dateLabel].forEach { bottomStack.addArrangedSubview($0) }
+        [topStack, bottomStack].forEach { containerStack.addArrangedSubview($0) }
     }
 }

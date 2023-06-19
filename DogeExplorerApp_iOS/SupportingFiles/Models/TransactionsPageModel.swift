@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct TransactionsPageModel: Codable {
+struct TransactionsPageModel: Decodable {
     let transactions: [TransactionBaseInfo]
     let success: Int
     
 }
 
-struct TransactionBaseInfo: Codable {
+struct TransactionBaseInfo: Decodable {
     let hash: String
     let value: String
     let time: Int
