@@ -55,10 +55,13 @@ final class CoreDataManager {
 // MARK: - Address Tracking Service Methods
 extension CoreDataManager: AddressTrackingService {
     func addNewTrackedAddress(address: String, name: String) {
-        let newAddressEntity = TrackedAddressEntity(context: persistentContainer.viewContext)
+        let backgroundContext = persistentContainer.newBackgroundContext()
+        
+        let newAddressEntity = TrackedAddressEntity(context: backgroundContext)
         newAddressEntity.address = address
         newAddressEntity.name = name
-        saveContext()
+        
+        saveContext(backgroundContext: backgroundContext)
     }
     
     func getAllTrackedAddresses() -> [(address: String, name: String)] {
@@ -74,20 +77,23 @@ extension CoreDataManager: AddressTrackingService {
     }
     
     func deleteAllTrackedAddresses() {
+        let backgroundContext = persistentContainer.newBackgroundContext()
+        
         let fetchRequest = TrackedAddressEntity.fetchRequest()
-        guard let entitiesArray = try? viewContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
-        for entity in entitiesArray {
-            viewContext.delete(entity)
-        }
-        saveContext()
+        guard let entitiesArray = try? backgroundContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
+        entitiesArray.forEach { backgroundContext.delete($0) }
+        
+        saveContext(backgroundContext: backgroundContext)
     }
     
     func deleteTracking(_ addressToDelete: String) {
+        let backgroundContext = persistentContainer.newBackgroundContext()
+        
         let fetchRequest = TrackedAddressEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "address == %@", addressToDelete)
-        guard let entitiesArray = try? viewContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
-        viewContext.delete(entitiesArray[0])
-        saveContext()
+        guard let entitiesArray = try? backgroundContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
+        backgroundContext.delete(entitiesArray[0])
+        saveContext(backgroundContext: backgroundContext)
     }
     
     func getTrackingName(for address: String) -> String? {
@@ -100,11 +106,14 @@ extension CoreDataManager: AddressTrackingService {
     }
     
     func renameAddress(_ address: String, to newName: String) {
+        let backgroundContext = persistentContainer.newBackgroundContext()
+        
         let fetchRequest = TrackedAddressEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "address == %@", address)
-        guard let entitiesArray = try? viewContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
+        guard let entitiesArray = try? backgroundContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
         entitiesArray[0].name = newName
-        saveContext()
+        
+        saveContext(backgroundContext: backgroundContext)
     }
     
     func addMockData() {

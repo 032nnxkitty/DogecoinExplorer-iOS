@@ -38,14 +38,10 @@ final class MainPresenterImpl: MainPresenter {
         return trackedAddresses.count
     }
     
-    func configureCell(
-        at indexPath: IndexPath,
-        completion: @escaping (_ name: String, _ address: String) -> Void
-    ) {
-        // add cell view model
+    func configureCell(at indexPath: IndexPath) -> (name: String, address: String) {
         let currentAddress = trackedAddresses[indexPath.row]
         let shortenAddress = currentAddress.address.shorten(prefix: 8, suffix: 5)
-        completion(currentAddress.name, shortenAddress)
+        return (currentAddress.name, shortenAddress)
     }
     
     func searchButtonDidTap(with text: String?) {

@@ -11,7 +11,7 @@ final class MainViewController: UIViewController {
     public var presenter: MainPresenter!
     
     // MARK: - UI Elements
-    private let addressSearchBar: LoaderSearchBar = {
+    private let searchBar: LoaderSearchBar = {
         let bar = LoaderSearchBar()
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.searchTextField.font = .dogeSans(size: 17, style: .body)
@@ -41,6 +41,7 @@ final class MainViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configureAppearance()
         configureSearchBar()
         configureNoAddressesView()
@@ -77,14 +78,14 @@ private extension MainViewController {
     }
     
     func configureSearchBar() {
-        addressSearchBar.delegate = self
+        searchBar.delegate = self
         
-        view.addSubview(addressSearchBar)
+        view.addSubview(searchBar)
         NSLayoutConstraint.activate([
-            addressSearchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            addressSearchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            addressSearchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            addressSearchBar.heightAnchor.constraint(equalToConstant: 55)
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            searchBar.heightAnchor.constraint(equalToConstant: 55)
         ])
     }
     
@@ -102,7 +103,7 @@ private extension MainViewController {
     func configureTableView() {
         view.addSubview(trackedAddressesTableView)
         NSLayoutConstraint.activate([
-            trackedAddressesTableView.topAnchor.constraint(equalTo: addressSearchBar.bottomAnchor, constant: 10),
+            trackedAddressesTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 10),
             trackedAddressesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             trackedAddressesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             trackedAddressesTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -111,17 +112,14 @@ private extension MainViewController {
     
     func showRenameAlertForAddress(at indexPath: IndexPath) {
         let renameAlert = UIAlertController(title: "Enter a new name", message: "", preferredStyle: .alert)
-        renameAlert.view.tintColor = R.Colors.accent
         renameAlert.addTextField { [weak self] textField in
             textField.text = self?.presenter?.getNameForAddress(at: indexPath)
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] action in
+        renameAlert.addAction(.init(title: "Cancel", style: .cancel))
+        renameAlert.addAction(.init(title: "Confirm", style: .default) { [weak self] action in
             let name = renameAlert.textFields?[0].text
             self?.presenter?.renameAddress(at: indexPath, newName: name)
-        }
-        renameAlert.addAction(confirmAction)
-        renameAlert.addAction(cancelAction)
+        })
         present(renameAlert, animated: true)
     }
 }
@@ -129,6 +127,7 @@ private extension MainViewController {
 // MARK: - MainView Protocol
 extension MainViewController: MainView {
     func showInfoViewController(for address: String, addressInfo: (BalanceModel, TransactionsCountModel)) {
+        searchBar.text = nil
         let addressInfoVC = ModuleBuilder.createAddressInfoModule(address: address, addressInfo: addressInfo)
         navigationController?.pushViewController(addressInfoVC, animated: true)
     }
@@ -138,11 +137,12 @@ extension MainViewController: MainView {
     }
     
     func showOkActionSheet(title: String, message: String) {
-        addressSearchBar.resignFirstResponder()
+        if searchBar.isFirstResponder {
+            searchBar.resignFirstResponder()
+        }
+        
         let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        actionSheet.view.tintColor = R.Colors.accent
-        let action = UIAlertAction(title: "Ok", style: .cancel)
-        actionSheet.addAction(action)
+        actionSheet.addAction(.init(title: "Ok", style: .default))
         present(actionSheet, animated: true)
     }
     
@@ -157,7 +157,7 @@ extension MainViewController: MainView {
     }
     
     func animateLoader(_ isAnimated: Bool) {
-        isAnimated ? addressSearchBar.startAnimating() : addressSearchBar.stopAnimating()
+        isAnimated ? searchBar.startAnimating() : searchBar.stopAnimating()
     }
 }
 
@@ -166,7 +166,6 @@ extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         presenter.searchButtonDidTap(with: searchBar.text)
         searchBar.resignFirstResponder()
-        searchBar.text = nil
     }
 }
 
@@ -178,9 +177,8 @@ extension MainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.trackedCell, for: indexPath) as! TrackedAddressCell
-        presenter.configureCell(at: indexPath) { name, address in
-            cell.configure(name: name, address: address)
-        }
+        let (name, address) = presenter.configureCell(at: indexPath)
+        cell.configure(name: name, address: address)
         return cell
     }
     
@@ -190,12 +188,10 @@ extension MainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completion in
-            self?.presenter.deleteTrackingForAddress(at: indexPath)
+            guard let self else { return }
+            self.presenter.deleteTrackingForAddress(at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .right)
             completion(true)
-            
-            let generator = UIImpactFeedbackGenerator(style: .medium)
-            generator.impactOccurred()
         }
         deleteAction.image = UIImage(named: "delete")
         deleteAction.backgroundColor = R.Colors.background
