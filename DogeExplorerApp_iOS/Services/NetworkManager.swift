@@ -15,7 +15,6 @@ enum NetworkError: Error {
 }
 
 protocol NetworkManager {
-    func checkAddressExistence(_ address: String) async throws -> Bool
     func getAddressInfo(_ address: String) async throws -> (BalanceModel, TransactionsCountModel)
     func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel]
 }
@@ -23,25 +22,15 @@ protocol NetworkManager {
 final class URLSessionNetworkManager: NetworkManager {
     static let shared = URLSessionNetworkManager()
     private init() {}
-    func checkAddressExistence(_ address: String) async throws -> Bool {
-        let balanceUrl = URL(string: "https://dogechain.info/api/v1/address/balance/\(address)")
-        
-        do {
-            let _ = try await request(url: balanceUrl, decodeTo: BalanceModel.self)
-            return true
-        } catch {
-            return false
-        }
-    }
     
     func getAddressInfo(_ address: String) async throws -> (BalanceModel, TransactionsCountModel) {
         let balanceUrl           = URL(string: "https://dogechain.info/api/v1/address/balance/\(address)")
         let transactionsCountUrl = URL(string: "https://dogechain.info/api/v1/address/transaction_count/\(address)")
         
-        async let balance           = request(url: balanceUrl, decodeTo: BalanceModel.self)
-        async let transactionsCount = request(url: transactionsCountUrl, decodeTo: TransactionsCountModel.self)
+        let balance           = try await request(url: balanceUrl, decodeTo: BalanceModel.self)
+        let transactionsCount = try await request(url: transactionsCountUrl, decodeTo: TransactionsCountModel.self)
         
-        return try await (balance, transactionsCount)
+        return (balance, transactionsCount)
     }
     
     func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel] {

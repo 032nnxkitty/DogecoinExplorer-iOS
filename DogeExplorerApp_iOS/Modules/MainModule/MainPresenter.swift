@@ -7,7 +7,8 @@
 
 import Foundation
 
-final class MainPresenterImp: MainPresenter {
+final class MainPresenterImpl: MainPresenter {
+    // MARK: - Private Properties
     private weak var view: MainView?
     private let trackingService: AddressTrackingService
     private let networkManager: NetworkManager
@@ -18,11 +19,16 @@ final class MainPresenterImp: MainPresenter {
     }
     
     // MARK: - Init
-    init(view: MainView, networkManager: NetworkManager, trackingService: AddressTrackingService) {
+    init(
+        view: MainView,
+        networkManager: NetworkManager,
+        trackingService: AddressTrackingService
+    ) {
         self.view = view
         self.networkManager = networkManager
         self.trackingService = trackingService
         self.internetConnectionObserver = InternetConnectionObserverImpl.shared
+        
         checkAddressesCount()
         trackingService.addMockData()
     }
@@ -32,7 +38,11 @@ final class MainPresenterImp: MainPresenter {
         return trackedAddresses.count
     }
     
-    func configureCell(at indexPath: IndexPath, completion: @escaping (_ name: String, _ address: String) -> Void) {
+    func configureCell(
+        at indexPath: IndexPath,
+        completion: @escaping (_ name: String, _ address: String) -> Void
+    ) {
+        // add cell view model
         let currentAddress = trackedAddresses[indexPath.row]
         let shortenAddress = currentAddress.address.shorten(prefix: 8, suffix: 5)
         completion(currentAddress.name, shortenAddress)
@@ -55,17 +65,7 @@ final class MainPresenterImp: MainPresenter {
             return
         }
         
-        view?.animateLoader(true)
-        
-        Task { @MainActor in
-            guard try await networkManager.checkAddressExistence(address) else {
-                view?.showOkActionSheet(title: "Address not found", message: "Please check the entered address and try again.")
-                view?.animateLoader(false)
-                return
-            }
-            view?.animateLoader(false)
-            view?.showInfoViewController(for: address)
-        }
+        loadInfo(for: address)
     }
     
     func deleteTrackingForAddress(at indexPath: IndexPath) {
@@ -94,7 +94,7 @@ final class MainPresenterImp: MainPresenter {
         }
         
         let selectedAddress = trackedAddresses[indexPath.row].address
-        view?.showInfoViewController(for: selectedAddress)
+        loadInfo(for: selectedAddress)
     }
     
     func getNameForAddress(at indexPath: IndexPath) -> String? {
@@ -103,12 +103,25 @@ final class MainPresenterImp: MainPresenter {
 }
 
 // MARK: - Private Methods
-private extension MainPresenterImp {
+private extension MainPresenterImpl {
     func checkAddressesCount() {
         if trackedAddresses.count == 0 {
             view?.showNoTrackedAddressesView()
         } else {
             view?.hideNoTrackedAddressesView()
+        }
+    }
+    
+    func loadInfo(for address: String) {
+        view?.animateLoader(true)
+        Task { @MainActor in
+            do {
+                let addressInfo = try await networkManager.getAddressInfo(address)
+                view?.showInfoViewController(for: address, addressInfo: addressInfo)
+            } catch {
+                view?.showOkActionSheet(title: "Address not found", message: "Please check the entered address and try again.")
+            }
+            view?.animateLoader(false)
         }
     }
 }

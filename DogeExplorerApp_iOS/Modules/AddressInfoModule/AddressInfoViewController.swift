@@ -164,8 +164,8 @@ extension AddressInfoViewController: AddressInfoView {
     }
     
     func setAddressInfo(address: String, dogeBalance: String, transactionsCount: String) {
-        transactionsTableView.reloadData()
         baseAddressInfoView.setInfo(address: address, dogeBalance: dogeBalance, transactionsCount: transactionsCount)
+        transactionsTableView.reloadData()
         UIView.animate(withDuration: 0.3) {
             self.containerStack.alpha = 1
         }

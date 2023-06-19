@@ -13,9 +13,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        let mainVC = ModuleBuilder.createMainModule()
+        
         window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = UINavigationController(rootViewController: mainVC)
         window?.overrideUserInterfaceStyle = .dark
-        window?.rootViewController = UINavigationController(rootViewController: ModuleBuilder.createMainModule())
         window?.makeKeyAndVisible()
     }
 }

@@ -70,8 +70,6 @@ private extension MainViewController {
         title = "Dogeexplorer"
         view.backgroundColor = R.Colors.background
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"))
-        
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.dogeSans(size: 17, style: .body)
@@ -117,11 +115,11 @@ private extension MainViewController {
         renameAlert.addTextField { [weak self] textField in
             textField.text = self?.presenter?.getNameForAddress(at: indexPath)
         }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] action in
             let name = renameAlert.textFields?[0].text
             self?.presenter?.renameAddress(at: indexPath, newName: name)
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         renameAlert.addAction(confirmAction)
         renameAlert.addAction(cancelAction)
         present(renameAlert, animated: true)
@@ -130,8 +128,8 @@ private extension MainViewController {
 
 // MARK: - MainView Protocol
 extension MainViewController: MainView {
-    func showInfoViewController(for address: String) {
-        let addressInfoVC = ModuleBuilder.createAddressInfoModule(address)
+    func showInfoViewController(for address: String, addressInfo: (BalanceModel, TransactionsCountModel)) {
+        let addressInfoVC = ModuleBuilder.createAddressInfoModule(address: address, addressInfo: addressInfo)
         navigationController?.pushViewController(addressInfoVC, animated: true)
     }
     

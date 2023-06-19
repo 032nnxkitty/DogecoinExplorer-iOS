@@ -19,4 +19,8 @@ enum R {
         static let lightGray:      UIColor = .RGB(r: 171, g: 171, b: 171)
         static let accent:         UIColor = .RGB(r: 254, g: 243, b: 195)
     }
+    
+    enum URLs {
+        
+    }
 }

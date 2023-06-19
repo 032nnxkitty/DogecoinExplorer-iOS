@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MainView: AnyObject {
-    func showInfoViewController(for address: String)
+    func showInfoViewController(for address: String, addressInfo: (BalanceModel, TransactionsCountModel))
     func showOkActionSheet(title: String, message: String)
     func reloadData()
     func showNoTrackedAddressesView()

@@ -7,26 +7,34 @@
 
 import Foundation
 
-final class AddressInfoPresenterImp: AddressInfoPresenter {
+final class AddressInfoPresenterImpl: AddressInfoPresenter {
+    // MARK: - Private Properties
     private weak var view: AddressInfoView?
     private let networkManager: NetworkManager
     private let trackingService: AddressTrackingService
     private let internetConnectionObserver: InternetConnectionObserver
     
-    // MARK: - Info About Address
+    // MARK: Info About Address
     private let address: String
-    private var addressInfo: (BalanceModel, TransactionsCountModel)?
+    private var addressInfo: (BalanceModel, TransactionsCountModel)
     private var isAddressTracked: Bool = false
     private var loadedTransactions: [DetailedTransactionModel] = []
     
     // MARK: - Init
-    init(address: String, view: AddressInfoView, networkManager: NetworkManager, trackingService: AddressTrackingService) {
+    init(
+        address: String,
+        addressInfo: (BalanceModel, TransactionsCountModel),
+        view: AddressInfoView,
+        networkManager: NetworkManager,
+        trackingService: AddressTrackingService
+    ) {
         self.view = view
         self.networkManager = networkManager
         self.trackingService = trackingService
         self.internetConnectionObserver = InternetConnectionObserverImpl.shared
         
         self.address = address
+        self.addressInfo = addressInfo
         
         initialize()
         configureTrackingState()
@@ -110,7 +118,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
             return
         }
         
-        guard let allTransactionsCount = addressInfo?.1.info.total else { return }
+        let allTransactionsCount = addressInfo.1.info.total
         let difference = allTransactionsCount - loadedTransactions.count
         guard difference > 0 else { return }
         
@@ -144,7 +152,7 @@ final class AddressInfoPresenterImp: AddressInfoPresenter {
 }
 
 // MARK: - Private Methods
-private extension AddressInfoPresenterImp {
+private extension AddressInfoPresenterImpl {
     func configureTrackingState() {
         if let name = trackingService.getTrackingName(for: address) {
             isAddressTracked = true
@@ -159,15 +167,13 @@ private extension AddressInfoPresenterImp {
         view?.animateCentralLoader(true)
         Task { @MainActor in
             do {
-                async let info = networkManager.getAddressInfo(address)
                 try await loadTransactionsPage(1)
-                addressInfo = try await info
                 
                 view?.setAddressInfo(address: address,
-                                     dogeBalance: "\(addressInfo!.0.balance.formatNumberString()) DOGE",
-                                     transactionsCount: "\(addressInfo!.1.info.total)")
+                                     dogeBalance: "\(addressInfo.0.balance.formatNumberString()) DOGE",
+                                     transactionsCount: "\(addressInfo.1.info.total)")
                 
-                if addressInfo!.1.info.total <= 10 {
+                if addressInfo.1.info.total <= 10 {
                     view?.hideLoadTransactionsButton()
                 }
             } catch {

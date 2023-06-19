@@ -14,16 +14,24 @@ final class ModuleBuilder {
         let view = MainViewController()
         let networkManager = URLSessionNetworkManager.shared
         let trackingService = CoreDataManager.shared
-        let presenter = MainPresenterImp(view: view, networkManager: networkManager, trackingService: trackingService)
+        let presenter = MainPresenterImpl(view: view, networkManager: networkManager, trackingService: trackingService)
         view.presenter = presenter
         return view
     }
     
-    static func createAddressInfoModule(_ address: String) -> UIViewController {
+    static func createAddressInfoModule(
+        address: String,
+        addressInfo: (BalanceModel, TransactionsCountModel)
+    ) -> UIViewController {
+        
         let view = AddressInfoViewController()
         let networkManager = URLSessionNetworkManager.shared
         let trackingService = CoreDataManager.shared
-        let presenter = AddressInfoPresenterImp(address: address, view: view, networkManager: networkManager, trackingService: trackingService)
+        let presenter = AddressInfoPresenterImpl(address: address,
+                                                 addressInfo: addressInfo,
+                                                 view: view,
+                                                 networkManager: networkManager,
+                                                 trackingService: trackingService)
         view.presenter = presenter
         return view
     }
