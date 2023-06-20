@@ -215,14 +215,13 @@ extension AddressInfoViewController: AddressInfoView {
 // MARK: - UITableViewDataSource
 extension AddressInfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.getNumberOfTransactions()
+        return presenter.getNumberOfLoadedTransactions()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.transactionCell, for: indexPath) as! TransactionCell
-        presenter.configureTransactionCell(at: indexPath) { style, value, time, hash in
-            cell.configure(style: style, value: value, date: time, hash: hash)
-        }
+        let (style, value, time, hash) = presenter.configureTransactionCell(at: indexPath)
+        cell.configure(style: style, value: value, date: time, hash: hash)
         return cell
     }
 }

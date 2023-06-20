@@ -19,11 +19,7 @@ final class ModuleBuilder {
         return view
     }
     
-    static func createAddressInfoModule(
-        address: String,
-        addressInfo: (BalanceModel, TransactionsCountModel)
-    ) -> UIViewController {
-        
+    static func createAddressInfoModule(address: String, addressInfo: (BalanceModel, TransactionsCountModel)) -> UIViewController {
         let view = AddressInfoViewController()
         let networkManager = URLSessionNetworkManager.shared
         let trackingService = CoreDataManager.shared

@@ -61,7 +61,7 @@ final class MainPresenterImpl: MainPresenter {
             return
         }
         
-        loadInfo(for: address)
+        self.loadInfo(for: address)
     }
     
     func deleteTrackingForAddress(at indexPath: IndexPath) {
@@ -101,11 +101,8 @@ final class MainPresenterImpl: MainPresenter {
 // MARK: - Private Methods
 private extension MainPresenterImpl {
     func checkAddressesCount() {
-        if trackedAddresses.count == 0 {
-            view?.showNoTrackedAddressesView()
-        } else {
-            view?.hideNoTrackedAddressesView()
-        }
+        let isNoAddresses = trackedAddresses.count == 0
+        view?.showNoTrackedAddressesView(isNoAddresses)
     }
     
     func loadInfo(for address: String) {

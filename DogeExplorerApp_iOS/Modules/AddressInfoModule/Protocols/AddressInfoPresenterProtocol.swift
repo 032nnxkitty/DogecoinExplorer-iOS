@@ -22,7 +22,7 @@ protocol AddressInfoPresenterActions {
 }
 
 protocol AddressInfoPresenterViewConfiguring {
-    func getNumberOfTransactions() -> Int
-    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (_ style: TransactionStyle, _ value: String, _ time: String, _ hash: String) -> Void)
+    func getNumberOfLoadedTransactions() -> Int
+    func configureTransactionCell(at indexPath: IndexPath) -> (style: TransactionStyle, value: String, time: String, hash: String)
     func getAddressName() -> String?
 }

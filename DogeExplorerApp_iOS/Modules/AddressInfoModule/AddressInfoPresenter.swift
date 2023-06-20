@@ -16,8 +16,8 @@ final class AddressInfoPresenterImpl: AddressInfoPresenter {
     
     // MARK: Info About Address
     private let address: String
-    private var addressInfo: (BalanceModel, TransactionsCountModel)
     private var isAddressTracked: Bool = false
+    private var addressInfo: (BalanceModel, TransactionsCountModel)
     private var loadedTransactions: [DetailedTransactionModel] = []
     
     // MARK: - Init
@@ -41,40 +41,36 @@ final class AddressInfoPresenterImpl: AddressInfoPresenter {
     }
     
     // MARK: - Table View Configuring Methods
-    func getNumberOfTransactions() -> Int {
+    func getNumberOfLoadedTransactions() -> Int {
         return loadedTransactions.count
     }
     
-    func configureTransactionCell(at indexPath: IndexPath, completion: @escaping (_ style: TransactionStyle, _ value: String, _ time: String, _ hash: String) -> Void) {
-        guard indexPath.row < loadedTransactions.count else { return }
+    func configureTransactionCell(at indexPath: IndexPath) -> (style: TransactionStyle, value: String, time: String, hash: String) {
         let currentTransaction = loadedTransactions[indexPath.row].transaction
-        
-        let time = currentTransaction.time.formatUnixTime()
-        let hash = currentTransaction.hash.shorten(prefix: 6, suffix: 6)
         
         var balanceChange: Double = 0.0
         
-        for input in currentTransaction.inputs {
-            if input.address == self.address {
-                let value = Double(input.value) ?? 0
-                balanceChange -= value
-            }
+        currentTransaction.inputs.forEach { input in
+            guard input.address == address else { return }
+            let value = Double(input.value) ?? 0
+            balanceChange -= value
         }
         
-        for output in currentTransaction.outputs {
-            if output.address == self.address {
-                let value = Double(output.value) ?? 0
-                balanceChange += value
-            }
+        currentTransaction.outputs.forEach { output in
+            guard output.address == address else { return }
+            let value = Double(output.value) ?? 0
+            balanceChange += value
+            
         }
         
         let formattedBalanceChange = String(abs(balanceChange)).formatNumberString()
         
-        if balanceChange >= 0 {
-            completion(.received, "+\(formattedBalanceChange) DOGE", time, hash)
-        } else {
-            completion(.sent, "-\(formattedBalanceChange) DOGE", time, hash)
-        }
+        let style: TransactionStyle = balanceChange >= 0 ? .received : .sent
+        let formattedTime = currentTransaction.time.formatUnixTime()
+        let formattedHash = currentTransaction.hash.shorten(prefix: 6, suffix: 6)
+        let formattedValue = "\(balanceChange >= 0 ? "+" : "-")\(formattedBalanceChange) DOGE"
+        
+        return (style, formattedValue, formattedTime, formattedHash)
     }
     
     // MARK: - Tracking Methods
@@ -92,12 +88,7 @@ final class AddressInfoPresenterImpl: AddressInfoPresenter {
     }
     
     func addTracking(with name: String?) {
-        guard let name, !name.isEmpty else {
-            trackingService.addNewTrackedAddress(address: address, name: "No name")
-            configureTrackingState()
-            return
-        }
-        trackingService.addNewTrackedAddress(address: address, name: name)
+        trackingService.addNewTrackedAddress(address: address, name: name ?? "No name")
         configureTrackingState()
     }
     

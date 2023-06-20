@@ -91,6 +91,7 @@ private extension MainViewController {
     
     func configureNoAddressesView() {
         noTrackedAddressesView.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(noTrackedAddressesView)
         NSLayoutConstraint.activate([
             noTrackedAddressesView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -30),
@@ -142,18 +143,13 @@ extension MainViewController: MainView {
         }
         
         let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        actionSheet.addAction(.init(title: "Ok", style: .default))
+        actionSheet.addAction(.init(title: "Ok", style: .cancel))
         present(actionSheet, animated: true)
     }
     
-    func showNoTrackedAddressesView() {
-        noTrackedAddressesView.isHidden = false
-        trackedAddressesTableView.isHidden = true
-    }
-    
-    func hideNoTrackedAddressesView() {
-        noTrackedAddressesView.isHidden = true
-        trackedAddressesTableView.isHidden = false
+    func showNoTrackedAddressesView(_ isVisible: Bool) {
+        noTrackedAddressesView.isHidden = !isVisible
+        trackedAddressesTableView.isHidden = isVisible
     }
     
     func animateLoader(_ isAnimated: Bool) {
