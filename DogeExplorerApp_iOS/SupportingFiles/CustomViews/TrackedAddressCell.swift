@@ -7,6 +7,11 @@
 
 import UIKit
 
+struct TrackedAddressCellViewModel {
+    let name: String
+    let address: String
+}
+
 final class TrackedAddressCell: UITableViewCell {
     // MARK: - UI Elements
     private let labelsStack: UIStackView = {
@@ -45,9 +50,9 @@ final class TrackedAddressCell: UITableViewCell {
     }
     
     // MARK: - Public Methods
-    func configure(name: String, address: String) {
-        nameLabel.text = name
-        addressLabel.text = address
+    func configure(viewModel: TrackedAddressCellViewModel) {
+        nameLabel.text = viewModel.name
+        addressLabel.text = viewModel.address
     }
 }
 

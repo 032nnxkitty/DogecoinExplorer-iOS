@@ -67,13 +67,11 @@ extension CoreDataManager: AddressTrackingService {
     func getAllTrackedAddresses() -> [(address: String, name: String)] {
         let fetchRequest = TrackedAddressEntity.fetchRequest()
         guard let entitiesArray = try? viewContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return [] }
-        var result: [(String, String)] = []
-        for trackedAddressesEntity in entitiesArray {
-            if let name = trackedAddressesEntity.name, let address = trackedAddressesEntity.address {
-                result.append((address, name))
+        return entitiesArray
+            .reversed()
+            .map {
+                ($0.address ?? "...", $0.name ?? "...")
             }
-        }
-        return result.reversed()
     }
     
     func deleteAllTrackedAddresses() {

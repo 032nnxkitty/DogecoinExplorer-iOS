@@ -11,11 +11,10 @@ final class ModuleBuilder {
     private init() {}
     
     static func createMainModule() -> UIViewController {
-        let view = MainViewController()
         let networkManager = URLSessionNetworkManager.shared
         let trackingService = CoreDataManager.shared
-        let presenter = MainPresenterImpl(view: view, networkManager: networkManager, trackingService: trackingService)
-        view.presenter = presenter
+        let viewModel = MainViewModelImpl(networkManager: networkManager, trackingService: trackingService)
+        let view = MainViewController(viewModel: viewModel)
         return view
     }
     

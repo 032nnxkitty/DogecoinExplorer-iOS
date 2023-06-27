@@ -8,7 +8,7 @@
 import UIKit
 
 final class MainViewController: UIViewController {
-    public var presenter: MainPresenter!
+    public let viewModel: MainViewModel
     
     // MARK: - UI Elements
     private let searchBar: LoaderSearchBar = {
@@ -30,13 +30,23 @@ final class MainViewController: UIViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.keyboardDismissMode = .onDrag
         tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.separatorStyle = .none
         return tableView
     }()
     
     private let noTrackedAddressesView = NoTrackedAddressesView()
+    
+    // MARK: - Init
+    init(viewModel: MainViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("storyboards are incompatible with truth and beauty")
+    }
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -44,13 +54,13 @@ final class MainViewController: UIViewController {
         
         configureAppearance()
         configureSearchBar()
-        configureNoAddressesView()
         configureTableView()
+        configureNoAddressesView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presenter.viewWillAppear()
+        trackedAddressesTableView.reloadData()
     }
     
     // MARK: - Event Hadling
@@ -58,11 +68,6 @@ final class MainViewController: UIViewController {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
     }
-}
-
-// MARK: - Actions
-@objc private extension MainViewController {
-   
 }
 
 // MARK: - Private Methods
@@ -89,18 +94,6 @@ private extension MainViewController {
         ])
     }
     
-    func configureNoAddressesView() {
-        noTrackedAddressesView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(noTrackedAddressesView)
-        NSLayoutConstraint.activate([
-            noTrackedAddressesView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -30),
-            noTrackedAddressesView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            noTrackedAddressesView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            noTrackedAddressesView.heightAnchor.constraint(equalToConstant: 200)
-        ])
-    }
-    
     func configureTableView() {
         view.addSubview(trackedAddressesTableView)
         NSLayoutConstraint.activate([
@@ -111,22 +104,41 @@ private extension MainViewController {
         ])
     }
     
+    func configureNoAddressesView() {
+        noTrackedAddressesView.isHidden = true
+        noTrackedAddressesView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(noTrackedAddressesView)
+        NSLayoutConstraint.activate([
+            noTrackedAddressesView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            noTrackedAddressesView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            noTrackedAddressesView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            noTrackedAddressesView.heightAnchor.constraint(equalToConstant: 200)
+        ])
+    }
+    
     func showRenameAlertForAddress(at indexPath: IndexPath) {
         let renameAlert = UIAlertController(title: "Enter a new name", message: "", preferredStyle: .alert)
         renameAlert.addTextField { [weak self] textField in
-            textField.text = self?.presenter?.getNameForAddress(at: indexPath)
+            textField.text = "..."
         }
         renameAlert.addAction(.init(title: "Cancel", style: .cancel))
         renameAlert.addAction(.init(title: "Confirm", style: .default) { [weak self] action in
             let name = renameAlert.textFields?[0].text
-            self?.presenter?.renameAddress(at: indexPath, newName: name)
+            //self?.presenter?.renameAddress(at: indexPath, newName: name)
         })
         present(renameAlert, animated: true)
+    }
+    
+    func checkNumberOfAddresses(_ numberOfAddresses: Int) {
+        let isEmpty = numberOfAddresses == 0
+        trackedAddressesTableView.isHidden = isEmpty
+        noTrackedAddressesView.isHidden = !isEmpty
     }
 }
 
 // MARK: - MainView Protocol
-extension MainViewController: MainView {
+extension MainViewController {
     func showInfoViewController(for address: String, addressInfo: (BalanceModel, TransactionsCountModel)) {
         searchBar.text = nil
         let addressInfoVC = ModuleBuilder.createAddressInfoModule(address: address, addressInfo: addressInfo)
@@ -160,7 +172,7 @@ extension MainViewController: MainView {
 // MARK: - UISearchBarDelegate
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        presenter.searchButtonDidTap(with: searchBar.text)
+        viewModel.searchButtonDidTap(text: searchBar.text)
         searchBar.resignFirstResponder()
     }
 }
@@ -168,13 +180,15 @@ extension MainViewController: UISearchBarDelegate {
 // MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.getNumberOfTrackedAddresses()
+        let numberOfAddresses = viewModel.numberOfTrackedAddresses
+        checkNumberOfAddresses(numberOfAddresses)
+        return numberOfAddresses
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.trackedCell, for: indexPath) as! TrackedAddressCell
-        let (name, address) = presenter.configureCell(at: indexPath)
-        cell.configure(name: name, address: address)
+        let cellViewModel = viewModel.getViewModelForAddress(at: indexPath)
+        cell.configure(viewModel: cellViewModel)
         return cell
     }
     
@@ -185,7 +199,7 @@ extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completion in
             guard let self else { return }
-            self.presenter.deleteTrackingForAddress(at: indexPath)
+            self.viewModel.deleteAddress(at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .right)
             completion(true)
         }
@@ -206,6 +220,6 @@ extension MainViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.didSelectAddress(at: indexPath)
+       // ..
     }
 }
