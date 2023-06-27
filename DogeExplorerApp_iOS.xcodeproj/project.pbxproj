@@ -34,6 +34,7 @@
 		10BA60EC29EC63E5005FCE80 /* InternetConnectionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */; };
 		10BA60EE29EDF98E005FCE80 /* Int+UnixTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */; };
 		10BAD4122A14280700D4BAAF /* UIStackView+Separators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BAD4112A14280700D4BAAF /* UIStackView+Separators.swift */; };
+		10BDC5F52A4B69D400F50E66 /* MakeWithLoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BDC5F42A4B69D400F50E66 /* MakeWithLoveView.swift */; };
 		10CF63072A155F91003C124E /* ScrollableStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF63062A155F91003C124E /* ScrollableStackView.swift */; };
 		10CF630B2A156A67003C124E /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF630A2A156A67003C124E /* SelfSizedTableView.swift */; };
 		10CF630D2A163C24003C124E /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CF630C2A163C24003C124E /* TitleView.swift */; };
@@ -99,6 +100,7 @@
 		10BA60EB29EC63E5005FCE80 /* InternetConnectionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionObserver.swift; sourceTree = "<group>"; };
 		10BA60ED29EDF98E005FCE80 /* Int+UnixTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+UnixTime.swift"; sourceTree = "<group>"; };
 		10BAD4112A14280700D4BAAF /* UIStackView+Separators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Separators.swift"; sourceTree = "<group>"; };
+		10BDC5F42A4B69D400F50E66 /* MakeWithLoveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeWithLoveView.swift; sourceTree = "<group>"; };
 		10CF63062A155F91003C124E /* ScrollableStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableStackView.swift; sourceTree = "<group>"; };
 		10CF630A2A156A67003C124E /* SelfSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
 		10CF630C2A163C24003C124E /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				10CF630C2A163C24003C124E /* TitleView.swift */,
 				10CF63102A166BCA003C124E /* NoTrackedAddressesView.swift */,
 				10CF63152A17F97F003C124E /* LoaderSearchBar.swift */,
+				10BDC5F42A4B69D400F50E66 /* MakeWithLoveView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -463,6 +466,7 @@
 				10A42D5A29E9B18C00BE04B9 /* MainPresenter.swift in Sources */,
 				10A42D6529E9B2D400BE04B9 /* AddressInfoPresenter.swift in Sources */,
 				10BAD4122A14280700D4BAAF /* UIStackView+Separators.swift in Sources */,
+				10BDC5F52A4B69D400F50E66 /* MakeWithLoveView.swift in Sources */,
 				1047F75F29FAD85500B46708 /* MainViewProtocol.swift in Sources */,
 				10A42D6C29E9B9E400BE04B9 /* ModuleBuilder.swift in Sources */,
 				1047F76829FAD99700B46708 /* AddressInfoPresenterProtocol.swift in Sources */,

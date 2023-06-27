@@ -38,12 +38,23 @@ final class MainViewController: UIViewController {
     
     private let noTrackedAddressesView = NoTrackedAddressesView()
     
+    private let makeWithLoveLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.text = "Made with ❤️ and ☕️ by Arseniy Zolotarev"
+        label.font = .dogeSans(size: 17, style: .body)
+        label.textColor = .gray
+        return label
+    }()
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureAppearance()
         configureSearchBar()
+        configureMakeWithLoveLabel()
         configureNoAddressesView()
         configureTableView()
     }
@@ -89,6 +100,16 @@ private extension MainViewController {
         ])
     }
     
+    func configureMakeWithLoveLabel() {
+        makeWithLoveLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(makeWithLoveLabel)
+        NSLayoutConstraint.activate([
+            makeWithLoveLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            makeWithLoveLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            makeWithLoveLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
+    }
+    
     func configureNoAddressesView() {
         noTrackedAddressesView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -107,7 +128,7 @@ private extension MainViewController {
             trackedAddressesTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 10),
             trackedAddressesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             trackedAddressesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            trackedAddressesTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            trackedAddressesTableView.bottomAnchor.constraint(equalTo: makeWithLoveLabel.topAnchor, constant: -8)
         ])
     }
     

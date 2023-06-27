@@ -39,7 +39,6 @@ final class MainPresenterImpl: MainPresenter {
     }
     
     func configureCell(at indexPath: IndexPath) -> (name: String, address: String) {
-        let sueta = Sueta.shared
         let currentAddress = trackedAddresses[indexPath.row]
         let shortenAddress = currentAddress.address.shorten(prefix: 8, suffix: 5)
         return (currentAddress.name, shortenAddress)
