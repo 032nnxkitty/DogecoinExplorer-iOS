@@ -10,9 +10,10 @@ import Foundation
 final class AddressInfoPresenterImpl: AddressInfoPresenter {
     // MARK: - Private Properties
     private weak var view: AddressInfoView?
-    private let networkManager: NetworkManager
+    
+    private let internetConnectionObserver = InternetConnectionObserverImpl.shared
     private let trackingService: AddressTrackingService
-    private let internetConnectionObserver: InternetConnectionObserver
+    private let networkManager: NetworkManager
     
     // MARK: Info About Address
     private let address: String
@@ -31,7 +32,6 @@ final class AddressInfoPresenterImpl: AddressInfoPresenter {
         self.view = view
         self.networkManager = networkManager
         self.trackingService = trackingService
-        self.internetConnectionObserver = InternetConnectionObserverImpl.shared
         
         self.address = address
         self.addressInfo = addressInfo
@@ -175,7 +175,7 @@ private extension AddressInfoPresenterImpl {
     }
     
     func loadTransactionsPage(_ page: Int) async throws {
-        let newTransactions = try await networkManager.getDetailedTransactionsPage(for: address, page: page)
+        let newTransactions = try await networkManager.loadDetailedTransactionsPage(for: address, page: page)
         loadedTransactions += newTransactions
         loadedTransactions.sort { $0.transaction.time > $1.transaction.time }
     }

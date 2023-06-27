@@ -8,11 +8,7 @@
 import Network
 import Foundation
 
-protocol InternetConnectionObserver {
-    var isReachable: Bool { get }
-}
-
-final class InternetConnectionObserverImpl: InternetConnectionObserver {
+final class InternetConnectionObserverImpl {
     static let shared = InternetConnectionObserverImpl()
     
     private let monitor = NWPathMonitor()

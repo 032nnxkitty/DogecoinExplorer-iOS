@@ -10,9 +10,10 @@ import Foundation
 final class MainPresenterImpl: MainPresenter {
     // MARK: - Private Properties
     private weak var view: MainView?
+    
+    private let internetConnectionObserver = InternetConnectionObserverImpl.shared
     private let trackingService: AddressTrackingService
     private let networkManager: NetworkManager
-    private let internetConnectionObserver: InternetConnectionObserver
     
     private var trackedAddresses: [(address: String, name: String)] {
         return trackingService.getAllTrackedAddresses()
@@ -27,7 +28,6 @@ final class MainPresenterImpl: MainPresenter {
         self.view = view
         self.networkManager = networkManager
         self.trackingService = trackingService
-        self.internetConnectionObserver = InternetConnectionObserverImpl.shared
         
         checkAddressesCount()
         trackingService.addMockData()
@@ -39,6 +39,7 @@ final class MainPresenterImpl: MainPresenter {
     }
     
     func configureCell(at indexPath: IndexPath) -> (name: String, address: String) {
+        let sueta = Sueta.shared
         let currentAddress = trackedAddresses[indexPath.row]
         let shortenAddress = currentAddress.address.shorten(prefix: 8, suffix: 5)
         return (currentAddress.name, shortenAddress)
@@ -109,7 +110,7 @@ private extension MainPresenterImpl {
         view?.animateLoader(true)
         Task { @MainActor in
             do {
-                let addressInfo = try await networkManager.getAddressInfo(address)
+                let addressInfo = try await networkManager.loadInfoForAddress(address)
                 view?.showInfoViewController(for: address, addressInfo: addressInfo)
             } catch {
                 view?.showOkActionSheet(title: "Address not found", message: "Please check the entered address and try again.")

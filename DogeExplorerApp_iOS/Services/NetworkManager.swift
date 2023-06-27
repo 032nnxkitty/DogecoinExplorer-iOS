@@ -15,39 +15,39 @@ enum NetworkError: Error {
 }
 
 protocol NetworkManager {
-    func getAddressInfo(_ address: String) async throws -> (BalanceModel, TransactionsCountModel)
-    func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel]
+    func loadInfoForAddress(_ address: String) async throws -> (BalanceModel, TransactionsCountModel)
+    func loadDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel]
 }
 
 final class URLSessionNetworkManager: NetworkManager {
     static let shared = URLSessionNetworkManager()
     private init() {}
     
-    func getAddressInfo(_ address: String) async throws -> (BalanceModel, TransactionsCountModel) {
+    func loadInfoForAddress(_ address: String) async throws -> (BalanceModel, TransactionsCountModel) {
         let balanceUrl           = URL(string: "https://dogechain.info/api/v1/address/balance/\(address)")
         let transactionsCountUrl = URL(string: "https://dogechain.info/api/v1/address/transaction_count/\(address)")
         
-        let balance           = try await request(url: balanceUrl, decodeTo: BalanceModel.self)
-        let transactionsCount = try await request(url: transactionsCountUrl, decodeTo: TransactionsCountModel.self)
+        let balance: BalanceModel = try await request(url: balanceUrl)
+        let transactionsCount: TransactionsCountModel = try await request(url: transactionsCountUrl)
         
         return (balance, transactionsCount)
     }
     
-    func getDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel] {
+    func loadDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel] {
         let pageUrl = URL(string: "https://dogechain.info/api/v1/address/transactions/\(address)/\(page)")
         
-        let transactionPage = try await request(url: pageUrl, decodeTo: TransactionsPageModel.self)
+        let transactionPage: TransactionsPageModel = try await request(url: pageUrl)
         
         var detailedTransactionsPage: [DetailedTransactionModel] = []
-        return try await withThrowingTaskGroup(of: DetailedTransactionModel.self,
-                                               returning: [DetailedTransactionModel].self) { taskGroup in
+        return try await withThrowingTaskGroup(of: DetailedTransactionModel.self, returning: [DetailedTransactionModel].self) { [weak self] taskGroup in
+            guard let self else { return [] }
             for transaction in transactionPage.transactions {
                 
                 let hash = transaction.hash
                 let transactionInfoUrl = URL(string: "https://dogechain.info/api/v1/transaction/\(hash)")
                 
                 taskGroup.addTask {
-                    let transaction = try await self.request(url: transactionInfoUrl, decodeTo: DetailedTransactionModel.self)
+                    let transaction: DetailedTransactionModel = try await self.request(url: transactionInfoUrl)
                     return transaction
                 }
             }
@@ -63,7 +63,7 @@ final class URLSessionNetworkManager: NetworkManager {
 
 // MARK: - Private Generic Request
 private extension URLSessionNetworkManager {
-    func request<T: Decodable>(url: URL?, decodeTo: T.Type) async throws -> T {
+    func request<T: Decodable>(url: URL?) async throws -> T {
         guard let url else {
             throw NetworkError.invalidURL
         }
