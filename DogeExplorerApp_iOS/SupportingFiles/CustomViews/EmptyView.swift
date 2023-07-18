@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NoTrackedAddressesView: UIView {
+final class EmptyView: UIView {
     // MARK: - UI Elements
     private let containerStack: UIStackView = {
         let stack = UIStackView()
@@ -17,9 +17,8 @@ final class NoTrackedAddressesView: UIView {
         return stack
     }()
     
-    private let noAddressesLabel: UILabel = {
+    private let textLabel: UILabel = {
         let label = UILabel()
-        label.text = "No tracked addresses :("
         label.textColor = R.Colors.accent
         label.font = .dogeSans(size: 25, style: .largeTitle)
         label.textAlignment = .center
@@ -44,8 +43,17 @@ final class NoTrackedAddressesView: UIView {
         fatalError("storyboards are incompatible with truth and beauty")
     }
     
+    // MARK: - Public Properties
+    var text: String = "No tracked addresses :(" {
+        didSet {
+            textLabel.text = text
+        }
+    }
+    
     // MARK: - Private Methods
     private func configureAppearance() {
+        textLabel.text = text
+        
         addSubview(containerStack)
         NSLayoutConstraint.activate([
             containerStack.topAnchor.constraint(equalTo: topAnchor),
@@ -54,6 +62,6 @@ final class NoTrackedAddressesView: UIView {
             containerStack.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         
-        [sadDogImageView, noAddressesLabel].forEach { containerStack.addArrangedSubview($0) }
+        [sadDogImageView, textLabel].forEach { containerStack.addArrangedSubview($0) }
     }
 }

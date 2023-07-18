@@ -8,6 +8,8 @@
 import UIKit
 
 final class TrackedAddressCell: UITableViewCell {
+    static let identifier = "tracked.cell.identifier"
+    
     // MARK: - UI Elements
     private let labelsStack: UIStackView = {
         let stack = UIStackView()
@@ -59,7 +61,7 @@ private extension TrackedAddressCell {
         
         var configuration = UIBackgroundConfiguration.listPlainCell()
         configuration.backgroundInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
-        configuration.backgroundColor = R.Colors.backgroundGray
+        configuration.backgroundColor = R.Colors.elementBackground
         configuration.cornerRadius = 20
         backgroundConfiguration =  configuration
         

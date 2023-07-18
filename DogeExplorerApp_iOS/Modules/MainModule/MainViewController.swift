@@ -8,63 +8,63 @@
 import UIKit
 
 final class MainViewController: UIViewController {
-    public var presenter: MainPresenter!
+    private var viewModel: MainViewModel
     
     // MARK: - UI Elements
-    private let searchBar: LoaderSearchBar = {
+    private lazy var searchBar: LoaderSearchBar = {
         let bar = LoaderSearchBar()
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.searchTextField.font = .dogeSans(size: 17, style: .body)
         bar.searchTextField.backgroundColor = .clear
-        bar.backgroundColor = R.Colors.backgroundGray
+        bar.backgroundColor = R.Colors.elementBackground
         bar.placeholder = "Enter the address to search"
         bar.backgroundImage = UIImage()
         bar.layer.cornerRadius = 20
+        bar.delegate = self
         return bar
     }()
     
     private lazy var trackedAddressesTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.register(TrackedAddressCell.self, forCellReuseIdentifier: R.Identifiers.trackedCell)
+        tableView.register(TrackedAddressCell.self, forCellReuseIdentifier: TrackedAddressCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.showsVerticalScrollIndicator = false
         tableView.keyboardDismissMode = .onDrag
         tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.separatorStyle = .none
         return tableView
     }()
     
-    private let noTrackedAddressesView = NoTrackedAddressesView()
+    private let emptyView = EmptyView()
     
-    private let makeWithLoveLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.text = "Made with ❤️ and ☕️ by Arseniy Zolotarev"
-        label.font = .dogeSans(size: 17, style: .body)
-        label.textColor = .gray
-        return label
-    }()
+    private let supportView = SupportView()
+    
+    // MARK: - Init
+    init(viewModel: MainViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("storyboards are incompatible with truth and beauty")
+    }
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureAppearance()
-        configureSearchBar()
-        configureMakeWithLoveLabel()
-        configureNoAddressesView()
-        configureTableView()
+        configureUIElements()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presenter.viewWillAppear()
+        trackedAddressesTableView.reloadData()
     }
     
-    // MARK: - Event Hadling
+    // MARK: - Event Handling
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
@@ -73,7 +73,9 @@ final class MainViewController: UIViewController {
 
 // MARK: - Actions
 @objc private extension MainViewController {
-   
+    func didTapSupportLabel() {
+        viewModel.didTapSupportView()
+    }
 }
 
 // MARK: - Private Methods
@@ -88,100 +90,62 @@ private extension MainViewController {
         ]
     }
     
-    func configureSearchBar() {
-        searchBar.delegate = self
+    func configureUIElements() {
+        supportView.translatesAutoresizingMaskIntoConstraints = false
+        supportView.addTarget(self, action: #selector(didTapSupportLabel))
         
-        view.addSubview(searchBar)
+        [searchBar, trackedAddressesTableView, supportView].forEach {
+            view.addSubview($0)
+        }
+        
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            searchBar.heightAnchor.constraint(equalToConstant: 55)
-        ])
-    }
-    
-    func configureMakeWithLoveLabel() {
-        makeWithLoveLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(makeWithLoveLabel)
-        NSLayoutConstraint.activate([
-            makeWithLoveLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            makeWithLoveLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            makeWithLoveLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-        ])
-    }
-    
-    func configureNoAddressesView() {
-        noTrackedAddressesView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(noTrackedAddressesView)
-        NSLayoutConstraint.activate([
-            noTrackedAddressesView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -30),
-            noTrackedAddressesView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            noTrackedAddressesView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            noTrackedAddressesView.heightAnchor.constraint(equalToConstant: 200)
-        ])
-    }
-    
-    func configureTableView() {
-        view.addSubview(trackedAddressesTableView)
-        NSLayoutConstraint.activate([
+            searchBar.heightAnchor.constraint(equalToConstant: 55),
+            
+            supportView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            supportView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            supportView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
             trackedAddressesTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 10),
             trackedAddressesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             trackedAddressesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            trackedAddressesTableView.bottomAnchor.constraint(equalTo: makeWithLoveLabel.topAnchor, constant: -8)
+            trackedAddressesTableView.bottomAnchor.constraint(equalTo: supportView.topAnchor)
+            
         ])
     }
     
-    func showRenameAlertForAddress(at indexPath: IndexPath) {
-        let renameAlert = UIAlertController(title: "Enter a new name", message: "", preferredStyle: .alert)
-        renameAlert.addTextField { [weak self] textField in
-            textField.text = self?.presenter?.getNameForAddress(at: indexPath)
-        }
-        renameAlert.addAction(.init(title: "Cancel", style: .cancel))
-        renameAlert.addAction(.init(title: "Confirm", style: .default) { [weak self] action in
-            let name = renameAlert.textFields?[0].text
-            self?.presenter?.renameAddress(at: indexPath, newName: name)
-        })
-        present(renameAlert, animated: true)
-    }
-}
-
-// MARK: - MainView Protocol
-extension MainViewController: MainView {
-    func showInfoViewController(for address: String, addressInfo: (BalanceModel, TransactionsCountModel)) {
-        searchBar.text = nil
-        let addressInfoVC = ModuleBuilder.createAddressInfoModule(address: address, addressInfo: addressInfo)
-        navigationController?.pushViewController(addressInfoVC, animated: true)
-    }
-    
-    func reloadData() {
-        trackedAddressesTableView.reloadData()
-    }
-    
-    func showOkActionSheet(title: String, message: String) {
-        if searchBar.isFirstResponder {
-            searchBar.resignFirstResponder()
-        }
+    func showEmptyView() {
+        trackedAddressesTableView.isHidden = true
         
-        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        actionSheet.addAction(.init(title: "Ok", style: .cancel))
-        present(actionSheet, animated: true)
+        emptyView.alpha = 0
+        emptyView.transform = .init(scaleX: 0.8, y: 0.8)
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(emptyView)
+        NSLayoutConstraint.activate([
+            emptyView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            emptyView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            emptyView.heightAnchor.constraint(equalToConstant: 200)
+        ])
+        
+        UIView.animate(withDuration: 0.3) {
+            self.emptyView.alpha = 1
+            self.emptyView.transform = .identity
+        }
     }
     
-    func showNoTrackedAddressesView(_ isVisible: Bool) {
-        noTrackedAddressesView.isHidden = !isVisible
-        trackedAddressesTableView.isHidden = isVisible
-    }
-    
-    func animateLoader(_ isAnimated: Bool) {
-        isAnimated ? searchBar.startAnimating() : searchBar.stopAnimating()
+    func hideEmptyView() {
+        emptyView.removeFromSuperview()
     }
 }
 
 // MARK: - UISearchBarDelegate
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        presenter.searchButtonDidTap(with: searchBar.text)
+        viewModel.searchButtonDidTap(text: searchBar.text)
         searchBar.resignFirstResponder()
     }
 }
@@ -189,12 +153,16 @@ extension MainViewController: UISearchBarDelegate {
 // MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.getNumberOfTrackedAddresses()
+        let numberOfAddresses = viewModel.numberOfTrackedAddresses
+        
+        numberOfAddresses == 0 ? showEmptyView() : hideEmptyView()
+        
+        return numberOfAddresses
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.trackedCell, for: indexPath) as! TrackedAddressCell
-        let (name, address) = presenter.configureCell(at: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: TrackedAddressCell.identifier, for: indexPath) as! TrackedAddressCell
+        let (address, name) = viewModel.getViewModelForAddress(at: indexPath)
         cell.configure(name: name, address: address)
         return cell
     }
@@ -206,7 +174,7 @@ extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completion in
             guard let self else { return }
-            self.presenter.deleteTrackingForAddress(at: indexPath)
+            viewModel.deleteAddress(at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .right)
             completion(true)
         }
@@ -214,7 +182,11 @@ extension MainViewController: UITableViewDataSource {
         deleteAction.backgroundColor = R.Colors.background
         
         let renameAction = UIContextualAction(style: .normal, title: "") { [weak self] _, _, completion in
-            self?.showRenameAlertForAddress(at: indexPath)
+            guard let self else { return }
+            presentTextFieldAlert(title: "Enter a new name", message: nil, textFieldText: "Sueta") { text in
+                self.viewModel.renameAddress(at: indexPath, newName: text)
+                tableView.reloadData()
+            }
             completion(true)
         }
         renameAction.image = UIImage(named: "rename")
@@ -227,6 +199,6 @@ extension MainViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.didSelectAddress(at: indexPath)
+        viewModel.didSelectAddress(at: indexPath)
     }
 }

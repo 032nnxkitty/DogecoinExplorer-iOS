@@ -8,8 +8,8 @@
 import Network
 import Foundation
 
-final class InternetConnectionObserverImpl {
-    static let shared = InternetConnectionObserverImpl()
+final class InternetConnectionObserver {
+    static let shared = InternetConnectionObserver()
     
     private let monitor = NWPathMonitor()
     private var status: NWPath.Status = .requiresConnection
@@ -30,7 +30,7 @@ final class InternetConnectionObserverImpl {
 }
 
 // MARK: - Private Methods
-private extension InternetConnectionObserverImpl {
+private extension InternetConnectionObserver {
     func startMonitoring() {
         monitor.pathUpdateHandler = { [weak self] path in
             guard let self else { return }

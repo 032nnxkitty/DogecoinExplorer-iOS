@@ -27,7 +27,7 @@ final class TrackingStateButton: UIButton {
         setTitleColor(.white, for: .normal)
         tintColor = .white
         
-        configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        configuration?.baseBackgroundColor = R.Colors.elementBackground
         configuration?.baseForegroundColor = .white
     }
     

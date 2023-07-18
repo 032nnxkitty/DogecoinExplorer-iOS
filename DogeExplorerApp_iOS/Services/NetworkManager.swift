@@ -12,6 +12,7 @@ enum NetworkError: Error {
     case httpError(statusCode: Int)
     case decodeError
     case badServerResponse
+    case addressNotFound
 }
 
 protocol NetworkManager {
@@ -27,10 +28,16 @@ final class URLSessionNetworkManager: NetworkManager {
         let balanceUrl           = URL(string: "https://dogechain.info/api/v1/address/balance/\(address)")
         let transactionsCountUrl = URL(string: "https://dogechain.info/api/v1/address/transaction_count/\(address)")
         
-        let balance: BalanceModel = try await request(url: balanceUrl)
-        let transactionsCount: TransactionsCountModel = try await request(url: transactionsCountUrl)
+        var balanceModel: BalanceModel
+        do {
+            balanceModel = try await request(url: balanceUrl)
+        } catch NetworkError.decodeError {
+            throw NetworkError.addressNotFound
+        }
         
-        return (balance, transactionsCount)
+        let transactionsCountModel: TransactionsCountModel = try await request(url: transactionsCountUrl)
+        
+        return (balanceModel, transactionsCountModel)
     }
     
     func loadDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel] {

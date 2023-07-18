@@ -13,6 +13,8 @@ enum TransactionStyle {
 }
 
 final class TransactionCell: UITableViewCell {
+    static let identifier = "transaction.cell.identifier"
+    
     // MARK: - UI Elements
     private let containerStack: UIStackView = {
         let stack = UIStackView()
@@ -99,7 +101,7 @@ private extension TransactionCell {
         
         var configuration = UIBackgroundConfiguration.listPlainCell()
         configuration.backgroundInsets = NSDirectionalEdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
-        configuration.backgroundColor = R.Colors.backgroundGray
+        configuration.backgroundColor = R.Colors.elementBackground
         configuration.cornerRadius = 20
         backgroundConfiguration =  configuration
         

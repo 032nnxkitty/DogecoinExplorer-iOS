@@ -38,7 +38,7 @@ final class LoaderButton: UIButton {
     // MARK: - Private Methods
     private func configureAppearance() {
         configuration = UIButton.Configuration.filled()
-        configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        configuration?.baseBackgroundColor = R.Colors.elementBackground
         configuration?.baseForegroundColor = .white
         configuration?.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
         configuration?.background.cornerRadius = 20

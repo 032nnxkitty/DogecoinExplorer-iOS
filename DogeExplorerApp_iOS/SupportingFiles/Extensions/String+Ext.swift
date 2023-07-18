@@ -1,5 +1,5 @@
 //
-//  String+Formatting.swift
+//  String+Ext.swift
 //  DogeExplorerApp_iOS
 //
 //  Created by Arseniy Zolotarev on 15.04.2023.
@@ -21,5 +21,9 @@ extension String {
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
         return formatter.string(for: number) ?? self
+    }
+    
+    func getRange(of substring: String) -> NSRange {
+        return (self as NSString).range(of: substring)
     }
 }

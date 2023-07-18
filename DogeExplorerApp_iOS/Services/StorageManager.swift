@@ -7,20 +7,22 @@
 
 import CoreData
 
-protocol AddressTrackingService {
-    func getAllTrackedAddresses() -> [(address: String, name: String)]
-    func deleteAllTrackedAddresses()
+protocol StorageManager {
+    var trackedAddresses: [TrackedAddressEntity] { get }
     
-    func addNewTrackedAddress(address: String, name: String)
-    func deleteTracking(_ addressToDelete: String)
-    func renameAddress(_ address: String, to newName: String)
-    func getTrackingName(for address: String) -> String?
+    func addNewAddress(address: String, name: String)
+    
+    func deleteAddress(_ addressToDelete: String)
+    
+    func renameAddress(_ addressToRename: String, newName: String)
+    
+    func getName(for address: String) -> String?
     
     func addMockData()
 }
 
-final class CoreDataManager {
-    static let shared = CoreDataManager()
+final class CoreDataStorageManager {
+    static let shared = CoreDataStorageManager()
     private init() {}
     
     private var entityName: String {
@@ -53,8 +55,16 @@ final class CoreDataManager {
 }
 
 // MARK: - Address Tracking Service Methods
-extension CoreDataManager: AddressTrackingService {
-    func addNewTrackedAddress(address: String, name: String) {
+extension CoreDataStorageManager: StorageManager {
+    var trackedAddresses: [TrackedAddressEntity] {
+        let fetchRequest = TrackedAddressEntity.fetchRequest()
+        guard let entitiesArray = try? viewContext.fetch(fetchRequest), !entitiesArray.isEmpty else {
+            return []
+        }
+        return entitiesArray.reversed()
+    }
+    
+    func addNewAddress(address: String, name: String) {
         let backgroundContext = persistentContainer.newBackgroundContext()
         
         let newAddressEntity = TrackedAddressEntity(context: backgroundContext)
@@ -64,16 +74,34 @@ extension CoreDataManager: AddressTrackingService {
         saveContext(backgroundContext: backgroundContext)
     }
     
-    func getAllTrackedAddresses() -> [(address: String, name: String)] {
+    func deleteAddress(_ addressToDelete: String) {
+        let backgroundContext = persistentContainer.newBackgroundContext()
+        
         let fetchRequest = TrackedAddressEntity.fetchRequest()
-        guard let entitiesArray = try? viewContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return [] }
-        var result: [(String, String)] = []
-        for trackedAddressesEntity in entitiesArray {
-            if let name = trackedAddressesEntity.name, let address = trackedAddressesEntity.address {
-                result.append((address, name))
-            }
-        }
-        return result.reversed()
+        fetchRequest.predicate = NSPredicate(format: "address == %@", addressToDelete)
+        guard let entitiesArray = try? backgroundContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
+        backgroundContext.delete(entitiesArray[0])
+        saveContext(backgroundContext: backgroundContext)
+    }
+    
+    func getName(for address: String) -> String? {
+        let fetchRequest = TrackedAddressEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "address == %@", address)
+        guard let entitiesArray = try? viewContext.fetch(fetchRequest),
+              !entitiesArray.isEmpty,
+              let name = entitiesArray[0].name else { return nil }
+        return name
+    }
+    
+    func renameAddress(_ addressToRename: String, newName: String) {
+        let backgroundContext = persistentContainer.newBackgroundContext()
+        
+        let fetchRequest = TrackedAddressEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "address == %@", addressToRename)
+        guard let entitiesArray = try? backgroundContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
+        entitiesArray[0].name = newName
+        
+        saveContext(backgroundContext: backgroundContext)
     }
     
     func deleteAllTrackedAddresses() {
@@ -86,45 +114,15 @@ extension CoreDataManager: AddressTrackingService {
         saveContext(backgroundContext: backgroundContext)
     }
     
-    func deleteTracking(_ addressToDelete: String) {
-        let backgroundContext = persistentContainer.newBackgroundContext()
-        
-        let fetchRequest = TrackedAddressEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "address == %@", addressToDelete)
-        guard let entitiesArray = try? backgroundContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
-        backgroundContext.delete(entitiesArray[0])
-        saveContext(backgroundContext: backgroundContext)
-    }
-    
-    func getTrackingName(for address: String) -> String? {
-        let fetchRequest = TrackedAddressEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "address == %@", address)
-        guard let entitiesArray = try? viewContext.fetch(fetchRequest),
-              !entitiesArray.isEmpty,
-              let name = entitiesArray[0].name else { return nil }
-        return name
-    }
-    
-    func renameAddress(_ address: String, to newName: String) {
-        let backgroundContext = persistentContainer.newBackgroundContext()
-        
-        let fetchRequest = TrackedAddressEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "address == %@", address)
-        guard let entitiesArray = try? backgroundContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
-        entitiesArray[0].name = newName
-        
-        saveContext(backgroundContext: backgroundContext)
-    }
-    
     func addMockData() {
         deleteAllTrackedAddresses()
-        addNewTrackedAddress(address: "DQL55LjFkYagcCdx9HXztYAepcXY3jb6Wa", name: "Andrew, Dubai expo")
-        addNewTrackedAddress(address: "DKQJ5X3scmBqv37kvAYjWRRhTFDiXFdzz6", name: "Martin")
-        addNewTrackedAddress(address: "DNqp3QBLpc8SCXV2Ww9YeMxZPfjwci1uZ1", name: "Luke")
-        addNewTrackedAddress(address: "DTsBpxfR9otQTRJEXc7dW4HmuNVgutc6fW", name: "Josh")
-        addNewTrackedAddress(address: "9wYpKfWNaWFtZ3KCqgoZM5AyYCz7S7juLV", name: "Pablo")
-        addNewTrackedAddress(address: "DAwJBoNqkHoT523p9h8gUjWJYSPc4RdDsr", name: "Tesla California")
-        addNewTrackedAddress(address: "DNqos1BcjPSZGxQn51nhcKydjA73nxohwC", name: "Eliška")
-        addNewTrackedAddress(address: "D5RpQhaVkpHHT4n8HrPahoVWbwmSohNpEt", name: "My wallet")
+        addNewAddress(address: "DQL55LjFkYagcCdx9HXztYAepcXY3jb6Wa", name: "Andrew, Dubai expo")
+        addNewAddress(address: "DKQJ5X3scmBqv37kvAYjWRRhTFDiXFdzz6", name: "Martin")
+        addNewAddress(address: "DNqp3QBLpc8SCXV2Ww9YeMxZPfjwci1uZ1", name: "Luke")
+        addNewAddress(address: "DTsBpxfR9otQTRJEXc7dW4HmuNVgutc6fW", name: "Josh")
+        addNewAddress(address: "9wYpKfWNaWFtZ3KCqgoZM5AyYCz7S7juLV", name: "Pablo")
+        addNewAddress(address: "DAwJBoNqkHoT523p9h8gUjWJYSPc4RdDsr", name: "Tesla California")
+        addNewAddress(address: "DNqos1BcjPSZGxQn51nhcKydjA73nxohwC", name: "Eliška")
+        addNewAddress(address: "D5RpQhaVkpHHT4n8HrPahoVWbwmSohNpEt", name: "My wallet")
     }
 }

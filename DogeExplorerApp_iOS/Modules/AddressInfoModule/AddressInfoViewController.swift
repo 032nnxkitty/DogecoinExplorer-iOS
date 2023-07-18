@@ -8,7 +8,7 @@
 import UIKit
 
 final class AddressInfoViewController: UIViewController {
-    var presenter: AddressInfoPresenter!
+    
     
     // MARK: - UI Elements
     private lazy var refreshControl: UIRefreshControl = {
@@ -30,7 +30,7 @@ final class AddressInfoViewController: UIViewController {
     
     private lazy var transactionsTableView: SelfSizedTableView = {
         let tableView = SelfSizedTableView()
-        tableView.register(TransactionCell.self, forCellReuseIdentifier: R.Identifiers.transactionCell)
+        tableView.register(TransactionCell.self, forCellReuseIdentifier: TransactionCell.identifier)
         tableView.showsVerticalScrollIndicator = false
         tableView.isScrollEnabled = false
         tableView.separatorStyle = .none
@@ -42,7 +42,7 @@ final class AddressInfoViewController: UIViewController {
     private lazy var backButton: UIBarButtonItem = {
         let button = UIButton(configuration: .filled())
         button.configuration?.background.cornerRadius = 10
-        button.configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        button.configuration?.baseBackgroundColor = R.Colors.elementBackground
         button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         button.addTarget(self, action: #selector(popToPrevious), for: .touchUpInside)
         return UIBarButtonItem(customView: button)
@@ -51,7 +51,7 @@ final class AddressInfoViewController: UIViewController {
     private lazy var renameButton: UIBarButtonItem = {
         let button = UIButton(configuration: .filled())
         button.configuration?.background.cornerRadius = 10
-        button.configuration?.baseBackgroundColor = R.Colors.backgroundGray
+        button.configuration?.baseBackgroundColor = R.Colors.elementBackground
         button.setImage(UIImage(systemName: "pencil"), for: .normal)
         button.addTarget(self, action: #selector(renameButtonDidTap), for: .touchUpInside)
         return UIBarButtonItem(customView: button)
@@ -129,15 +129,15 @@ private extension AddressInfoViewController {
     }
     
     func trackingStateDidChange() {
-        presenter.trackingStateDidChange()
+//        presenter.trackingStateDidChange()
     }
     
     func loadTransactionsButtonDidTap() {
-        presenter.loadTransactionsButtonDidTap()
+//        presenter.loadTransactionsButtonDidTap()
     }
     
     func renameButtonDidTap() {
-        presenter.renameButtonDidTap()
+//        presenter.renameButtonDidTap()
     }
     
     func popToPrevious() {
@@ -145,83 +145,15 @@ private extension AddressInfoViewController {
     }
 }
 
-// MARK: - AddressInfoView Protocol
-extension AddressInfoViewController: AddressInfoView {
-    func reloadData() {
-        transactionsTableView.reloadData()
-    }
-    
-    func configureIfAddressTracked(name: String) {
-        title = name
-        navigationItem.rightBarButtonItems = [renameButton]
-        trackingStateButton.setTrackingState()
-    }
-    
-    func configureIfAddressNotTracked(shortenAddress: String) {
-        title = shortenAddress
-        navigationItem.rightBarButtonItems = []
-        trackingStateButton.setNonTrackingState()
-    }
-    
-    func setAddressInfo(address: String, dogeBalance: String, transactionsCount: String) {
-        baseAddressInfoView.setInfo(address: address, dogeBalance: dogeBalance, transactionsCount: transactionsCount)
-        transactionsTableView.reloadData()
-        UIView.animate(withDuration: 0.3) {
-            self.containerStack.alpha = 1
-        }
-    }
-    
-    func showOkActionSheet(title: String, message: String) {
-        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        actionSheet.view.tintColor = R.Colors.accent
-        let action = UIAlertAction(title: "Ok", style: .cancel)
-        actionSheet.addAction(action)
-        present(actionSheet, animated: true)
-    }
-    
-    func showAddTrackingAlert() {
-        let trackingAlert = createTextFieldAlert(title: "Add name to the address", placeHolder: "Enter name") { name in
-            self.presenter.addTracking(with: name)
-        }
-        present(trackingAlert, animated: true)
-    }
-    
-    func showRenameAlert() {
-        let previousName = presenter.getAddressName()
-        let renameAlert = createTextFieldAlert(title: "Enter a new name", text: previousName) { name in
-            self.presenter.renameAddress(newName: name)
-        }
-        present(renameAlert, animated: true)
-    }
-    
-    func animateCentralLoader(_ isAnimated: Bool) {
-        isAnimated ? loader.startAnimating() : loader.stopAnimating()
-    }
-    
-    func animateLoadTransactionLoader(_ isAnimated: Bool) {
-        isAnimated ? loadTransactionButton.startLoading() : loadTransactionButton.stopLoading()
-    }
-    
-    func hideLoadTransactionsButton() {
-        loadTransactionButton.isHidden = true
-    }
-    
-    func makeHapticFeedback() {
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
-    }
-}
-
 // MARK: - UITableViewDataSource
 extension AddressInfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.getNumberOfLoadedTransactions()
+        return 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: R.Identifiers.transactionCell, for: indexPath) as! TransactionCell
-        let (style, value, time, hash) = presenter.configureTransactionCell(at: indexPath)
-        cell.configure(style: style, value: value, date: time, hash: hash)
+        let cell = tableView.dequeueReusableCell(withIdentifier: TransactionCell.identifier, for: indexPath) as! TransactionCell
+       
         return cell
     }
 }
