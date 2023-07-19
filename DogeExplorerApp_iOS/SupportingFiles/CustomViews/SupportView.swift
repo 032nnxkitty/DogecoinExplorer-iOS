@@ -41,7 +41,7 @@ final class SupportView: UIView {
     }
     
     private func configureLabel() {
-        let labelText = "Made with ☕️ and ❤️ love by Arseniy Zolotarev"
+        let labelText = "Made with ☕️ and ❤️ by Arseniy Zolotarev"
         let coloredText = "Arseniy Zolotarev"
         let range = labelText.getRange(of: coloredText)
         

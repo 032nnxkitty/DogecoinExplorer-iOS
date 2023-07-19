@@ -54,22 +54,24 @@ final class MainViewModelImpl: MainViewModel {
     func deleteAddress(at indexPath: IndexPath) {
         guard let addressToDelete = storageManager.trackedAddresses[indexPath.row].address else { return }
         storageManager.deleteAddress(addressToDelete)
+        AlertKit.presentToast(message: "Address successfully deleted")
     }
     
     func renameAddress(at indexPath: IndexPath, newName: String?) {
         guard let newName else { return }
         guard let addressToRename = storageManager.trackedAddresses[indexPath.row].address else { return }
         storageManager.renameAddress(addressToRename, newName: newName)
+        AlertKit.presentToast(message: "Address successfully renamed")
     }
     
     func searchButtonDidTap(text: String?) {
         guard internetConnectionObserver.isReachable else {
-            ToastKit.present(message: "No internet connection")
+            AlertKit.presentToast(message: "No internet connection")
             return
         }
         
         guard let address = text?.trimmingCharacters(in: .whitespaces), address.count == 34 else {
-            ToastKit.present(message: "Invalid address format")
+            AlertKit.presentToast(message: "Invalid address format")
             return
         }
         
@@ -78,11 +80,16 @@ final class MainViewModelImpl: MainViewModel {
     
     func didSelectAddress(at indexPath: IndexPath) {
         guard internetConnectionObserver.isReachable else {
-            ToastKit.present(message: "No internet connection")
+            AlertKit.presentToast(message: "No internet connection")
             return
         }
         
-        self.loadInfo(for: "add")
+        guard let address = storageManager.trackedAddresses[indexPath.row].address else {
+            AlertKit.presentToast(message: "Something went wrong :(")
+            return
+        }
+        
+        self.loadInfo(for: address)
     }
     
     func didTapSupportView() {
@@ -94,25 +101,28 @@ final class MainViewModelImpl: MainViewModel {
 // MARK: - Private Methods
 private extension MainViewModelImpl {
     func loadInfo(for address: String) {
+        LoaderKit.showLoader()
         Task { @MainActor in
             do {
-                let info = try await networkManager.loadInfoForAddress(address)
+                let (balanceModel, transactionsCountModel) = try await networkManager.loadInfoForAddress(address)
+                // open address info vc
             } catch let error as NetworkError {
                 switch error {
                 case .invalidURL:
-                    ToastKit.present(message: "Invalid URL :/")
+                    AlertKit.presentToast(message: "Invalid URL :/")
                 case .httpError(let statusCode):
-                    ToastKit.present(message: "Error status code: \(statusCode)")
+                    AlertKit.presentToast(message: "Error status code: \(statusCode)")
                 case .decodeError:
                     fallthrough
                 case .badServerResponse:
-                    ToastKit.present(message: "Something went wrong :(")
+                    AlertKit.presentToast(message: "Something went wrong :(")
                 case .addressNotFound:
-                    ToastKit.present(message: "Address not found")
+                    AlertKit.presentToast(message: "Address not found")
                 }
             } catch _ {
-                ToastKit.present(message: "Something went wrong :(")
+                AlertKit.presentToast(message: "Something went wrong :(")
             }
+            LoaderKit.hideLoader()
         }
     }
 }

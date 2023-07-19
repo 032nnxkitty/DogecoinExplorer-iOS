@@ -25,6 +25,8 @@ final class URLSessionNetworkManager: NetworkManager {
     private init() {}
     
     func loadInfoForAddress(_ address: String) async throws -> (BalanceModel, TransactionsCountModel) {
+        let startTime = Date()
+        
         let balanceUrl           = URL(string: "https://dogechain.info/api/v1/address/balance/\(address)")
         let transactionsCountUrl = URL(string: "https://dogechain.info/api/v1/address/transaction_count/\(address)")
         
@@ -36,6 +38,8 @@ final class URLSessionNetworkManager: NetworkManager {
         }
         
         let transactionsCountModel: TransactionsCountModel = try await request(url: transactionsCountUrl)
+        
+        print(Date().timeIntervalSince(startTime))
         
         return (balanceModel, transactionsCountModel)
     }

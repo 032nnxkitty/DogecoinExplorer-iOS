@@ -23,7 +23,6 @@ final class AddressInfoViewController: UIViewController {
         stack.showsVerticalScrollIndicator = false
         stack.axis = .vertical
         stack.spacing = 10
-        stack.alpha = 0
         stack.delaysContentTouches = false
         return stack
     }()
@@ -63,8 +62,6 @@ final class AddressInfoViewController: UIViewController {
     
     private let loadTransactionButton = LoaderButton()
     
-    private let loader = UIActivityIndicatorView()
-    
     // MARK: - Init
     init(viewModel: AddressInfoViewModel) {
         self.viewModel = viewModel
@@ -89,9 +86,6 @@ private extension AddressInfoViewController {
         view.backgroundColor = R.Colors.background
         navigationItem.leftBarButtonItem = backButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
-        
-        view.addSubview(loader)
-        loader.center = view.center
         
         trackingStateButton.addTarget(self, action: #selector(trackingButtonDidTap), for: .touchUpInside)
         loadTransactionButton.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)

@@ -20,11 +20,21 @@ final class Assembly {
         return view
     }
     
-    static func setupAddressInfoModule(address: String) -> UIViewController {
+    struct AddressInfoSetupModel {
+        let address: String
+        let balanceModel: BalanceModel
+        let transactionsCountModel: TransactionsCountModel
+    }
+    
+    static func setupAddressInfoModule(model: AddressInfoSetupModel) -> UIViewController {
         let networkManager = URLSessionNetworkManager.shared
         let storageMananger = CoreDataStorageManager.shared
         
-        let viewModel = AddressInfoViewModelImpl(networkManager: networkManager, storageManager: storageMananger)
+        let viewModel = AddressInfoViewModelImpl(
+            networkManager: networkManager,
+            storageManager: storageMananger,
+            model: model
+        )
         let view = AddressInfoViewController(viewModel: viewModel)
         
         return view

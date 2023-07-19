@@ -35,9 +35,15 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     private var loadedTransactions: [TransactionInfoModel] = []
     
     // MARK: - Init
-    init(networkManager: NetworkManager, storageManager: StorageManager) {
+    init(
+        networkManager: NetworkManager,
+        storageManager: StorageManager,
+        model: Assembly.AddressInfoSetupModel
+    ) {
         self.networkManager = networkManager
         self.storageManager = storageManager
+        
+        initialize()
     }
     
     // MARK: - Protocol Methods & Properties
@@ -45,7 +51,11 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         return loadedTransactions.count
     }
     
-    var isTracked: Bool = false
+    var isTracked: Bool = false {
+        didSet {
+            
+        }
+    }
     
     func addTracking(name: String?) {
         
@@ -66,7 +76,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     
     func loadMoreTransactions() {
         guard internetConnectionObserver.isReachable else {
-            ToastKit.present(message: "No internet connection")
+            AlertKit.presentToast(message: "No internet connection")
             return
         }
     }
@@ -77,11 +87,11 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
 }
 
 private extension AddressInfoViewModelImpl {
-    func checkTrackingState() {
-        if let name = storageManager.getName(for: address) {
-            isTracked = true
+    func initialize() {
+        if let addressName = storageManager.getName(for: address) {
+            
         } else {
-            isTracked = false
+            
         }
     }
 }
