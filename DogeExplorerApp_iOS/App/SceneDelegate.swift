@@ -14,10 +14,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let mainVC = Assembly.setupMainModule()
+        UserDefaults.standard.isOnboarded = false
+        
+        let vc = UserDefaults.standard.isOnboarded ? Assembly.setupMainModule() : OnboardingViewController()
         
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = UINavigationController(rootViewController: mainVC)
+        window?.rootViewController = UINavigationController(rootViewController: vc)
         window?.overrideUserInterfaceStyle = .dark
         window?.makeKeyAndVisible()
     }

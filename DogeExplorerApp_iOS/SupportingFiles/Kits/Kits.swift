@@ -16,7 +16,7 @@ enum AlertKit {
 }
  
 enum LoaderKit {
-    static let loader = LoaderView()
+    private static let loader = LoaderView()
     
     static func showLoader() {
         guard let window = UIApplication.shared.windows.filter({ $0.isKeyWindow }).first else { return }

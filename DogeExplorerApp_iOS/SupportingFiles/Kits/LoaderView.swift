@@ -14,7 +14,7 @@ final class LoaderView: UIView {
     init() {
         super.init(frame: .zero)
         
-        backgroundColor = .darkGray
+        backgroundColor = .systemGray5
         layer.cornerRadius = 20
         
         loader.translatesAutoresizingMaskIntoConstraints = false

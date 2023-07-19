@@ -199,6 +199,10 @@ extension MainViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelectAddress(at: indexPath)
+//        viewModel.didSelectAddress(at: indexPath)
+        LoaderKit.showLoader()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            LoaderKit.hideLoader()
+        }
     }
 }

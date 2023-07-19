@@ -31,7 +31,9 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     private let storageManager: StorageManager
     
     // MARK: - Address Info
-    private var address: String = "some address"
+    private var address: String
+    private var balanceModel: BalanceModel
+    private var transactionCountModel: TransactionsCountModel
     private var loadedTransactions: [TransactionInfoModel] = []
     
     // MARK: - Init
@@ -43,6 +45,9 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         self.networkManager = networkManager
         self.storageManager = storageManager
         
+        self.address = model.address
+        self.balanceModel = model.balanceModel
+        self.transactionCountModel = model.transactionsCountModel
         initialize()
     }
     
@@ -51,23 +56,22 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         return loadedTransactions.count
     }
     
-    var isTracked: Bool = false {
-        didSet {
-            
-        }
-    }
+    var isTracked: Bool = false
     
     func addTracking(name: String?) {
-        
+        storageManager.addNewAddress(address: address, name: name ?? "No name")
+        AlertKit.presentToast(message: "Successfully added to tracked addresses")
     }
     
     func deleteTracking() {
         storageManager.deleteAddress(address)
+        AlertKit.presentToast(message: "Successfully deleted from tracked addresses")
     }
     
     func rename(newName: String?) {
         guard let newName else { return }
         storageManager.renameAddress(address, newName: newName)
+        AlertKit.presentToast(message: "Successfully renamed")
     }
     
     func getViewModelForTransaction(at indexPath: IndexPath) -> Void {
