@@ -39,7 +39,7 @@ final class MainViewModelImpl: MainViewModel {
     
     // MARK: - In Memory Storage !!!
     
-    // MARK: - Protocol Methods
+    // MARK: - Protocol Methods & Properties
     var numberOfTrackedAddresses: Int {
         return storageManager.trackedAddresses.count
     }

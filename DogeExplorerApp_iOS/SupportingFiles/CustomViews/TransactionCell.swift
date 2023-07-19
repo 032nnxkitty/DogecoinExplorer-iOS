@@ -7,9 +7,17 @@
 
 import UIKit
 
-enum TransactionStyle {
-    case sent
-    case received
+
+struct TransactionCellViewModel {
+    let style: TransactionStyle
+    let value: String
+    let date: String
+    let hash: String
+    
+    enum TransactionStyle: String {
+        case sent
+        case received
+    }
 }
 
 final class TransactionCell: UITableViewCell {
@@ -78,18 +86,18 @@ final class TransactionCell: UITableViewCell {
     }
     
     // MARK: - Public Methods
-    func configure(style: TransactionStyle, value: String, date: String, hash: String) {
-        switch style {
+    func configure(viewModel: TransactionCellViewModel) {
+        switch viewModel.style {
         case .sent:
-            stateLabel.text = "Sent"
+            stateLabel.text = viewModel.style.rawValue.capitalized
             sumLabel.textColor = .white
         case .received:
-            stateLabel.text = "Received"
+            stateLabel.text = viewModel.style.rawValue.capitalized
             sumLabel.textColor = R.Colors.accent
         }
-        sumLabel.text = value
-        dateLabel.text = date
-        destinationLabel.text = hash
+        sumLabel.text = viewModel.value
+        dateLabel.text = viewModel.date
+        destinationLabel.text = viewModel.hash
     }
 }
 
@@ -114,7 +122,9 @@ private extension TransactionCell {
         ])
         
         [stateLabel, sumLabel].forEach { topStack.addArrangedSubview($0) }
+        
         [destinationLabel, dateLabel].forEach { bottomStack.addArrangedSubview($0) }
+        
         [topStack, bottomStack].forEach { containerStack.addArrangedSubview($0) }
     }
 }

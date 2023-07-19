@@ -17,7 +17,7 @@ enum NetworkError: Error {
 
 protocol NetworkManager {
     func loadInfoForAddress(_ address: String) async throws -> (BalanceModel, TransactionsCountModel)
-    func loadDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel]
+    func loadDetailedTransactionsPage(for address: String, page: Int) async throws -> [TransactionInfoModel]
 }
 
 final class URLSessionNetworkManager: NetworkManager {
@@ -40,13 +40,13 @@ final class URLSessionNetworkManager: NetworkManager {
         return (balanceModel, transactionsCountModel)
     }
     
-    func loadDetailedTransactionsPage(for address: String, page: Int) async throws -> [DetailedTransactionModel] {
+    func loadDetailedTransactionsPage(for address: String, page: Int) async throws -> [TransactionInfoModel] {
         let pageUrl = URL(string: "https://dogechain.info/api/v1/address/transactions/\(address)/\(page)")
         
         let transactionPage: TransactionsPageModel = try await request(url: pageUrl)
         
-        var detailedTransactionsPage: [DetailedTransactionModel] = []
-        return try await withThrowingTaskGroup(of: DetailedTransactionModel.self, returning: [DetailedTransactionModel].self) { [weak self] taskGroup in
+        var detailedTransactionsPage: [TransactionInfoModel] = []
+        return try await withThrowingTaskGroup(of: TransactionInfoModel.self, returning: [TransactionInfoModel].self) { [weak self] taskGroup in
             guard let self else { return [] }
             for transaction in transactionPage.transactions {
                 
@@ -54,7 +54,7 @@ final class URLSessionNetworkManager: NetworkManager {
                 let transactionInfoUrl = URL(string: "https://dogechain.info/api/v1/transaction/\(hash)")
                 
                 taskGroup.addTask {
-                    let transaction: DetailedTransactionModel = try await self.request(url: transactionInfoUrl)
+                    let transaction: TransactionInfoModel = try await self.request(url: transactionInfoUrl)
                     return transaction
                 }
             }

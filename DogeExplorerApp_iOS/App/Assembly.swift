@@ -21,9 +21,11 @@ final class Assembly {
     }
     
     static func setupAddressInfoModule(address: String) -> UIViewController {
-        let view = AddressInfoViewController()
         let networkManager = URLSessionNetworkManager.shared
-        let trackingService = CoreDataStorageManager.shared
+        let storageMananger = CoreDataStorageManager.shared
+        
+        let viewModel = AddressInfoViewModelImpl(networkManager: networkManager, storageManager: storageMananger)
+        let view = AddressInfoViewController(viewModel: viewModel)
         
         return view
     }

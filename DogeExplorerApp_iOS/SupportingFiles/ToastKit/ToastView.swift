@@ -7,14 +7,6 @@
 
 import UIKit
 
-enum ToastKit {
-    static func present(message: String) {
-        let toast = ToastView(message: message)
-        guard let window = UIApplication.shared.windows.filter({ $0.isKeyWindow }).first else { return }
-        toast.present(on: window)
-    }
-}
-
 final class ToastView: UIView {
     private let messageLabel: UILabel = {
         let label = UILabel()

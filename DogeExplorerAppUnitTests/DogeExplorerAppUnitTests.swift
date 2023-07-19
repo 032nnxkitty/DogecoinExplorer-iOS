@@ -9,14 +9,6 @@ import XCTest
 @testable import DogeExplorerApp_iOS
 
 final class DogeExplorerAppUnitTests: XCTestCase {
-    override func setUpWithError() throws {
-        
-    }
-
-    override func tearDownWithError() throws {
-        
-    }
-
     // MARK: - Extensions Tests
     func testShortenAddress() throws {
         // Given

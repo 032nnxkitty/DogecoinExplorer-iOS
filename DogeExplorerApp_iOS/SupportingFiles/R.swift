@@ -9,9 +9,9 @@ import UIKit.UIColor
 
 enum R {
     enum Colors {
-        static let background:     UIColor = .RGB(r: 0,   g: 0,   b: 0)
+        static let background:        UIColor = .RGB(r: 0,   g: 0,   b: 0)
         static let elementBackground: UIColor = .RGB(r: 31,  g: 33,  b: 37)
-        static let lightGray:      UIColor = .RGB(r: 171, g: 171, b: 171)
-        static let accent:         UIColor = .RGB(r: 254, g: 243, b: 195)
+        static let lightGray:         UIColor = .RGB(r: 171, g: 171, b: 171)
+        static let accent:            UIColor = .RGB(r: 254, g: 243, b: 195)
     }
 }

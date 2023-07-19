@@ -8,7 +8,7 @@
 import UIKit
 
 final class AddressInfoViewController: UIViewController {
-    
+    private let viewModel: AddressInfoViewModel
     
     // MARK: - UI Elements
     private lazy var refreshControl: UIRefreshControl = {
@@ -27,6 +27,10 @@ final class AddressInfoViewController: UIViewController {
         stack.delaysContentTouches = false
         return stack
     }()
+    
+    private let baseAddressInfoView = AddressBaseInfoView()
+    
+    private let trackingStateButton = TrackingStateButton()
     
     private lazy var transactionsTableView: SelfSizedTableView = {
         let tableView = SelfSizedTableView()
@@ -57,10 +61,19 @@ final class AddressInfoViewController: UIViewController {
         return UIBarButtonItem(customView: button)
     }()
     
-    private let baseAddressInfoView = AddressBaseInfoView()
-    private let trackingStateButton = TrackingStateButton()
     private let loadTransactionButton = LoaderButton()
+    
     private let loader = UIActivityIndicatorView()
+    
+    // MARK: - Init
+    init(viewModel: AddressInfoViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("storyboards are incompatible with truth and beauty")
+    }
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -80,7 +93,7 @@ private extension AddressInfoViewController {
         view.addSubview(loader)
         loader.center = view.center
         
-        trackingStateButton.addTarget(self, action: #selector(trackingStateDidChange), for: .touchUpInside)
+        trackingStateButton.addTarget(self, action: #selector(trackingButtonDidTap), for: .touchUpInside)
         loadTransactionButton.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
     }
     
@@ -95,29 +108,9 @@ private extension AddressInfoViewController {
             containerStack.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        containerStack.addArrangedSubview(baseAddressInfoView)
-        containerStack.addArrangedSubview(trackingStateButton)
-        containerStack.addArrangedSubview(transactionsTableView)
-        containerStack.addArrangedSubview(loadTransactionButton)
-    }
-    
-    func createTextFieldAlert(title: String, placeHolder: String? = nil, text: String? = nil, completion: @escaping (String?) -> Void) -> UIAlertController  {
-        let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
-        alert.view.tintColor = R.Colors.accent
-        alert.addTextField { textField in
-            textField.placeholder = placeHolder
-            textField.text = text
+        [baseAddressInfoView, trackingStateButton, trackingStateButton, loadTransactionButton].forEach {
+            containerStack.addArrangedSubview($0)
         }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { action in
-            completion(alert.textFields?[0].text)
-        }
-        
-        alert.addAction(cancelAction)
-        alert.addAction(confirmAction)
-        
-        return alert
     }
 }
 
@@ -128,16 +121,26 @@ private extension AddressInfoViewController {
         }
     }
     
-    func trackingStateDidChange() {
-//        presenter.trackingStateDidChange()
+    func trackingButtonDidTap() {
+        if viewModel.isTracked {
+            viewModel.deleteTracking()
+        } else {
+            presentTextFieldAlert(title: "Add name to the address", message: nil, textFieldText: nil) { [weak self] text in
+                guard let self else { return }
+                self.viewModel.addTracking(name: text)
+            }
+        }
     }
     
     func loadTransactionsButtonDidTap() {
-//        presenter.loadTransactionsButtonDidTap()
+        viewModel.loadMoreTransactions()
     }
     
     func renameButtonDidTap() {
-//        presenter.renameButtonDidTap()
+        presentTextFieldAlert(title: "Enter a new name", message: nil, textFieldText: "Sueta") { [weak self] text in
+            guard let self else { return }
+            self.viewModel.rename(newName: text)
+        }
     }
     
     func popToPrevious() {
@@ -148,12 +151,12 @@ private extension AddressInfoViewController {
 // MARK: - UITableViewDataSource
 extension AddressInfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return viewModel.numberOfLoadedTransactions
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TransactionCell.identifier, for: indexPath) as! TransactionCell
-       
+        
         return cell
     }
 }
