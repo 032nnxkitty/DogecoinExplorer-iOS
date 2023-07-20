@@ -8,15 +8,13 @@
 import Foundation
 
 protocol AddressInfoViewModel {
-    var numberOfLoadedTransactions: Int { get }
-    
-    var isTracked: Bool { get }
-    
     func addTracking(name: String?)
+    
+    func rename(newName: String?)
     
     func deleteTracking()
     
-    func rename(newName: String?)
+    var numberOfLoadedTransactions: Int { get }
     
     func getViewModelForTransaction(at indexPath: IndexPath) -> Void
     
@@ -31,36 +29,32 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     private let storageManager: StorageManager
     
     // MARK: - Address Info
-    private var address: String
-    private var balanceModel: BalanceModel
-    private var transactionCountModel: TransactionsCountModel
-    private var loadedTransactions: [TransactionInfoModel] = []
+    private let addressInfoModel: AddressInfoModel
     
     // MARK: - Init
     init(
         networkManager: NetworkManager,
         storageManager: StorageManager,
-        model: Assembly.AddressInfoSetupModel
+        model: AddressInfoModel
     ) {
         self.networkManager = networkManager
         self.storageManager = storageManager
+        self.addressInfoModel = model
         
-        self.address = model.address
-        self.balanceModel = model.balanceModel
-        self.transactionCountModel = model.transactionsCountModel
         initialize()
     }
     
     // MARK: - Protocol Methods & Properties
-    var numberOfLoadedTransactions: Int {
-        return loadedTransactions.count
+    func addTracking(name: String?) {
+        let name = name ?? "No name"
+        storageManager.addNewAddress(address: address, name: name)
+        AlertKit.presentToast(message: "Successfully added to tracked addresses")
     }
     
-    var isTracked: Bool = false
-    
-    func addTracking(name: String?) {
-        storageManager.addNewAddress(address: address, name: name ?? "No name")
-        AlertKit.presentToast(message: "Successfully added to tracked addresses")
+    func rename(newName: String?) {
+        guard let newName else { return }
+        storageManager.renameAddress(address, newName: newName)
+        AlertKit.presentToast(message: "Successfully renamed")
     }
     
     func deleteTracking() {
@@ -68,10 +62,9 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         AlertKit.presentToast(message: "Successfully deleted from tracked addresses")
     }
     
-    func rename(newName: String?) {
-        guard let newName else { return }
-        storageManager.renameAddress(address, newName: newName)
-        AlertKit.presentToast(message: "Successfully renamed")
+    
+    var numberOfLoadedTransactions: Int {
+        return addressInfoModel.transactions.count
     }
     
     func getViewModelForTransaction(at indexPath: IndexPath) -> Void {
@@ -97,5 +90,9 @@ private extension AddressInfoViewModelImpl {
         } else {
             
         }
+    }
+    
+    var address: String {
+        return addressInfoModel.address
     }
 }

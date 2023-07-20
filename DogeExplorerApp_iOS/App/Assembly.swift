@@ -14,19 +14,17 @@ final class Assembly {
         let networkManager = URLSessionNetworkManager.shared
         let storageManager = CoreDataStorageManager.shared
         
-        let viewModel = MainViewModelImpl(networkManager: networkManager, storageManager: storageManager)
+        let viewModel = MainViewModelImpl(
+            networkManager: networkManager,
+            storageManager: storageManager
+        )
+        
         let view = MainViewController(viewModel: viewModel)
        
         return view
     }
     
-    struct AddressInfoSetupModel {
-        let address: String
-        let balanceModel: BalanceModel
-        let transactionsCountModel: TransactionsCountModel
-    }
-    
-    static func setupAddressInfoModule(model: AddressInfoSetupModel) -> UIViewController {
+    static func setupAddressInfoModule(model: AddressInfoModel) -> UIViewController {
         let networkManager = URLSessionNetworkManager.shared
         let storageMananger = CoreDataStorageManager.shared
         
@@ -35,6 +33,7 @@ final class Assembly {
             storageManager: storageMananger,
             model: model
         )
+        
         let view = AddressInfoViewController(viewModel: viewModel)
         
         return view

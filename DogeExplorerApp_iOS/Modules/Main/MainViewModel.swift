@@ -17,7 +17,7 @@ protocol MainViewModel {
     
     func renameAddress(at indexPath: IndexPath, newName: String?)
     
-    func searchButtonDidTap(text: String?)
+    func didTapSearchButton(text: String?)
     
     func didSelectAddress(at indexPath: IndexPath)
     
@@ -64,7 +64,7 @@ final class MainViewModelImpl: MainViewModel {
         AlertKit.presentToast(message: "Address successfully renamed")
     }
     
-    func searchButtonDidTap(text: String?) {
+    func didTapSearchButton(text: String?) {
         guard internetConnectionObserver.isReachable else {
             AlertKit.presentToast(message: "No internet connection")
             return
@@ -103,9 +103,23 @@ private extension MainViewModelImpl {
     func loadInfo(for address: String) {
         LoaderKit.showLoader()
         Task { @MainActor in
+            defer {
+                LoaderKit.hideLoader()
+            }
+            
             do {
-                let (balanceModel, transactionsCountModel) = try await networkManager.loadInfoForAddress(address)
-                // open address info vc
+                let balanceModel = try await networkManager.loadBalance(for: address)
+                async let transactionsCountModel = networkManager.loadTransactionsCount(for: address)
+                async let firstTransactionsPage = networkManager.loadDetailedTransactionsPage(for: address, page: 1)
+                
+                let addressInfoModel = try await AddressInfoModel(
+                    address: address,
+                    balanceModel: balanceModel,
+                    transactionsCountModel: transactionsCountModel,
+                    transactions: firstTransactionsPage
+                )
+                
+                // transfer data
             } catch let error as NetworkError {
                 switch error {
                 case .invalidURL:
@@ -122,7 +136,6 @@ private extension MainViewModelImpl {
             } catch _ {
                 AlertKit.presentToast(message: "Something went wrong :(")
             }
-            LoaderKit.hideLoader()
         }
     }
 }

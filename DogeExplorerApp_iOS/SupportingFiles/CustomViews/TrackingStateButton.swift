@@ -20,8 +20,21 @@ final class TrackingStateButton: UIButton {
         fatalError("storyboards are incompatible with truth and beauty")
     }
     
-    // MARK: - Public Methods
-    func setTrackingState() {
+    var isTracked: Bool = false {
+        didSet {
+            isTracked ? setTrackingState() : setNonTrackingState()
+        }
+    }
+    
+    // MARK: - Private Methods
+    private func configureAppearance() {
+        configuration = UIButton.Configuration.filled()
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
+        configuration?.background.cornerRadius = 20
+        configuration?.imagePadding = 5
+    }
+    
+    private func setTrackingState() {
         setTitle("Delete tracking", for: .normal)
         setImage(UIImage(systemName: "eye.slash.fill"), for: .normal)
         
@@ -32,7 +45,7 @@ final class TrackingStateButton: UIButton {
         configuration?.baseForegroundColor = .white
     }
     
-    func setNonTrackingState() {
+    private func setNonTrackingState() {
         setTitle("Add tracking", for: .normal)
         setImage(UIImage(systemName: "eye.fill"), for: .normal)
         
@@ -41,13 +54,5 @@ final class TrackingStateButton: UIButton {
         
         configuration?.baseBackgroundColor = R.Colors.accent
         configuration?.baseForegroundColor = .black
-    }
-    
-    // MARK: - Private Methods
-    private func configureAppearance() {
-        configuration = UIButton.Configuration.filled()
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
-        configuration?.background.cornerRadius = 20
-        configuration?.imagePadding = 5
     }
 }

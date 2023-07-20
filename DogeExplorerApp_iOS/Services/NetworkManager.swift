@@ -7,16 +7,11 @@
 
 import Foundation
 
-enum NetworkError: Error {
-    case invalidURL
-    case httpError(statusCode: Int)
-    case decodeError
-    case badServerResponse
-    case addressNotFound
-}
-
 protocol NetworkManager {
-    func loadInfoForAddress(_ address: String) async throws -> (BalanceModel, TransactionsCountModel)
+    func loadBalance(for address: String) async throws -> BalanceModel
+    
+    func loadTransactionsCount(for address: String) async throws -> TransactionsCountModel
+    
     func loadDetailedTransactionsPage(for address: String, page: Int) async throws -> [TransactionInfoModel]
 }
 
@@ -24,24 +19,15 @@ final class URLSessionNetworkManager: NetworkManager {
     static let shared = URLSessionNetworkManager()
     private init() {}
     
-    func loadInfoForAddress(_ address: String) async throws -> (BalanceModel, TransactionsCountModel) {
-        let startTime = Date()
-        
-        let balanceUrl           = URL(string: "https://dogechain.info/api/v1/address/balance/\(address)")
+    func loadBalance(for address: String) async throws -> BalanceModel {
+        let balanceUrl = URL(string: "https://dogechain.info/api/v1/address/balance/\(address)")
+        return try await request(url: balanceUrl)
+    }
+    
+    func loadTransactionsCount(for address: String) async throws -> TransactionsCountModel {
         let transactionsCountUrl = URL(string: "https://dogechain.info/api/v1/address/transaction_count/\(address)")
+        return try await request(url: transactionsCountUrl)
         
-        var balanceModel: BalanceModel
-        do {
-            balanceModel = try await request(url: balanceUrl)
-        } catch NetworkError.decodeError {
-            throw NetworkError.addressNotFound
-        }
-        
-        let transactionsCountModel: TransactionsCountModel = try await request(url: transactionsCountUrl)
-        
-        print(Date().timeIntervalSince(startTime))
-        
-        return (balanceModel, transactionsCountModel)
     }
     
     func loadDetailedTransactionsPage(for address: String, page: Int) async throws -> [TransactionInfoModel] {

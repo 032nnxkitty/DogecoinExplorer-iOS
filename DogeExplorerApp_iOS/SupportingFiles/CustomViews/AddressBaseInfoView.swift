@@ -18,7 +18,9 @@ final class AddressBaseInfoView: UIView {
     }()
     
     private lazy var addressLabel: UILabel = setupValueLabel()
+    
     private lazy var balanceLabel: UILabel = setupValueLabel()
+    
     private lazy var transactionsLabel: UILabel = setupValueLabel()
     
     // MARK: - Init
@@ -32,11 +34,23 @@ final class AddressBaseInfoView: UIView {
         fatalError("storyboards are incompatible with truth and beauty")
     }
     
-    // MARK: - Public Methods
-    func setInfo(address: String, dogeBalance: String, transactionsCount: String) {
-        addressLabel.text = address
-        balanceLabel.text = dogeBalance
-        transactionsLabel.text = transactionsCount
+    // MARK: - Public Properties
+    var address: String = "..." {
+        didSet {
+            addressLabel.text = address
+        }
+    }
+    
+    var balance: String = "..." {
+        didSet {
+            balanceLabel.text = balance
+        }
+    }
+    
+    var transactionsCount: String = "..." {
+        didSet {
+            transactionsLabel.text = transactionsCount
+        }
     }
 }
 

@@ -8,7 +8,7 @@
 import UIKit
 
 final class AddressInfoViewController: UIViewController {
-    private let viewModel: AddressInfoViewModel
+    private var viewModel: AddressInfoViewModel
     
     // MARK: - UI Elements
     private lazy var refreshControl: UIRefreshControl = {
@@ -77,6 +77,7 @@ final class AddressInfoViewController: UIViewController {
         super.viewDidLoad()
         configureAppearance()
         configureScrollableStack()
+        bind()
     }
 }
 
@@ -106,6 +107,10 @@ private extension AddressInfoViewController {
             containerStack.addArrangedSubview($0)
         }
     }
+    
+    func bind() {
+        
+    }
 }
 
 @objc private extension AddressInfoViewController {
@@ -116,14 +121,14 @@ private extension AddressInfoViewController {
     }
     
     func trackingButtonDidTap() {
-        if viewModel.isTracked {
-            viewModel.deleteTracking()
-        } else {
-            presentTextFieldAlert(title: "Add name to the address", message: nil, textFieldText: nil) { [weak self] text in
-                guard let self else { return }
-                self.viewModel.addTracking(name: text)
-            }
-        }
+//        if viewModel.isTracked {
+//            viewModel.deleteTracking()
+//        } else {
+//            presentTextFieldAlert(title: "Add name to the address", message: nil, textFieldText: nil) { [weak self] text in
+//                guard let self else { return }
+//                self.viewModel.addTracking(name: text)
+//            }
+//        }
     }
     
     func loadTransactionsButtonDidTap() {
