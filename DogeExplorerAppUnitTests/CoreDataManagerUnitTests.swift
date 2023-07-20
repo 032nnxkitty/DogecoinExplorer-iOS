@@ -9,10 +9,10 @@ import XCTest
 @testable import DogeExplorerApp_iOS
 
 final class CoreDataManagerUnitTests: XCTestCase {
-    var sut: AddressTrackingService!
+    var sut: CoreDataStorageManager!
     
     override func setUpWithError() throws {
-        sut = CoreDataManager.shared
+        sut = CoreDataStorageManager.shared
         sut.deleteAllTrackedAddresses()
     }
     
@@ -28,8 +28,8 @@ final class CoreDataManagerUnitTests: XCTestCase {
         let name = "Andrew"
         
         // When
-        sut.addNewTrackedAddress(address: address, name: name)
-        let addresses = sut.getAllTrackedAddresses()
+        sut.addNewAddress(address: address, name: name)
+        let addresses = sut.trackedAddresses
         
         // Then
         XCTAssertEqual(addresses.count, 1)
@@ -41,14 +41,14 @@ final class CoreDataManagerUnitTests: XCTestCase {
         // Given
         let address1 = "DQL55LjFkYagcCdx9HXztYAepcXY3jb6Wa"
         let name1 = "Andrew"
-        sut.addNewTrackedAddress(address: address1, name: name1)
+        sut.addNewAddress(address: address1, name: name1)
         
         let address2 = "9wYpKfWNaWFtZ3KCqgoZM5AyYCz7S7juLV"
         let name2 = "Pablo"
-        sut.addNewTrackedAddress(address: address2, name: name2)
+        sut.addNewAddress(address: address2, name: name2)
         
         // When
-        let addresses = sut.getAllTrackedAddresses()
+        let addresses = sut.trackedAddresses
         
         // Then
         XCTAssertEqual(addresses.count, 2)
@@ -58,15 +58,15 @@ final class CoreDataManagerUnitTests: XCTestCase {
         // Given
         let address1 = "DQL55LjFkYagcCdx9HXztYAepcXY3jb6Wa"
         let name1 = "Andrew"
-        sut.addNewTrackedAddress(address: address1, name: name1)
+        sut.addNewAddress(address: address1, name: name1)
         
         let address2 = "9wYpKfWNaWFtZ3KCqgoZM5AyYCz7S7juLV"
         let name2 = "Pable"
-        sut.addNewTrackedAddress(address: address2, name: name2)
+        sut.addNewAddress(address: address2, name: name2)
         
         // When
         sut.deleteAllTrackedAddresses()
-        let addresses = sut.getAllTrackedAddresses()
+        let addresses = sut.trackedAddresses
         
         // Then
         XCTAssertEqual(addresses.count, 0)
@@ -76,15 +76,15 @@ final class CoreDataManagerUnitTests: XCTestCase {
         // Given
         let address1 = "DQL55LjFkYagcCdx9HXztYAepcXY3jb6Wa"
         let name1 = "Andrew"
-        sut.addNewTrackedAddress(address: address1, name: name1)
+        sut.addNewAddress(address: address1, name: name1)
         
         let address2 = "9wYpKfWNaWFtZ3KCqgoZM5AyYCz7S7juLV"
         let name2 = "Pable"
-        sut.addNewTrackedAddress(address: address2, name: name2)
+        sut.addNewAddress(address: address2, name: name2)
         
         // When
-        sut.deleteTracking(address1)
-        let addresses = sut.getAllTrackedAddresses()
+        sut.deleteAddress(address1)
+        let addresses = sut.trackedAddresses
         
         // Then
         XCTAssertEqual(addresses.count, 1)
@@ -97,11 +97,11 @@ final class CoreDataManagerUnitTests: XCTestCase {
         let address = "DQL55LjFkYagcCdx9HXztYAepcXY3jb6Wa"
         let name = "Andrew"
         let newName = "Andrej"
-        sut.addNewTrackedAddress(address: address, name: name)
+        sut.addNewAddress(address: address, name: name)
         
         // When
-        sut.renameAddress(address, to: newName)
-        let addresses = sut.getAllTrackedAddresses()
+        sut.renameAddress(address, newName: newName)
+        let addresses = sut.trackedAddresses
         
         // Then
         XCTAssertEqual(addresses.count, 1)
@@ -113,10 +113,10 @@ final class CoreDataManagerUnitTests: XCTestCase {
         // Given
         let address = "DQL55LjFkYagcCdx9HXztYAepcXY3jb6Wa"
         let name = "Andrew"
-        sut.addNewTrackedAddress(address: address, name: name)
+        sut.addNewAddress(address: address, name: name)
         
         // When
-        let trackingName = sut.getTrackingName(for: address)
+        let trackingName = sut.getName(for: address)
         
         // Then
         XCTAssertEqual(name, trackingName)

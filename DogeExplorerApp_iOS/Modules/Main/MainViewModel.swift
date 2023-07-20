@@ -125,18 +125,7 @@ private extension MainViewModelImpl {
                 
                 // transfer data
             } catch let error as NetworkError {
-                switch error {
-                case .invalidURL:
-                    AlertKit.presentToast(message: "Invalid URL :/")
-                case .httpError(let statusCode):
-                    AlertKit.presentToast(message: "Error status code: \(statusCode)")
-                case .decodeError:
-                    fallthrough
-                case .badServerResponse:
-                    AlertKit.presentToast(message: "Something went wrong :(")
-                case .addressNotFound:
-                    AlertKit.presentToast(message: "Address not found")
-                }
+                AlertKit.presentToast(message: error.description)
             } catch _ {
                 AlertKit.presentToast(message: "Something went wrong :(")
             }

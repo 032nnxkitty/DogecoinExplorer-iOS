@@ -83,6 +83,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     }
 }
 
+// MARK: - Private Methods
 private extension AddressInfoViewModelImpl {
     func initialize() {
         if let addressName = storageManager.getName(for: address) {

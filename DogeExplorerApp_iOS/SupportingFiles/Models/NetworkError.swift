@@ -18,15 +18,15 @@ enum NetworkError: Error {
         switch self {
             
         case .invalidURL:
-            return "Invalid URL"
+            return "Invalid URL :/"
         case .httpError(let statusCode):
             return "Http error status code: \(statusCode)"
         case .decodeError:
             fallthrough
         case .badServerResponse:
-            return "Something went wrong"
+            return "Something went wrong :/"
         case .addressNotFound:
-            return "Address not found"
+            return "Address not found :("
         }
     }
 }

@@ -27,7 +27,7 @@ final class AddressInfoViewController: UIViewController {
         return stack
     }()
     
-    private let baseAddressInfoView = AddressBaseInfoView()
+    private let addressInformationView = InformationCardView()
     
     private let trackingStateButton = TrackingStateButton()
     
@@ -103,7 +103,7 @@ private extension AddressInfoViewController {
             containerStack.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        [baseAddressInfoView, trackingStateButton, trackingStateButton, loadTransactionButton].forEach {
+        [addressInformationView, trackingStateButton, trackingStateButton, loadTransactionButton].forEach {
             containerStack.addArrangedSubview($0)
         }
     }

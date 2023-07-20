@@ -11,8 +11,8 @@ final class MainViewController: UIViewController {
     private var viewModel: MainViewModel
     
     // MARK: - UI Elements
-    private lazy var searchBar: LoaderSearchBar = {
-        let bar = LoaderSearchBar()
+    private lazy var searchBar: UISearchBar = {
+        let bar = UISearchBar()
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.searchTextField.font = .dogeSans(size: 17, style: .body)
         bar.searchTextField.backgroundColor = .clear
@@ -200,6 +200,25 @@ extension MainViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelectAddress(at: indexPath)
+//        viewModel.didSelectAddress(at: indexPath)
+        let vc = Assembly.setupAddressInfoModule(model: .init(
+            address: "",
+            balanceModel: .init(
+                balance: "",
+                confirmed: "",
+                unconfirmed: "",
+                success: -1
+            ),
+            transactionsCountModel: .init(
+                info: .init(
+                    sent: -1,
+                    received: -1,
+                    total: -1),
+                success: -1
+            ),
+            transactions: [])
+        )
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
