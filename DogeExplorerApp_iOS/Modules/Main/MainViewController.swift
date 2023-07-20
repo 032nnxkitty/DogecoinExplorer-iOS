@@ -153,7 +153,7 @@ extension MainViewController: UISearchBarDelegate {
 // MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numberOfAddresses = viewModel.numberOfTrackedAddresses
+        let numberOfAddresses = viewModel.trackedAddresses.count
         
         numberOfAddresses == 0 ? showEmptyView() : hideEmptyView()
         
@@ -162,7 +162,7 @@ extension MainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TrackedAddressCell.identifier, for: indexPath) as! TrackedAddressCell
-        let (address, name) = viewModel.getViewModelForAddress(at: indexPath)
+        let (address, name) = viewModel.trackedAddresses[indexPath.row]
         cell.configure(name: name, address: address)
         return cell
     }
@@ -183,7 +183,8 @@ extension MainViewController: UITableViewDataSource {
         
         let renameAction = UIContextualAction(style: .normal, title: "") { [weak self] _, _, completion in
             guard let self else { return }
-            presentTextFieldAlert(title: "Enter a new name", message: nil, textFieldText: "Sueta") { text in
+            let oldName = viewModel.trackedAddresses[indexPath.row].name
+            presentTextFieldAlert(title: "Enter a new name", message: nil, textFieldText: oldName) { text in
                 self.viewModel.renameAddress(at: indexPath, newName: text)
                 tableView.reloadData()
             }

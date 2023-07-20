@@ -9,9 +9,7 @@ import Foundation
 import UIKit.UIApplication
 
 protocol MainViewModel {
-    var numberOfTrackedAddresses: Int { get }
-    
-    func getViewModelForAddress(at indexPath: IndexPath) -> (address: String, name: String)
+    var trackedAddresses: [(address: String, name: String)] { get }
     
     func deleteAddress(at indexPath: IndexPath)
     
@@ -37,31 +35,37 @@ final class MainViewModelImpl: MainViewModel {
         storageManager.addMockData()
     }
     
-    // MARK: - In Memory Storage !!!
+    // MARK: - In Memory Storage
+    private var inMemoryTrackedAddresses: [TrackedAddressEntity] = []
+    private var needUpdateInMemoryTrackedAddresses: Bool = true
     
     // MARK: - Protocol Methods & Properties
-    var numberOfTrackedAddresses: Int {
-        return storageManager.trackedAddresses.count
-    }
-    
-    func getViewModelForAddress(at indexPath: IndexPath) -> (address: String, name: String) {
-        let currentModel = storageManager.trackedAddresses[indexPath.row]
-        let name = currentModel.name ?? "No name"
-        let address = currentModel.address?.shorten(prefix: 5, suffix: 5) ?? "Something went wrong :/"
-        return (address, name)
+    var trackedAddresses: [(address: String, name: String)] {
+        get {
+            if needUpdateInMemoryTrackedAddresses {
+                inMemoryTrackedAddresses = storageManager.trackedAddresses
+                needUpdateInMemoryTrackedAddresses = false
+            }
+            
+            return inMemoryTrackedAddresses.map { ($0.address?.shorten(prefix: 5, suffix: 5) ?? "...", $0.name ?? "...") }
+        }
     }
     
     func deleteAddress(at indexPath: IndexPath) {
-        guard let addressToDelete = storageManager.trackedAddresses[indexPath.row].address else { return }
+        guard let addressToDelete = inMemoryTrackedAddresses[indexPath.row].address else { return }
         storageManager.deleteAddress(addressToDelete)
         AlertKit.presentToast(message: "Address successfully deleted")
+        
+        needUpdateInMemoryTrackedAddresses = true
     }
     
     func renameAddress(at indexPath: IndexPath, newName: String?) {
         guard let newName else { return }
-        guard let addressToRename = storageManager.trackedAddresses[indexPath.row].address else { return }
+        guard let addressToRename = inMemoryTrackedAddresses[indexPath.row].address else { return }
         storageManager.renameAddress(addressToRename, newName: newName)
         AlertKit.presentToast(message: "Address successfully renamed")
+        
+        needUpdateInMemoryTrackedAddresses = true
     }
     
     func didTapSearchButton(text: String?) {
@@ -84,7 +88,7 @@ final class MainViewModelImpl: MainViewModel {
             return
         }
         
-        guard let address = storageManager.trackedAddresses[indexPath.row].address else {
+        guard let address = inMemoryTrackedAddresses[indexPath.row].address else {
             AlertKit.presentToast(message: "Something went wrong :(")
             return
         }
