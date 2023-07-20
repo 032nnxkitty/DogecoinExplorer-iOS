@@ -1,5 +1,5 @@
 //
-//  ObservableObject.swift
+//  Observable.swift
 //  DogeExplorerApp_iOS
 //
 //  Created by Arseniy Zolotarev on 19.07.2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ObservableObject<T> {
+final class Observable<T> {
     typealias Listener = (T) -> Void
     
     private var listener: Listener?

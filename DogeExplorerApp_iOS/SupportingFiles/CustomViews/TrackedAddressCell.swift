@@ -47,7 +47,7 @@ final class TrackedAddressCell: UITableViewCell {
     }
     
     // MARK: - Public Methods
-    func configure(name: String, address: String) {
+    func configure(address: String, name: String) {
         nameLabel.text = name
         addressLabel.text = address
     }

@@ -1,5 +1,5 @@
 //
-//  MainPresenter.swift
+//  MainViewModelImpl.swift
 //  DogeExplorerApp_iOS
 //
 //  Created by Arseniy Zolotarev on 14.04.2023.
@@ -7,20 +7,6 @@
 
 import Foundation
 import UIKit.UIApplication
-
-protocol MainViewModel {
-    var trackedAddresses: [(address: String, name: String)] { get }
-    
-    func deleteAddress(at indexPath: IndexPath)
-    
-    func renameAddress(at indexPath: IndexPath, newName: String?)
-    
-    func didTapSearchButton(text: String?)
-    
-    func didSelectAddress(at indexPath: IndexPath)
-    
-    func didTapSupportView()
-}
 
 final class MainViewModelImpl: MainViewModel {
     private let internetConnectionObserver = InternetConnectionObserver.shared
@@ -40,12 +26,16 @@ final class MainViewModelImpl: MainViewModel {
     private var needUpdateInMemoryTrackedAddresses: Bool = true
     
     // MARK: - Protocol Methods & Properties
+    var observableViewState: Observable<MainViewState> = .init(value: .initial)
+    
     var trackedAddresses: [(address: String, name: String)] {
         get {
             if needUpdateInMemoryTrackedAddresses {
                 inMemoryTrackedAddresses = storageManager.trackedAddresses
                 needUpdateInMemoryTrackedAddresses = false
             }
+            
+            observableViewState.value = inMemoryTrackedAddresses.count == 0 ? .emptyList : .filledList
             
             return inMemoryTrackedAddresses.map { ($0.address?.shorten(prefix: 5, suffix: 5) ?? "...", $0.name ?? "...") }
         }
@@ -54,7 +44,8 @@ final class MainViewModelImpl: MainViewModel {
     func deleteAddress(at indexPath: IndexPath) {
         guard let addressToDelete = inMemoryTrackedAddresses[indexPath.row].address else { return }
         storageManager.deleteAddress(addressToDelete)
-        AlertKit.presentToast(message: "Address successfully deleted")
+        
+        observableViewState.value = .message(text: "Address successfully deleted")
         
         needUpdateInMemoryTrackedAddresses = true
     }
@@ -63,19 +54,20 @@ final class MainViewModelImpl: MainViewModel {
         guard let newName else { return }
         guard let addressToRename = inMemoryTrackedAddresses[indexPath.row].address else { return }
         storageManager.renameAddress(addressToRename, newName: newName)
-        AlertKit.presentToast(message: "Address successfully renamed")
+        
+        observableViewState.value = .message(text: "Address successfully renamed")
         
         needUpdateInMemoryTrackedAddresses = true
     }
     
     func didTapSearchButton(text: String?) {
         guard internetConnectionObserver.isReachable else {
-            AlertKit.presentToast(message: "No internet connection")
+            observableViewState.value = .message(text: "No internet connection")
             return
         }
         
         guard let address = text?.trimmingCharacters(in: .whitespaces), address.count == 34 else {
-            AlertKit.presentToast(message: "Invalid address format")
+            observableViewState.value = .message(text: "Invalid address format")
             return
         }
         
@@ -84,12 +76,12 @@ final class MainViewModelImpl: MainViewModel {
     
     func didSelectAddress(at indexPath: IndexPath) {
         guard internetConnectionObserver.isReachable else {
-            AlertKit.presentToast(message: "No internet connection")
+            observableViewState.value = .message(text: "No internet connection")
             return
         }
         
         guard let address = inMemoryTrackedAddresses[indexPath.row].address else {
-            AlertKit.presentToast(message: "Something went wrong :(")
+            observableViewState.value = .message(text: "Something went wrong :(")
             return
         }
         
@@ -105,29 +97,32 @@ final class MainViewModelImpl: MainViewModel {
 // MARK: - Private Methods
 private extension MainViewModelImpl {
     func loadInfo(for address: String) {
-        LoaderKit.showLoader()
+        observableViewState.value = .startLoader
         Task { @MainActor in
             defer {
-                LoaderKit.hideLoader()
+                observableViewState.value = .finishLoader
             }
             
             do {
                 let balanceModel = try await networkManager.loadBalance(for: address)
                 async let transactionsCountModel = networkManager.loadTransactionsCount(for: address)
                 async let firstTransactionsPage = networkManager.loadDetailedTransactionsPage(for: address, page: 1)
+                let name = storageManager.getName(for: address)
                 
                 let addressInfoModel = try await AddressInfoModel(
                     address: address,
+                    trackingName: name,
                     balanceModel: balanceModel,
                     transactionsCountModel: transactionsCountModel,
                     transactions: firstTransactionsPage
                 )
                 
-                // transfer data
+                observableViewState.value = .push(model: addressInfoModel)
+                
             } catch let error as NetworkError {
-                AlertKit.presentToast(message: error.description)
+                observableViewState.value = .message(text: error.description)
             } catch _ {
-                AlertKit.presentToast(message: "Something went wrong :(")
+                observableViewState.value = .message(text: "Something went wrong :(")
             }
         }
     }

@@ -11,12 +11,6 @@ final class AddressInfoViewController: UIViewController {
     private var viewModel: AddressInfoViewModel
     
     // MARK: - UI Elements
-    private lazy var refreshControl: UIRefreshControl = {
-        let refresh = UIRefreshControl()
-        refresh.addTarget(self, action: #selector(refreshUI), for: .valueChanged)
-        return refresh
-    }()
-    
     private let containerStack: ScrollableStackView = {
         let stack = ScrollableStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -77,7 +71,7 @@ final class AddressInfoViewController: UIViewController {
         super.viewDidLoad()
         configureAppearance()
         configureScrollableStack()
-        bind()
+        bindStates()
     }
 }
 
@@ -88,58 +82,84 @@ private extension AddressInfoViewController {
         navigationItem.leftBarButtonItem = backButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         
+        addressInformationView.address = viewModel.address
+        addressInformationView.balance = viewModel.formattedBalance
+        addressInformationView.transactionsCount = viewModel.totalTransactionsCount
+        
         trackingStateButton.addTarget(self, action: #selector(trackingButtonDidTap), for: .touchUpInside)
         loadTransactionButton.addTarget(self, action: #selector(loadTransactionsButtonDidTap), for: .touchUpInside)
     }
     
     func configureScrollableStack() {
-        containerStack.refreshControl = refreshControl
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(refreshUI), for: .valueChanged)
+        containerStack.refreshControl = refresh
         
         view.addSubview(containerStack)
         NSLayoutConstraint.activate([
-            containerStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            containerStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             containerStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             containerStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             containerStack.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        [addressInformationView, trackingStateButton, trackingStateButton, loadTransactionButton].forEach {
+        [addressInformationView, trackingStateButton, transactionsTableView, loadTransactionButton].forEach {
             containerStack.addArrangedSubview($0)
         }
     }
     
-    func bind() {
-        
+    func bindStates() {
+        viewModel.observableViewState.bind { [weak self] newState in
+            guard let self else { return }
+            
+            switch newState {
+            case .initial:
+                break
+            case .startTrackAlert:
+                self.presentTextFieldAlert(title: "Add name to the address", message: nil, textFieldText: nil) { text in
+                    self.viewModel.startTracking(name: text)
+                }
+            case .becomeTracked(let name):
+                title = name
+                trackingStateButton.isTracked = true
+                navigationItem.rightBarButtonItem = renameButton
+                AlertKit.presentToast(message: "Address successful added to tracked")
+            case .renameAlert(let oldName):
+                self.presentTextFieldAlert(title: "Enter a new name", message: nil, textFieldText: oldName) { text in
+                    self.viewModel.rename(newName: text)
+                }
+            case .becomeUntracked:
+                title = "Address"
+                trackingStateButton.isTracked = false
+                navigationItem.rightBarButtonItem = nil
+                AlertKit.presentToast(message: "Address successful deleted from tracked")
+            case .allTransactionsLoaded:
+                loadTransactionButton.isHidden = true
+                AlertKit.presentToast(message: "All transactions loaded")
+            case .message(let text):
+                AlertKit.presentToast(message: text)
+            }
+        }
     }
 }
 
 @objc private extension AddressInfoViewController {
-    func refreshUI() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            self?.refreshControl.endRefreshing()
+    func refreshUI(_ sender: UIRefreshControl) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            sender.endRefreshing()
         }
     }
     
     func trackingButtonDidTap() {
-//        if viewModel.isTracked {
-//            viewModel.deleteTracking()
-//        } else {
-//            presentTextFieldAlert(title: "Add name to the address", message: nil, textFieldText: nil) { [weak self] text in
-//                guard let self else { return }
-//                self.viewModel.addTracking(name: text)
-//            }
-//        }
+        viewModel.trackingButtonDidTap()
     }
     
     func loadTransactionsButtonDidTap() {
-        viewModel.loadMoreTransactions()
+        viewModel.loadMoreTransactionsButtonDidTap()
     }
     
     func renameButtonDidTap() {
-        presentTextFieldAlert(title: "Enter a new name", message: nil, textFieldText: "Sueta") { [weak self] text in
-            guard let self else { return }
-            self.viewModel.rename(newName: text)
-        }
+        viewModel.renameButtonDidTap()
     }
     
     func popToPrevious() {
@@ -150,12 +170,17 @@ private extension AddressInfoViewController {
 // MARK: - UITableViewDataSource
 extension AddressInfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfLoadedTransactions
+        return viewModel.loadedTransactions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TransactionCell.identifier, for: indexPath) as! TransactionCell
-        
+        cell.configure(viewModel: .init(
+            style: Int.random(in: 0...1) == 0 ? .sent : .received,
+            value: "123456",
+            date: "23.10.2001",
+            hash: "shhgrqagqrhgqhr")
+        )
         return cell
     }
 }
@@ -164,6 +189,7 @@ extension AddressInfoViewController: UITableViewDataSource {
 extension AddressInfoViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        viewModel.didSelectTransaction(at: indexPath)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

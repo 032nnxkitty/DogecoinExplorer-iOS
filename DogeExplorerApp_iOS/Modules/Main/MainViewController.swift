@@ -54,9 +54,9 @@ final class MainViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureAppearance()
         configureUIElements()
+        bindStates()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -116,6 +116,30 @@ private extension MainViewController {
         ])
     }
     
+    func bindStates() {
+        viewModel.observableViewState.bind { [weak self] newState in
+            guard let self else { return }
+            
+            switch newState {
+            case .initial:
+                break
+            case .emptyList:
+                showEmptyView()
+            case .filledList:
+                hideEmptyView()
+            case .startLoader:
+                LoaderKit.showLoader()
+            case .finishLoader:
+                LoaderKit.hideLoader()
+            case .message(let text):
+                AlertKit.presentToast(message: text)
+            case .push(let model):
+                let addressInfoVC = Assembly.setupAddressInfoModule(model: model)
+                navigationController?.pushViewController(addressInfoVC, animated: true)
+            }
+        }
+    }
+    
     func showEmptyView() {
         trackedAddressesTableView.isHidden = true
         
@@ -138,6 +162,7 @@ private extension MainViewController {
     }
     
     func hideEmptyView() {
+        trackedAddressesTableView.isHidden = false
         emptyView.removeFromSuperview()
     }
 }
@@ -153,17 +178,13 @@ extension MainViewController: UISearchBarDelegate {
 // MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numberOfAddresses = viewModel.trackedAddresses.count
-        
-        numberOfAddresses == 0 ? showEmptyView() : hideEmptyView()
-        
-        return numberOfAddresses
+        return viewModel.trackedAddresses.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TrackedAddressCell.identifier, for: indexPath) as! TrackedAddressCell
         let (address, name) = viewModel.trackedAddresses[indexPath.row]
-        cell.configure(name: name, address: address)
+        cell.configure(address: address, name: name)
         return cell
     }
     
@@ -200,25 +221,6 @@ extension MainViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        viewModel.didSelectAddress(at: indexPath)
-        let vc = Assembly.setupAddressInfoModule(model: .init(
-            address: "",
-            balanceModel: .init(
-                balance: "",
-                confirmed: "",
-                unconfirmed: "",
-                success: -1
-            ),
-            transactionsCountModel: .init(
-                info: .init(
-                    sent: -1,
-                    received: -1,
-                    total: -1),
-                success: -1
-            ),
-            transactions: [])
-        )
-        
-        navigationController?.pushViewController(vc, animated: true)
+        viewModel.didSelectAddress(at: indexPath)
     }
 }

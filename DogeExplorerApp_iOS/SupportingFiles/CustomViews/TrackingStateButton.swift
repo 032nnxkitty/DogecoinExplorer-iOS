@@ -12,6 +12,7 @@ final class TrackingStateButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureAppearance()
+        
         setNonTrackingState()
     }
     
