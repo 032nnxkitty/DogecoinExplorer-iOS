@@ -18,7 +18,7 @@ final class MainViewModelImpl: MainViewModel {
         self.networkManager = networkManager
         self.storageManager = storageManager
         
-//        storageManager.addMockData()
+        storageManager.addMockData()
     }
     
     // MARK: - Protocol Methods & Properties
@@ -102,7 +102,7 @@ private extension MainViewModelImpl {
                     trackingName: name,
                     balanceModel: balanceModel,
                     transactionsCountModel: transactionsCountModel,
-                    transactions: firstTransactionsPage
+                    loadedTransactions: firstTransactionsPage
                 )
                 
                 observableViewState.value = .push(model: addressInfoModel)

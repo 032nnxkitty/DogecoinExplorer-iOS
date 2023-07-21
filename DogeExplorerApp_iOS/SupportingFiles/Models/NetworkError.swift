@@ -16,7 +16,6 @@ enum NetworkError: Error {
     
     var description: String {
         switch self {
-            
         case .invalidURL:
             return "Invalid URL :/"
         case .httpError(let statusCode):

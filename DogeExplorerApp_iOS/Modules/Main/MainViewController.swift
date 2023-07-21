@@ -14,7 +14,7 @@ final class MainViewController: UIViewController {
     private lazy var searchBar: UISearchBar = {
         let bar = UISearchBar()
         bar.translatesAutoresizingMaskIntoConstraints = false
-        bar.searchTextField.font = .dogeSans(size: 17, style: .body)
+        bar.searchTextField.font = .dogeSans(style: .body)
         bar.searchTextField.backgroundColor = .clear
         bar.backgroundColor = R.Colors.elementBackground
         bar.placeholder = "Enter the address to search"
@@ -86,7 +86,7 @@ private extension MainViewController {
         
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.titleTextAttributes = [
-            .font: UIFont.dogeSans(size: 17, style: .body)
+            .font: UIFont.dogeSans(style: .body)
         ]
     }
     
@@ -134,6 +134,7 @@ private extension MainViewController {
             case .message(let text):
                 AlertKit.presentToast(message: text)
             case .push(let model):
+                searchBar.text = nil
                 let addressInfoVC = Assembly.setupAddressInfoModule(model: model)
                 navigationController?.pushViewController(addressInfoVC, animated: true)
             }
@@ -170,8 +171,8 @@ private extension MainViewController {
 // MARK: - UISearchBarDelegate
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        viewModel.didTapSearchButton(text: searchBar.text)
         searchBar.resignFirstResponder()
+        viewModel.didTapSearchButton(text: searchBar.text)
     }
 }
 
@@ -205,7 +206,7 @@ extension MainViewController: UITableViewDataSource {
         let renameAction = UIContextualAction(style: .normal, title: "") { [weak self] _, _, completion in
             guard let self else { return }
             let oldName = viewModel.trackedAddresses[indexPath.row].name
-            presentTextFieldAlert(title: "Enter a new name", message: nil, textFieldText: oldName) { text in
+            presentTextFieldAlert(title: "Enter a new name", placeHolder: "New name", textFieldText: oldName) { text in
                 self.viewModel.renameAddress(at: indexPath, newName: text)
                 tableView.reloadData()
             }

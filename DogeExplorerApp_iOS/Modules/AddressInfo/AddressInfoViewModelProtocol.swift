@@ -10,6 +10,8 @@ import Foundation
 protocol AddressInfoViewModel {
     var observableViewState: Observable<AddressInfoViewState> { get }
     
+    func viewDidLoad()
+    
     var address: String { get }
     
     var formattedBalance: String { get }
@@ -22,7 +24,9 @@ protocol AddressInfoViewModel {
     
     func rename(newName: String?)
     
-    var loadedTransactions: [Int] { get }
+    var numberOfLoadedTransactions: Int { get }
+    
+    func getViewModelForTransaction(at indexPath: IndexPath) -> TransactionCellViewModel
     
     func loadMoreTransactionsButtonDidTap()
     

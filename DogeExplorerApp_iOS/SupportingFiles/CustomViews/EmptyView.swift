@@ -20,7 +20,7 @@ final class EmptyView: UIView {
     private let textLabel: UILabel = {
         let label = UILabel()
         label.textColor = R.Colors.accent
-        label.font = .dogeSans(size: 25, style: .largeTitle)
+        label.font = .dogeSans(style: .largeTitle)
         label.textAlignment = .center
         label.numberOfLines = 0
         return label

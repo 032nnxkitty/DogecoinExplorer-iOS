@@ -43,7 +43,7 @@ final class LoaderButton: UIButton {
         configuration?.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
         configuration?.background.cornerRadius = 20
         setTitle("Load more", for: .normal)
-        titleLabel?.font = .dogeSans(size: 17, style: .body)
+        titleLabel?.font = .dogeSans(style: .body)
     }
     
     private func configureLoader() {

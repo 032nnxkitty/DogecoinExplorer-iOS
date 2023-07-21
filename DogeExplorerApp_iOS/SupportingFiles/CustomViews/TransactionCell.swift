@@ -48,21 +48,21 @@ final class TransactionCell: UITableViewCell {
     private let stateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = .dogeSans(size: 20, style: .headline)
+        label.font = .dogeSans(style: .headline)
         return label
     }()
     
     private let sumLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.font = .dogeSans(size: 20, style: .headline)
+        label.font = .dogeSans(style: .headline)
         return label
     }()
     
     private let destinationLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = .dogeSans(size: 14, style: .footnote)
+        label.font = .dogeSans(style: .footnote)
         label.textColor = .secondaryLabel
         return label
     }()
@@ -70,7 +70,7 @@ final class TransactionCell: UITableViewCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.font = .dogeSans(size: 14, style: .footnote)
+        label.font = .dogeSans(style: .footnote)
         label.textColor = .secondaryLabel
         return label
     }()

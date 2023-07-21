@@ -22,7 +22,7 @@ final class TitleView: UIView {
     // MARK: - Private Methods
     private func configureAppearance() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = .dogeSans(size: 17, style: .body)
+        titleLabel.font = .dogeSans(style: .body)
         titleLabel.textColor = .white
         titleLabel.textAlignment = .center
         

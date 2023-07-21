@@ -12,7 +12,7 @@ final class ToastView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
-        label.font = .dogeSans(size: 17, style: .body)
+        label.font = .dogeSans(style: .body)
         label.textAlignment = .left
         label.textColor = .white
         return label

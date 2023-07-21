@@ -12,5 +12,5 @@ struct AddressInfoModel {
     var trackingName: String? 
     let balanceModel: BalanceModel
     let transactionsCountModel: TransactionsCountModel
-    let transactions: [TransactionInfoModel]
+    var loadedTransactions: [TransactionInfoModel] 
 }

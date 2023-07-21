@@ -13,7 +13,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     private let storageManager: StorageManager
     
     // MARK: - Address Info
-    private let addressInfoModel: AddressInfoModel
+    private var addressInfoModel: AddressInfoModel
     private var isTracked: Bool = false
     
     // MARK: - Init
@@ -25,12 +25,26 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         self.networkManager = networkManager
         self.storageManager = storageManager
         self.addressInfoModel = model
-        
-        initialize()
     }
     
     // MARK: - Protocol Methods & Properties
     var observableViewState: Observable<AddressInfoViewState> = .init(value: .initial)
+    
+    func viewDidLoad() {
+        sortTransactions()
+        
+        if let name = storageManager.getName(for: address) {
+            observableViewState.value = .becomeTracked(name: name)
+            isTracked = true
+        } else {
+            observableViewState.value = .becomeUntracked
+            isTracked = false
+        }
+        
+        if addressInfoModel.transactionsCountModel.info.total <= 10 {
+            observableViewState.value = .allTransactionsLoaded
+        }
+    }
     
     var address: String {
         return addressInfoModel.address
@@ -48,7 +62,9 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         let name = name ?? "No name"
         storageManager.addNewAddress(address: address, name: name)
         
+        isTracked = true
         observableViewState.value = .becomeTracked(name: name)
+        observableViewState.value = .message(text: "Address added to tracked")
     }
     
     func rename(newName: String?) {
@@ -56,48 +72,101 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         storageManager.renameAddress(address, newName: newName)
         
         observableViewState.value = .becomeTracked(name: newName)
+        observableViewState.value = .message(text: "Address renamed")
     }
     
     
-    var loadedTransactions: [Int] {
-        return addressInfoModel.transactions.compactMap { $0.success }
+    var numberOfLoadedTransactions: Int {
+        return addressInfoModel.loadedTransactions.count
+    }
+    
+    func getViewModelForTransaction(at indexPath: IndexPath) -> TransactionCellViewModel {
+        let currentTransaction = addressInfoModel.loadedTransactions[indexPath.row].transaction
+        
+        let date = currentTransaction.time?.formatUnixTime() ?? "01.01.0001"
+        let hash = currentTransaction.hash?.shorten(prefix: 6, suffix: 6) ?? "hash"
+        
+        var balanceChange: Double = 0.0
+        
+        for input in currentTransaction.inputs ?? [] {
+            guard input.address == self.address else { continue }
+            if let value = input.value {
+                balanceChange -= Double(value) ?? 0
+            }
+        }
+        
+        for output in currentTransaction.outputs ?? [] {
+            guard output.address == self.address else { continue }
+            if let value = output.value {
+                balanceChange += Double(value) ?? 0
+            }
+        }
+        
+        let formattedBalanceChange = String(abs(balanceChange)).formatNumberString()
+        
+        if balanceChange >= 0 {
+            return .init(style: .received, value: "+\(formattedBalanceChange) DOGE", date: date, hash: hash)
+        } else {
+            return .init(style: .sent, value: "-\(formattedBalanceChange) DOGE", date: date, hash: hash)
+        }
     }
     
     func loadMoreTransactionsButtonDidTap() {
         guard internetConnectionObserver.isReachable else {
-            // ..
+            observableViewState.value = .message(text: "No internet connection")
             return
         }
+        let allTransactionsCount = addressInfoModel.transactionsCountModel.info.total
+        let difference = allTransactionsCount - addressInfoModel.loadedTransactions.count
         
-        guard false else { return }
-        
+        observableViewState.value = .startLoadTransactions
         Task { @MainActor in
-            let pageToLoad = (loadedTransactions.count / 10) + 1
-            let newTransactions = try await networkManager.loadDetailedTransactionsPage(for: address, page: pageToLoad)
+            defer {
+                observableViewState.value = .finishLoadTransactions
+            }
+            
+            let pageToLoad = (addressInfoModel.loadedTransactions.count / 10) + 1
+            do {
+                let newTransactions = try await networkManager.loadDetailedTransactionsPage(for: address, page: pageToLoad)
+                addressInfoModel.loadedTransactions.append(contentsOf: newTransactions)
+                sortTransactions()
+                if difference <= 10 {
+                    observableViewState.value = .allTransactionsLoaded
+                    observableViewState.value = .message(text: "All transactions loaded")
+                }
+            } catch let error as NetworkError {
+                observableViewState.value = .message(text: error.localizedDescription)
+            } catch _ {
+                observableViewState.value = .message(text: "Something went wrong :/")
+            }
         }
     }
     
     func trackingButtonDidTap() {
         if isTracked {
             storageManager.deleteAddress(address)
+            isTracked = false
             observableViewState.value = .becomeUntracked
+            observableViewState.value = .message(text: "Address deleted")
         } else {
             observableViewState.value = .startTrackAlert
         }
     }
     
     func renameButtonDidTap() {
-        observableViewState.value = .renameAlert(oldName: "Old name")
+        let oldName = storageManager.getName(for: address)
+        observableViewState.value = .renameAlert(oldName: oldName)
     }
     
     func didSelectTransaction(at indexPath: IndexPath) {
-        
+        let selectedTransaction = addressInfoModel.loadedTransactions[indexPath.row]
+        observableViewState.value = .transactionInfo(model: selectedTransaction)
     }
 }
 
-// MARK: - Private Methods
+// MARK: - Private Methods & Properties
 private extension AddressInfoViewModelImpl {
-    func initialize() {
-        
+    func sortTransactions() {
+        addressInfoModel.loadedTransactions.sort { $0.transaction.time ?? 0 >= $1.transaction.time ?? 0 }
     }
 }

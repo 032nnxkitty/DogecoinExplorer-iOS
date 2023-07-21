@@ -10,12 +10,14 @@ import UIKit
 extension UIViewController {
     func presentTextFieldAlert(
         title: String?,
-        message: String?,
+        message: String? = nil,
+        placeHolder: String? = nil,
         textFieldText: String?,
         completion: @escaping (String?) -> Void
     ) {
         let renameAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         renameAlert.addTextField { textField in
+            textField.placeholder = placeHolder
             textField.text = textFieldText
         }
         renameAlert.addAction(.init(title: "Cancel", style: .cancel))

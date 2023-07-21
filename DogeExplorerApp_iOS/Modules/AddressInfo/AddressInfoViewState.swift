@@ -18,7 +18,13 @@ enum AddressInfoViewState {
     
     case becomeUntracked
     
+    case startLoadTransactions
+    
+    case finishLoadTransactions
+    
     case allTransactionsLoaded
     
     case message(text: String)
+    
+    case transactionInfo(model: TransactionInfoModel)
 }

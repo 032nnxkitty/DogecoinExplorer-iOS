@@ -72,12 +72,15 @@ final class AddressInfoViewController: UIViewController {
         configureAppearance()
         configureScrollableStack()
         bindStates()
+        
+        viewModel.viewDidLoad()
     }
 }
 
 // MARK: - Private Methods
 private extension AddressInfoViewController {
     func configureAppearance() {
+        title = "Address"
         view.backgroundColor = R.Colors.background
         navigationItem.leftBarButtonItem = backButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -116,33 +119,38 @@ private extension AddressInfoViewController {
             case .initial:
                 break
             case .startTrackAlert:
-                self.presentTextFieldAlert(title: "Add name to the address", message: nil, textFieldText: nil) { text in
+                self.presentTextFieldAlert(title: "Add name to the address", placeHolder: "Enter name", textFieldText: nil) { text in
                     self.viewModel.startTracking(name: text)
                 }
             case .becomeTracked(let name):
                 title = name
                 trackingStateButton.isTracked = true
                 navigationItem.rightBarButtonItem = renameButton
-                AlertKit.presentToast(message: "Address successful added to tracked")
             case .renameAlert(let oldName):
-                self.presentTextFieldAlert(title: "Enter a new name", message: nil, textFieldText: oldName) { text in
+                self.presentTextFieldAlert(title: "Enter a new name", placeHolder: "New name", textFieldText: oldName) { text in
                     self.viewModel.rename(newName: text)
                 }
             case .becomeUntracked:
                 title = "Address"
                 trackingStateButton.isTracked = false
                 navigationItem.rightBarButtonItem = nil
-                AlertKit.presentToast(message: "Address successful deleted from tracked")
+            case .startLoadTransactions:
+                loadTransactionButton.startLoading()
+            case .finishLoadTransactions:
+                transactionsTableView.reloadData()
+                loadTransactionButton.stopLoading()
             case .allTransactionsLoaded:
                 loadTransactionButton.isHidden = true
-                AlertKit.presentToast(message: "All transactions loaded")
             case .message(let text):
                 AlertKit.presentToast(message: text)
+            case .transactionInfo(let model):
+                print("show")
             }
         }
     }
 }
 
+// MARK: - Actions
 @objc private extension AddressInfoViewController {
     func refreshUI(_ sender: UIRefreshControl) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -170,17 +178,13 @@ private extension AddressInfoViewController {
 // MARK: - UITableViewDataSource
 extension AddressInfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.loadedTransactions.count
+        return viewModel.numberOfLoadedTransactions
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TransactionCell.identifier, for: indexPath) as! TransactionCell
-        cell.configure(viewModel: .init(
-            style: Int.random(in: 0...1) == 0 ? .sent : .received,
-            value: "123456",
-            date: "23.10.2001",
-            hash: "shhgrqagqrhgqhr")
-        )
+        let transactionCellViewModel = viewModel.getViewModelForTransaction(at: indexPath)
+        cell.configure(viewModel: transactionCellViewModel)
         return cell
     }
 }

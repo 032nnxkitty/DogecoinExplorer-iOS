@@ -12,7 +12,7 @@ final class InformationSectionView: UIStackView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "..."
-        label.font = .dogeSans(size: 14, style: .footnote)
+        label.font = .dogeSans(style: .footnote)
         label.textColor = .black
         return label
     }()
@@ -20,7 +20,7 @@ final class InformationSectionView: UIStackView {
     private let valueLabel: UILabel = {
         let label = UILabel()
         label.text = "..."
-        label.font = .dogeSans(size: 17, style: .body)
+        label.font = .dogeSans(style: .body)
         label.numberOfLines = 0
         label.textAlignment = .left
         label.textColor = .black

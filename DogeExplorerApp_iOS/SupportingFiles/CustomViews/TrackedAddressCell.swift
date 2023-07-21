@@ -23,7 +23,7 @@ final class TrackedAddressCell: UITableViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "..."
-        label.font = .dogeSans(size: 25, style: .largeTitle)
+        label.font = .dogeSans(style: .largeTitle)
         label.textColor = R.Colors.accent
         return label
     }()
@@ -31,7 +31,7 @@ final class TrackedAddressCell: UITableViewCell {
     private let addressLabel: UILabel = {
         let label = UILabel()
         label.text = "..."
-        label.font = .dogeSans(size: 17, style: .body)
+        label.font = .dogeSans(style: .body)
         label.textColor = R.Colors.lightGray
         return label
     }()

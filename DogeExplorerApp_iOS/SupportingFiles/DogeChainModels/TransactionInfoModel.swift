@@ -9,7 +9,7 @@ import Foundation
 
 struct TransactionInfoModel: Decodable {
     let success: Int?
-    let transaction: Transaction?
+    let transaction: Transaction
     
     struct Transaction: Decodable {
         let hash: String?

@@ -13,7 +13,7 @@ final class SupportView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = true
-        label.font = .dogeSans(size: 14, style: .footnote)
+        label.font = .dogeSans(style: .footnote)
         label.textAlignment = .center
         label.textColor = .white
         return label
