@@ -51,7 +51,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     }
     
     var formattedBalance: String {
-        return "\(addressInfoModel.balanceModel.balance.formatNumberString()) DOGE"
+        return "\(addressInfoModel.balanceModel.balance.formatNumberString())"
     }
     
     var totalTransactionsCount: String {
@@ -105,9 +105,9 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         let formattedBalanceChange = String(abs(balanceChange)).formatNumberString()
         
         if balanceChange >= 0 {
-            return .init(style: .received, value: "+\(formattedBalanceChange) DOGE", date: date, hash: hash)
+            return .init(style: .received, value: "+\(formattedBalanceChange)", date: date, hash: hash)
         } else {
-            return .init(style: .sent, value: "-\(formattedBalanceChange) DOGE", date: date, hash: hash)
+            return .init(style: .sent, value: "-\(formattedBalanceChange)", date: date, hash: hash)
         }
     }
     

@@ -20,7 +20,11 @@ extension String {
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
-        return formatter.string(for: number) ?? self
+        if let result = formatter.string(for: number) {
+            return "\(result) DOGE"
+        } else {
+            return self
+        }
     }
     
     func getRange(of substring: String) -> NSRange {

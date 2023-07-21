@@ -144,7 +144,13 @@ private extension AddressInfoViewController {
             case .message(let text):
                 AlertKit.presentToast(message: text)
             case .transactionInfo(let model):
-                print("show")
+                let transactionInfoVC = UINavigationController(rootViewController: Assembly.setupTransactionInfoModule(model: model))
+                if let sheetController = transactionInfoVC.sheetPresentationController {
+                    sheetController.detents = [.medium(), .large()]
+                    sheetController.preferredCornerRadius = 20
+                    sheetController.prefersGrabberVisible = true
+                }
+                present(transactionInfoVC, animated: true)
             }
         }
     }

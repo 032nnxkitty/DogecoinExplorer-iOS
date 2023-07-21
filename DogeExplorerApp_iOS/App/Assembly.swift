@@ -38,4 +38,10 @@ final class Assembly {
         
         return view
     }
+    
+    static func setupTransactionInfoModule(model: TransactionInfoModel) -> UIViewController {
+        let viewModel = TransactionInfoViewModelImpl(model: model)
+        let view = TransactionInfoViewController(viewModel: viewModel)
+        return view
+    }
 }
