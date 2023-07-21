@@ -8,7 +8,7 @@
 import CoreData
 
 protocol StorageManager {
-    var trackedAddresses: [TrackedAddressEntity] { get }
+    var trackedAddresses: [(address: String?, name: String?)] { get }
     
     func addNewAddress(address: String, name: String)
     
@@ -56,47 +56,60 @@ final class CoreDataStorageManager {
 
 // MARK: - Address Tracking Service Methods
 extension CoreDataStorageManager: StorageManager {
-    var trackedAddresses: [TrackedAddressEntity] {
+    var trackedAddresses: [(address: String?, name: String?)] {
         let fetchRequest = TrackedAddressEntity.fetchRequest()
         guard let entitiesArray = try? viewContext.fetch(fetchRequest), !entitiesArray.isEmpty else {
             return []
         }
-        return entitiesArray.reversed()
+        return entitiesArray
+            .map { ($0.address, $0.name) }
+            .reversed()
     }
     
     func addNewAddress(address: String, name: String) {
-        let newAddressEntity = TrackedAddressEntity(context: viewContext)
+        let backgroundContext = persistentContainer.newBackgroundContext()
+        
+        let newAddressEntity = TrackedAddressEntity(context: backgroundContext)
         newAddressEntity.address = address
         newAddressEntity.name = name
-        saveContext(backgroundContext: viewContext)
+        
+        saveContext(backgroundContext: backgroundContext)
     }
     
     func deleteAddress(_ addressToDelete: String) {
+        let backgroundContext = persistentContainer.newBackgroundContext()
+        
         let fetchRequest = TrackedAddressEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "address == %@", addressToDelete)
-        guard let entitiesArray = try? viewContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
-        viewContext.delete(entitiesArray[0])
-        saveContext(backgroundContext: viewContext)
+        guard let entitiesArray = try? backgroundContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
+        backgroundContext.delete(entitiesArray[0])
+        
+        saveContext(backgroundContext: backgroundContext)
     }
     
     func getName(for address: String) -> String? {
+        let backgroundContext = persistentContainer.newBackgroundContext()
+        
         let fetchRequest = TrackedAddressEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "address == %@", address)
-        guard let entitiesArray = try? viewContext.fetch(fetchRequest),
+        guard let entitiesArray = try? backgroundContext.fetch(fetchRequest),
               !entitiesArray.isEmpty,
               let name = entitiesArray[0].name else { return nil }
         return name
     }
     
     func renameAddress(_ addressToRename: String, newName: String) {
+        let backgroundContext = persistentContainer.newBackgroundContext()
+        
         let fetchRequest = TrackedAddressEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "address == %@", addressToRename)
-        guard let entitiesArray = try? viewContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
+        guard let entitiesArray = try? backgroundContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }
         entitiesArray[0].name = newName
         
-        saveContext(backgroundContext: viewContext)
+        saveContext(backgroundContext: backgroundContext)
     }
     
+    // MARK: - Methods to delete
     func deleteAllTrackedAddresses() {
         let fetchRequest = TrackedAddressEntity.fetchRequest()
         guard let entitiesArray = try? viewContext.fetch(fetchRequest), !entitiesArray.isEmpty else { return }

@@ -18,46 +18,34 @@ final class MainViewModelImpl: MainViewModel {
         self.networkManager = networkManager
         self.storageManager = storageManager
         
-        storageManager.addMockData()
+//        storageManager.addMockData()
     }
-    
-    // MARK: - In Memory Storage
-    private var inMemoryTrackedAddresses: [TrackedAddressEntity] = []
-    private var needUpdateInMemoryTrackedAddresses: Bool = true
     
     // MARK: - Protocol Methods & Properties
     var observableViewState: Observable<MainViewState> = .init(value: .initial)
     
     var trackedAddresses: [(address: String, name: String)] {
-        get {
-            if needUpdateInMemoryTrackedAddresses {
-                inMemoryTrackedAddresses = storageManager.trackedAddresses
-                needUpdateInMemoryTrackedAddresses = false
-            }
-            
-            observableViewState.value = inMemoryTrackedAddresses.count == 0 ? .emptyList : .filledList
-            
-            return inMemoryTrackedAddresses.map { ($0.address?.shorten(prefix: 5, suffix: 5) ?? "...", $0.name ?? "...") }
-        }
+        let addresses = storageManager.trackedAddresses
+        
+        observableViewState.value = addresses.count == 0 ? .emptyList : .filledList
+        
+        return addresses.map { ($0.address?.shorten(prefix: 5, suffix: 5) ?? "...", $0.name ?? "...") }
+        
     }
     
     func deleteAddress(at indexPath: IndexPath) {
-        guard let addressToDelete = inMemoryTrackedAddresses[indexPath.row].address else { return }
+        guard let addressToDelete = storageManager.trackedAddresses[indexPath.row].address else { return }
         storageManager.deleteAddress(addressToDelete)
         
         observableViewState.value = .message(text: "Address successfully deleted")
-        
-        needUpdateInMemoryTrackedAddresses = true
     }
     
     func renameAddress(at indexPath: IndexPath, newName: String?) {
         guard let newName else { return }
-        guard let addressToRename = inMemoryTrackedAddresses[indexPath.row].address else { return }
+        guard let addressToRename = storageManager.trackedAddresses[indexPath.row].address else { return }
         storageManager.renameAddress(addressToRename, newName: newName)
         
         observableViewState.value = .message(text: "Address successfully renamed")
-        
-        needUpdateInMemoryTrackedAddresses = true
     }
     
     func didTapSearchButton(text: String?) {
@@ -80,7 +68,7 @@ final class MainViewModelImpl: MainViewModel {
             return
         }
         
-        guard let address = inMemoryTrackedAddresses[indexPath.row].address else {
+        guard let address = storageManager.trackedAddresses[indexPath.row].address else {
             observableViewState.value = .message(text: "Something went wrong :(")
             return
         }

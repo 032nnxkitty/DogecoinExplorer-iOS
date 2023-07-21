@@ -12,7 +12,7 @@ final class Assembly {
     
     static func setupMainModule() -> UIViewController {
         let networkManager = URLSessionNetworkManager.shared
-        let storageManager = CoreDataStorageManager.shared
+        let storageManager = InMemoryStorageManager.shared
         
         let viewModel = MainViewModelImpl(
             networkManager: networkManager,
@@ -26,7 +26,7 @@ final class Assembly {
     
     static func setupAddressInfoModule(model: AddressInfoModel) -> UIViewController {
         let networkManager = URLSessionNetworkManager.shared
-        let storageMananger = CoreDataStorageManager.shared
+        let storageMananger = InMemoryStorageManager.shared
         
         let viewModel = AddressInfoViewModelImpl(
             networkManager: networkManager,
