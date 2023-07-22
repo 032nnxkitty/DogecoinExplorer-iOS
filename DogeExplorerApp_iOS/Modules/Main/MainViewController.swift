@@ -39,7 +39,9 @@ final class MainViewController: UIViewController {
     
     private let emptyView = EmptyView()
     
-    private let supportView = SupportView()
+    private let toastView = ToastView()
+    
+    private let loader = LoaderView()
     
     // MARK: - Init
     init(viewModel: MainViewModel) {
@@ -71,13 +73,6 @@ final class MainViewController: UIViewController {
     }
 }
 
-// MARK: - Actions
-@objc private extension MainViewController {
-    func didTapSupportLabel() {
-        viewModel.didTapSupportView()
-    }
-}
-
 // MARK: - Private Methods
 private extension MainViewController {
     func configureAppearance() {
@@ -91,10 +86,7 @@ private extension MainViewController {
     }
     
     func configureUIElements() {
-        supportView.translatesAutoresizingMaskIntoConstraints = false
-        supportView.addTarget(self, action: #selector(didTapSupportLabel))
-        
-        [searchBar, trackedAddressesTableView, supportView].forEach {
+        [searchBar, trackedAddressesTableView].forEach {
             view.addSubview($0)
         }
         
@@ -104,15 +96,10 @@ private extension MainViewController {
             searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             searchBar.heightAnchor.constraint(equalToConstant: 55),
             
-            supportView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            supportView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            supportView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
             trackedAddressesTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 10),
             trackedAddressesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             trackedAddressesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            trackedAddressesTableView.bottomAnchor.constraint(equalTo: supportView.topAnchor)
-            
+            trackedAddressesTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
@@ -128,11 +115,11 @@ private extension MainViewController {
             case .filledList:
                 hideEmptyView()
             case .startLoader:
-                LoaderKit.showLoader()
+                loader.startLoading(on: self.view)
             case .finishLoader:
-                LoaderKit.hideLoader()
+                loader.stopLoading()
             case .message(let text):
-                AlertKit.presentToast(message: text)
+                toastView.present(on: self.view, text: text)
             case .push(let model):
                 searchBar.text = nil
                 let addressInfoVC = Assembly.setupAddressInfoModule(model: model)

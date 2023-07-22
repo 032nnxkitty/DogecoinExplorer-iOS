@@ -19,6 +19,4 @@ protocol MainViewModel {
     func didTapSearchButton(text: String?)
     
     func didSelectAddress(at indexPath: IndexPath)
-    
-    func didTapSupportView()
 }

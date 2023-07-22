@@ -28,10 +28,15 @@ final class TransactionInOutputCell: UITableViewCell {
     // MARK: - Public Methods
     func configure(isOutput: Bool, address: String, amount: String) {
         destinationTitleLabel.text = isOutput ? "To:" : "From:"
-        destinationValueLabel.text = address
         amountTitleLabel.text = "Amount:"
         amountValueLabel.text = amount
+        
+        let underlinedAddress = address.getUnderlinedString()
+        destinationValueLabel.attributedText = underlinedAddress
+        destinationValueLabel.textColor = R.Colors.accent
     }
+    
+    // MARK: - Public Methods
     
     // MARK: - Private Methods
     private func configureAppearance() {

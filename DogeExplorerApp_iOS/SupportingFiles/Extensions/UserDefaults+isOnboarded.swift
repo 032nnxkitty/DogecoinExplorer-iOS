@@ -8,7 +8,7 @@
 import Foundation
 
 extension UserDefaults {
-    private var isOnboardedKey: String { "isOnboardedKey" }
+    fileprivate var isOnboardedKey: String { "isOnboardedKey" }
     
     var isOnboarded: Bool {
         get {

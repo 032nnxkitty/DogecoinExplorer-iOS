@@ -8,8 +8,8 @@
 import Foundation
 
 struct BalanceModel: Decodable {
-    var balance: String
-    var confirmed: String
-    var unconfirmed: String
-    var success: Int
+    let balance: String
+    let confirmed: String
+    let unconfirmed: String
+    let success: Int
 }

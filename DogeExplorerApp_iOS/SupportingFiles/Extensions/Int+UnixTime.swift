@@ -8,11 +8,21 @@
 import Foundation
 
 extension Int {
-    func formatUnixTime() -> String {
+    enum TimeStyle {
+        case shorten
+        case detailed
+    }
+    
+    func formatUnixTime(style: TimeStyle) -> String {
         let date = Date(timeIntervalSince1970: Double(self))
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone.current
-        dateFormatter.dateFormat = "d MMM yyyy"
+        switch style {
+        case .shorten:
+            dateFormatter.dateFormat = "d MMM yyyy"
+        case .detailed:
+            dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss Z"
+        }
         return dateFormatter.string(from: date)
     }
 }

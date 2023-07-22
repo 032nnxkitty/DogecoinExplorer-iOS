@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit.UIApplication
 
 final class TransactionInfoViewModelImpl: TransactionInfoViewModel {
     private var transactionInfoModel: TransactionInfoModel
@@ -36,10 +37,7 @@ final class TransactionInfoViewModelImpl: TransactionInfoViewModel {
     }
     
     func getTitleForSection(in section: Int) -> String? {
-        guard let section = TransactionListModel(rawValue: section) else {
-            return nil
-        }
-        return section.title
+        return TransactionListModel(rawValue: section)?.title
     }
     
     func configureDetailCell(at indexPath: IndexPath) -> (title: String, value: String) {
@@ -55,7 +53,7 @@ final class TransactionInfoViewModelImpl: TransactionInfoViewModel {
             let hash = transactionInfoModel.transaction.hash
             value = hash ?? "..."
         case .confirmed:
-            let confirmed = transactionInfoModel.transaction.time?.formatUnixTime()
+            let confirmed = transactionInfoModel.transaction.time?.formatUnixTime(style: .detailed)
             value = confirmed ?? "..."
         case .numberOfInputs:
             let inputsNumber = transactionInfoModel.transaction.inputsN ?? -1
@@ -74,7 +72,7 @@ final class TransactionInfoViewModelImpl: TransactionInfoViewModel {
             value = "\(size) bytes"
         case .fee:
             let fee = transactionInfoModel.transaction.fee
-            value = fee ?? "..." + " DOGE"
+            value = "\(fee ?? "...") DOGE"
         case .confirmations:
             let confirmations = transactionInfoModel.transaction.confirmations ?? -1
             value = "\(confirmations)"
@@ -95,5 +93,10 @@ final class TransactionInfoViewModelImpl: TransactionInfoViewModel {
         let addressFrom = currentOutput?.address ?? "..."
         let amount = currentOutput?.value?.formatNumberString() ?? "..."
         return (addressFrom, amount)
+    }
+    
+    func didTapSupportView() {
+        guard let url = URL(string: "https://github.com/032nnxkitty/DogecoinExplorer-iOS") else { return }
+        UIApplication.shared.open(url)
     }
 }

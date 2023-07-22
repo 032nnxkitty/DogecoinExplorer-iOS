@@ -26,5 +26,5 @@ enum AddressInfoViewState {
     
     case message(text: String)
     
-    case transactionInfo(model: TransactionInfoModel)
+    case push(model: TransactionInfoModel)
 }

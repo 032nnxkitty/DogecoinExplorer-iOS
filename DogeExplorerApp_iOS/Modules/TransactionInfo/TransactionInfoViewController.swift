@@ -10,6 +10,8 @@ import UIKit
 final class TransactionInfoViewController: UITableViewController {
     private let viewModel: TransactionInfoViewModel
     
+    let supportView = SupportView()
+    
     // MARK: - Init
     init(viewModel: TransactionInfoViewModel) {
         self.viewModel = viewModel
@@ -50,7 +52,7 @@ final class TransactionInfoViewController: UITableViewController {
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: TransactionInOutputCell.identifier, for: indexPath) as! TransactionInOutputCell
-            let (addressTo, amount) = viewModel.configureInputCell(at: indexPath)
+            let (addressTo, amount) = viewModel.configureOutputCell(at: indexPath)
             cell.configure(isOutput: true, address: addressTo, amount: amount)
             return cell
         default:
@@ -70,28 +72,34 @@ final class TransactionInfoViewController: UITableViewController {
         contentConfiguration.textProperties.color = R.Colors.accent
         view.contentConfiguration = contentConfiguration
     }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return section == 2 ? supportView : nil
+    }
 }
 
 // MARK: - Private Methods
 private extension TransactionInfoViewController {
     func configureAppearance() {
         title = "Transaction info"
-        navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .close, target: self, action: #selector(popBack))
-        navigationController?.navigationBar.titleTextAttributes = [
-            .font: UIFont.dogeSans(style: .body)
-        ]
         
+        supportView.addTarget(self, action: #selector(didTapSupportLabel))
     }
     
     func configureTableView() {
         tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.backgroundColor = R.Colors.background
+        tableView.showsVerticalScrollIndicator = false
         tableView.allowsSelection = false
-        tableView.backgroundColor = .systemGray6
         tableView.register(TransactionDetailCell.self, forCellReuseIdentifier: TransactionDetailCell.identifier)
         tableView.register(TransactionInOutputCell.self, forCellReuseIdentifier: TransactionInOutputCell.identifier)
     }
     
-    @objc func popBack() {
-        dismiss(animated: true)
+    @objc func copyAddress() {
+        print("hello")
+    }
+    
+    @objc func didTapSupportLabel() {
+        viewModel.didTapSupportView()
     }
 }

@@ -9,7 +9,6 @@ import Foundation
 
 struct AddressInfoModel {
     let address: String
-    var trackingName: String? 
     let balanceModel: BalanceModel
     let transactionsCountModel: TransactionsCountModel
     var loadedTransactions: [TransactionInfoModel] 

@@ -34,23 +34,24 @@ final class InMemoryStorageManager: StorageManager {
         storageManager.addNewAddress(address: address, name: name)
         
         inMemoryStorage.append((address, name))
-        needUpdateInMemoryStorage = true
     }
     
     func deleteAddress(_ addressToDelete: String) {
         storageManager.deleteAddress(addressToDelete)
         
         inMemoryStorage = inMemoryStorage.filter { $0.address != addressToDelete }
-        needUpdateInMemoryStorage = true
     }
     
     func renameAddress(_ addressToRename: String, newName: String) {
         storageManager.renameAddress(addressToRename, newName: newName)
         
         inMemoryStorage = inMemoryStorage.map {
-            return $0.address == addressToRename ? ($0.address, $0.name) : $0
+            if $0.address == addressToRename {
+                return ($0.address, newName)
+            } else {
+                return $0
+            }
         }
-        needUpdateInMemoryStorage = true
     }
     
     func getName(for address: String) -> String? {

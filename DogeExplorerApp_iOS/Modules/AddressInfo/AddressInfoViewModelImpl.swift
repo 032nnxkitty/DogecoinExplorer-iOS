@@ -51,7 +51,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     }
     
     var formattedBalance: String {
-        return "\(addressInfoModel.balanceModel.balance.formatNumberString())"
+        return addressInfoModel.balanceModel.balance.formatNumberString()
     }
     
     var totalTransactionsCount: String {
@@ -59,7 +59,11 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     }
     
     func startTracking(name: String?) {
-        let name = name ?? "No name"
+        guard var name else { return }
+        if name.isEmpty {
+            name = "No name"
+        }
+
         storageManager.addNewAddress(address: address, name: name)
         
         isTracked = true
@@ -68,7 +72,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     }
     
     func rename(newName: String?) {
-        guard let newName else { return }
+        guard let newName, !newName.isEmpty else { return }
         storageManager.renameAddress(address, newName: newName)
         
         observableViewState.value = .becomeTracked(name: newName)
@@ -83,7 +87,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     func getViewModelForTransaction(at indexPath: IndexPath) -> TransactionCellViewModel {
         let currentTransaction = addressInfoModel.loadedTransactions[indexPath.row].transaction
         
-        let date = currentTransaction.time?.formatUnixTime() ?? "01.01.0001"
+        let date = currentTransaction.time?.formatUnixTime(style: .shorten) ?? "01.01.0001"
         let hash = currentTransaction.hash?.shorten(prefix: 6, suffix: 6) ?? "hash"
         
         var balanceChange: Double = 0.0
@@ -116,10 +120,12 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
             observableViewState.value = .message(text: "No internet connection")
             return
         }
+        
         let allTransactionsCount = addressInfoModel.transactionsCountModel.info.total
         let difference = allTransactionsCount - addressInfoModel.loadedTransactions.count
         
         observableViewState.value = .startLoadTransactions
+        
         Task { @MainActor in
             defer {
                 observableViewState.value = .finishLoadTransactions
@@ -160,7 +166,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     
     func didSelectTransaction(at indexPath: IndexPath) {
         let selectedTransaction = addressInfoModel.loadedTransactions[indexPath.row]
-        observableViewState.value = .transactionInfo(model: selectedTransaction)
+        observableViewState.value = .push(model: selectedTransaction)
     }
 }
 

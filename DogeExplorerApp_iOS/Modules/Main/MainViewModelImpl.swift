@@ -41,7 +41,7 @@ final class MainViewModelImpl: MainViewModel {
     }
     
     func renameAddress(at indexPath: IndexPath, newName: String?) {
-        guard let newName else { return }
+        guard let newName, !newName.isEmpty else { return }
         guard let addressToRename = storageManager.trackedAddresses[indexPath.row].address else { return }
         storageManager.renameAddress(addressToRename, newName: newName)
         
@@ -75,11 +75,6 @@ final class MainViewModelImpl: MainViewModel {
         
         self.loadInfo(for: address)
     }
-    
-    func didTapSupportView() {
-        guard let url = URL(string: "https://github.com/032nnxkitty/DogecoinExplorer-iOS") else { return }
-        UIApplication.shared.open(url)
-    }
 }
 
 // MARK: - Private Methods
@@ -95,11 +90,9 @@ private extension MainViewModelImpl {
                 let balanceModel = try await networkManager.loadBalance(for: address)
                 async let transactionsCountModel = networkManager.loadTransactionsCount(for: address)
                 async let firstTransactionsPage = networkManager.loadDetailedTransactionsPage(for: address, page: 1)
-                let name = storageManager.getName(for: address)
                 
                 let addressInfoModel = try await AddressInfoModel(
                     address: address,
-                    trackingName: name,
                     balanceModel: balanceModel,
                     transactionsCountModel: transactionsCountModel,
                     loadedTransactions: firstTransactionsPage

@@ -7,15 +7,8 @@
 
 import UIKit
 
-final class EmptyView: UIView {
+final class EmptyView: UIStackView {
     // MARK: - UI Elements
-    private let containerStack: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
-        stack.spacing = 15
-        return stack
-    }()
     
     private let textLabel: UILabel = {
         let label = UILabel()
@@ -39,7 +32,7 @@ final class EmptyView: UIView {
         configureAppearance()
     }
     
-    required init?(coder: NSCoder) {
+    required init(coder: NSCoder) {
         fatalError("storyboards are incompatible with truth and beauty")
     }
     
@@ -53,15 +46,10 @@ final class EmptyView: UIView {
     // MARK: - Private Methods
     private func configureAppearance() {
         textLabel.text = text
+        translatesAutoresizingMaskIntoConstraints = false
+        axis = .vertical
+        spacing = 15
         
-        addSubview(containerStack)
-        NSLayoutConstraint.activate([
-            containerStack.topAnchor.constraint(equalTo: topAnchor),
-            containerStack.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerStack.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-        
-        [sadDogImageView, textLabel].forEach { containerStack.addArrangedSubview($0) }
+        [sadDogImageView, textLabel].forEach { addArrangedSubview($0) }
     }
 }

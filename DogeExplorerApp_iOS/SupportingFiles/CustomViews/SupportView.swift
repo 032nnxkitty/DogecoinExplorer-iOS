@@ -46,7 +46,18 @@ final class SupportView: UIView {
         let range = labelText.getRange(of: coloredText)
         
         let attributedString = NSMutableAttributedString(string: labelText)
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: R.Colors.accent, range: range)
+        
+        attributedString.addAttribute(
+            NSAttributedString.Key.foregroundColor,
+            value: R.Colors.accent,
+            range: range
+        )
+        
+        attributedString.addAttribute(
+            NSAttributedString.Key.underlineStyle,
+            value: 1,
+            range: range
+        )
         
         label.attributedText = attributedString
         

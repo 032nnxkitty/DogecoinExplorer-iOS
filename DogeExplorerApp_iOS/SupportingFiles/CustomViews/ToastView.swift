@@ -19,9 +19,8 @@ final class ToastView: UIView {
     }()
     
     // MARK: - Init
-    init(message: String) {
+    init() {
         super.init(frame: .zero)
-        messageLabel.text = message
         configureAppearance()
     }
     
@@ -30,7 +29,9 @@ final class ToastView: UIView {
     }
     
     // MARK: - Public Methods
-    func present(on view: UIView) {
+    func present(on view: UIView, text: String) {
+        messageLabel.text = text
+        
         translatesAutoresizingMaskIntoConstraints = false
         transform = .init(scaleX: 0.8, y: 0.8)
         alpha = 0

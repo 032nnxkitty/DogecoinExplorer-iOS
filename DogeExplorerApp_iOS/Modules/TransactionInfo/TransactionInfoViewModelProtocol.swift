@@ -19,4 +19,6 @@ protocol TransactionInfoViewModel {
     func configureInputCell(at indexPath: IndexPath) -> (from: String, amount: String)
     
     func configureOutputCell(at indexPath: IndexPath) -> (to: String, amount: String)
+    
+    func didTapSupportView() 
 }

@@ -15,10 +15,11 @@ struct TransactionsCountModel: Decodable {
         case info = "transaction_count"
         case success
     }
+    
+    struct TransactionCountInfo: Decodable {
+        let sent: Int
+        let received: Int
+        let total: Int
+    }
 }
 
-struct TransactionCountInfo: Decodable {
-    let sent: Int
-    let received: Int
-    let total: Int
-}

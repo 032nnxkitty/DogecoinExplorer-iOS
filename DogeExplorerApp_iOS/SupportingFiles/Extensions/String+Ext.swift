@@ -30,4 +30,18 @@ extension String {
     func getRange(of substring: String) -> NSRange {
         return (self as NSString).range(of: substring)
     }
+    
+    func getUnderlinedString() -> NSAttributedString {
+        let attributedString = NSMutableAttributedString.init(string: self)
+        attributedString.addAttribute(
+            NSAttributedString.Key.underlineStyle,
+            value: 1,
+            range: NSRange(
+                location: 0,
+                length: attributedString.length
+            )
+        )
+        
+        return attributedString
+    }
 }

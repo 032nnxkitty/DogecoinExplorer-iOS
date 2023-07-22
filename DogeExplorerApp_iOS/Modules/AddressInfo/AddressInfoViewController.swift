@@ -11,6 +11,20 @@ final class AddressInfoViewController: UIViewController {
     private var viewModel: AddressInfoViewModel
     
     // MARK: - UI Elements
+    private lazy var backButton: UIBarButtonItem = UIBarButtonItem(
+        image: .init(systemName: "chevron.backward"),
+        style: .plain,
+        target: self,
+        action: #selector(popToPrevious)
+    )
+    
+    private lazy var renameButton: UIBarButtonItem = UIBarButtonItem(
+        image: .init(systemName: "square.and.pencil"),
+        style: .plain,
+        target: self,
+        action: #selector(renameButtonDidTap)
+    )
+    
     private let containerStack: ScrollableStackView = {
         let stack = ScrollableStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -36,25 +50,9 @@ final class AddressInfoViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var backButton: UIBarButtonItem = {
-        let button = UIButton(configuration: .filled())
-        button.configuration?.background.cornerRadius = 10
-        button.configuration?.baseBackgroundColor = R.Colors.elementBackground
-        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
-        button.addTarget(self, action: #selector(popToPrevious), for: .touchUpInside)
-        return UIBarButtonItem(customView: button)
-    }()
-    
-    private lazy var renameButton: UIBarButtonItem = {
-        let button = UIButton(configuration: .filled())
-        button.configuration?.background.cornerRadius = 10
-        button.configuration?.baseBackgroundColor = R.Colors.elementBackground
-        button.setImage(UIImage(systemName: "pencil"), for: .normal)
-        button.addTarget(self, action: #selector(renameButtonDidTap), for: .touchUpInside)
-        return UIBarButtonItem(customView: button)
-    }()
-    
     private let loadTransactionButton = LoaderButton()
+    
+    let toastView = ToastView()
     
     // MARK: - Init
     init(viewModel: AddressInfoViewModel) {
@@ -142,15 +140,10 @@ private extension AddressInfoViewController {
             case .allTransactionsLoaded:
                 loadTransactionButton.isHidden = true
             case .message(let text):
-                AlertKit.presentToast(message: text)
-            case .transactionInfo(let model):
-                let transactionInfoVC = UINavigationController(rootViewController: Assembly.setupTransactionInfoModule(model: model))
-                if let sheetController = transactionInfoVC.sheetPresentationController {
-                    sheetController.detents = [.medium(), .large()]
-                    sheetController.preferredCornerRadius = 20
-                    sheetController.prefersGrabberVisible = true
-                }
-                present(transactionInfoVC, animated: true)
+                toastView.present(on: self.view, text: text)
+            case .push(let model):
+                let transactionInfoVC = Assembly.setupTransactionInfoModule(model: model)
+                navigationController?.pushViewController(transactionInfoVC, animated: true)
             }
         }
     }
