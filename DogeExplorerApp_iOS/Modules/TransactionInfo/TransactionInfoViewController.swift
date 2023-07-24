@@ -61,13 +61,13 @@ final class TransactionInfoViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel.getTitleForSection(in: section)
+        return viewModel.getTitle(for: section)
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let view = view as? UITableViewHeaderFooterView else { return }
         var contentConfiguration = view.defaultContentConfiguration()
-        contentConfiguration.text = viewModel.getTitleForSection(in: section)
+        contentConfiguration.text = viewModel.getTitle(for: section)
         contentConfiguration.textProperties.font = .dogeSans(style: .largeTitle)
         contentConfiguration.textProperties.color = R.Colors.accent
         view.contentConfiguration = contentConfiguration
@@ -93,10 +93,6 @@ private extension TransactionInfoViewController {
         tableView.allowsSelection = false
         tableView.register(TransactionDetailCell.self, forCellReuseIdentifier: TransactionDetailCell.identifier)
         tableView.register(TransactionInOutputCell.self, forCellReuseIdentifier: TransactionInOutputCell.identifier)
-    }
-    
-    @objc func copyAddress() {
-        print("hello")
     }
     
     @objc func didTapSupportLabel() {

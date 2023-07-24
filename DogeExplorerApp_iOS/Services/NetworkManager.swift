@@ -27,7 +27,6 @@ final class URLSessionNetworkManager: NetworkManager {
     func loadTransactionsCount(for address: String) async throws -> TransactionsCountModel {
         let transactionsCountUrl = URL(string: "https://dogechain.info/api/v1/address/transaction_count/\(address)")
         return try await request(url: transactionsCountUrl)
-        
     }
     
     func loadDetailedTransactionsPage(for address: String, page: Int) async throws -> [TransactionInfoModel] {

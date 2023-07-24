@@ -45,4 +45,38 @@ final class DogeExplorerAppUnitTests: XCTestCase {
         // Then
         XCTAssertEqual(result, expectedResult)
     }
+    
+    func testUnixTimeShortenFormatting() throws {
+        // Given
+        let givenTime1: Int = 1386273600
+        let givenTime2: Int = 1554197040
+        
+        let expectedResult1 = "6 Dec 2013"
+        let expectedResult2 = "2 Apr 2019"
+        
+        // When
+        let result1 = givenTime1.formatUnixTime(style: .shorten)
+        let result2 = givenTime2.formatUnixTime(style: .shorten)
+        
+        // Then
+        XCTAssertEqual(result1, expectedResult1)
+        XCTAssertEqual(result2, expectedResult2)
+    }
+    
+    func testUnixTimeDetailedFormatting() throws {
+        // Given
+        let givenTime1: Int = 1386273600
+        let givenTime2: Int = 1554197040
+        
+        let expectedResult1 = "2013-12-06 12:00:00 +0400"
+        let expectedResult2 = "2019-04-02 12:24:00 +0300"
+        
+        // When
+        let result1 = givenTime1.formatUnixTime(style: .detailed)
+        let result2 = givenTime2.formatUnixTime(style: .detailed)
+        
+        // Then
+        XCTAssertEqual(result1, expectedResult1)
+        XCTAssertEqual(result2, expectedResult2)
+    }
 }

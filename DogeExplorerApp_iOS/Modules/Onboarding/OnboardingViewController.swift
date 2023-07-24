@@ -2,7 +2,7 @@
 //  OnboardingViewController.swift
 //  DogeExplorerApp_iOS
 //
-//  Created by Arseniy Zolotarev on 19.07.2023.
+//  Created by Arseniy Zolotarev on 25.07.2023.
 //
 
 import UIKit

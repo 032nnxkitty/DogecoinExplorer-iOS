@@ -52,8 +52,6 @@ final class AddressInfoViewController: UIViewController {
     
     private let loadTransactionButton = LoaderButton()
     
-    let toastView = ToastView()
-    
     // MARK: - Init
     init(viewModel: AddressInfoViewModel) {
         self.viewModel = viewModel
@@ -80,8 +78,7 @@ private extension AddressInfoViewController {
     func configureAppearance() {
         title = "Address"
         view.backgroundColor = R.Colors.background
-        navigationItem.leftBarButtonItem = backButton
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationItem.backBarButtonItem = backButton
         
         addressInformationView.address = viewModel.address
         addressInformationView.balance = viewModel.formattedBalance
@@ -117,7 +114,10 @@ private extension AddressInfoViewController {
             case .initial:
                 break
             case .startTrackAlert:
-                self.presentTextFieldAlert(title: "Add name to the address", placeHolder: "Enter name", textFieldText: nil) { text in
+                self.presentTextFieldAlert(
+                    title: "Add name to the address",
+                    placeHolder: "Enter name"
+                ) { text in
                     self.viewModel.startTracking(name: text)
                 }
             case .becomeTracked(let name):
@@ -125,7 +125,11 @@ private extension AddressInfoViewController {
                 trackingStateButton.isTracked = true
                 navigationItem.rightBarButtonItem = renameButton
             case .renameAlert(let oldName):
-                self.presentTextFieldAlert(title: "Enter a new name", placeHolder: "New name", textFieldText: oldName) { text in
+                self.presentTextFieldAlert(
+                    title: "Enter a new name",
+                    placeHolder: "New name",
+                    textFieldText: oldName
+                ) { text in
                     self.viewModel.rename(newName: text)
                 }
             case .becomeUntracked:
@@ -140,6 +144,7 @@ private extension AddressInfoViewController {
             case .allTransactionsLoaded:
                 loadTransactionButton.isHidden = true
             case .message(let text):
+                let toastView = ToastView()
                 toastView.present(on: self.view, text: text)
             case .push(let model):
                 let transactionInfoVC = Assembly.setupTransactionInfoModule(model: model)
@@ -197,13 +202,6 @@ extension AddressInfoViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return TitleView(title: "Transactions", height: 20)
-    }
-}
-
-// MARK: - Swipe back
-extension AddressInfoViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
     }
 }
 

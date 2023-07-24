@@ -39,8 +39,6 @@ final class MainViewController: UIViewController {
     
     private let emptyView = EmptyView()
     
-    private let toastView = ToastView()
-    
     private let loader = LoaderView()
     
     // MARK: - Init
@@ -115,10 +113,13 @@ private extension MainViewController {
             case .filledList:
                 hideEmptyView()
             case .startLoader:
+                self.view.isUserInteractionEnabled = false
                 loader.startLoading(on: self.view)
             case .finishLoader:
+                self.view.isUserInteractionEnabled = true
                 loader.stopLoading()
             case .message(let text):
+                let toastView = ToastView()
                 toastView.present(on: self.view, text: text)
             case .push(let model):
                 searchBar.text = nil

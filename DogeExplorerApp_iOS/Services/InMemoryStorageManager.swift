@@ -33,7 +33,7 @@ final class InMemoryStorageManager: StorageManager {
     func addNewAddress(address: String, name: String) {
         storageManager.addNewAddress(address: address, name: name)
         
-        inMemoryStorage.append((address, name))
+        inMemoryStorage.insert((address, name), at: 0)
     }
     
     func deleteAddress(_ addressToDelete: String) {
@@ -57,9 +57,5 @@ final class InMemoryStorageManager: StorageManager {
     func getName(for address: String) -> String? {
         let name = inMemoryStorage.filter { $0.address == address }.first?.name
         return name
-    }
-    
-    func addMockData() {
-        storageManager.addMockData()
     }
 }

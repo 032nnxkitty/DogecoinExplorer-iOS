@@ -14,7 +14,6 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     
     // MARK: - Address Info
     private var addressInfoModel: AddressInfoModel
-    private var isTracked: Bool = false
     
     // MARK: - Init
     init(
@@ -31,14 +30,12 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     var observableViewState: Observable<AddressInfoViewState> = .init(value: .initial)
     
     func viewDidLoad() {
-        sortTransactions()
+        sortLoadedTransactions()
         
         if let name = storageManager.getName(for: address) {
             observableViewState.value = .becomeTracked(name: name)
-            isTracked = true
         } else {
             observableViewState.value = .becomeUntracked
-            isTracked = false
         }
         
         if addressInfoModel.transactionsCountModel.info.total <= 10 {
@@ -66,7 +63,6 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
 
         storageManager.addNewAddress(address: address, name: name)
         
-        isTracked = true
         observableViewState.value = .becomeTracked(name: name)
         observableViewState.value = .message(text: "Address added to tracked")
     }
@@ -135,7 +131,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
             do {
                 let newTransactions = try await networkManager.loadDetailedTransactionsPage(for: address, page: pageToLoad)
                 addressInfoModel.loadedTransactions.append(contentsOf: newTransactions)
-                sortTransactions()
+                sortLoadedTransactions()
                 if difference <= 10 {
                     observableViewState.value = .allTransactionsLoaded
                     observableViewState.value = .message(text: "All transactions loaded")
@@ -149,9 +145,8 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
     }
     
     func trackingButtonDidTap() {
-        if isTracked {
+        if storageManager.trackedAddresses.contains(where: { $0.address == address }) {
             storageManager.deleteAddress(address)
-            isTracked = false
             observableViewState.value = .becomeUntracked
             observableViewState.value = .message(text: "Address deleted")
         } else {
@@ -172,7 +167,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
 
 // MARK: - Private Methods & Properties
 private extension AddressInfoViewModelImpl {
-    func sortTransactions() {
+    func sortLoadedTransactions() {
         addressInfoModel.loadedTransactions.sort { $0.transaction.time ?? 0 >= $1.transaction.time ?? 0 }
     }
 }

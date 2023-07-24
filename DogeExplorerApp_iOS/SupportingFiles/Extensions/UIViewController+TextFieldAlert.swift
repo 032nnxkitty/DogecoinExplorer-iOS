@@ -12,7 +12,7 @@ extension UIViewController {
         title: String?,
         message: String? = nil,
         placeHolder: String? = nil,
-        textFieldText: String?,
+        textFieldText: String? = nil,
         completion: @escaping (String?) -> Void
     ) {
         let renameAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)

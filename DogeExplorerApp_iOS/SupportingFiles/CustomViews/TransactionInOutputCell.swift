@@ -10,8 +10,8 @@ import UIKit
 final class TransactionInOutputCell: UITableViewCell {
     static let identifier = "transaction.inputoutput.cell"
     
-    private lazy var destinationTitleLabel = setupTitleLabel()
-    private lazy var destinationValueLabel = setupValueLabel()
+    private lazy var directionLabel = setupTitleLabel()
+    private lazy var addressLabel = setupValueLabel()
     private lazy var amountTitleLabel = setupTitleLabel()
     private lazy var amountValueLabel = setupValueLabel()
     
@@ -27,13 +27,13 @@ final class TransactionInOutputCell: UITableViewCell {
     
     // MARK: - Public Methods
     func configure(isOutput: Bool, address: String, amount: String) {
-        destinationTitleLabel.text = isOutput ? "To:" : "From:"
+        directionLabel.text = isOutput ? "To:" : "From:"
         amountTitleLabel.text = "Amount:"
         amountValueLabel.text = amount
         
         let underlinedAddress = address.getUnderlinedString()
-        destinationValueLabel.attributedText = underlinedAddress
-        destinationValueLabel.textColor = R.Colors.accent
+        addressLabel.attributedText = underlinedAddress
+        addressLabel.textColor = R.Colors.accent
     }
     
     // MARK: - Public Methods
@@ -47,7 +47,7 @@ final class TransactionInOutputCell: UITableViewCell {
         stack.axis = .vertical
         stack.spacing = 6
         
-        [destinationTitleLabel, destinationValueLabel, amountTitleLabel, amountValueLabel].forEach {
+        [directionLabel, addressLabel, amountTitleLabel, amountValueLabel].forEach {
             stack.addArrangedSubview($0)
         }
         

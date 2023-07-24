@@ -36,7 +36,7 @@ final class TransactionInfoViewModelImpl: TransactionInfoViewModel {
         }
     }
     
-    func getTitleForSection(in section: Int) -> String? {
+    func getTitle(for section: Int) -> String? {
         return TransactionListModel(rawValue: section)?.title
     }
     

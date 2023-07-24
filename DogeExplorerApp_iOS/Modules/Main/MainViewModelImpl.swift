@@ -17,8 +17,6 @@ final class MainViewModelImpl: MainViewModel {
     init(networkManager: NetworkManager, storageManager: StorageManager) {
         self.networkManager = networkManager
         self.storageManager = storageManager
-        
-        storageManager.addMockData()
     }
     
     // MARK: - Protocol Methods & Properties

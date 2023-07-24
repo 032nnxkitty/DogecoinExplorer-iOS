@@ -12,7 +12,7 @@ protocol TransactionInfoViewModel {
     
     func getNumberOfItems(in section: Int) -> Int
     
-    func getTitleForSection(in section: Int) -> String?
+    func getTitle(for section: Int) -> String?
     
     func configureDetailCell(at indexPath: IndexPath) -> (title: String, value: String)
     
