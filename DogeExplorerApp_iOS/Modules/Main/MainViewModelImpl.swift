@@ -35,7 +35,7 @@ final class MainViewModelImpl: MainViewModel {
         guard let addressToDelete = storageManager.trackedAddresses[indexPath.row].address else { return }
         storageManager.deleteAddress(addressToDelete)
         
-        observableViewState.value = .message(text: "Address successfully deleted")
+        observableViewState.value = .message(text: "The address was successfully deleted")
     }
     
     func renameAddress(at indexPath: IndexPath, newName: String?) {
@@ -43,7 +43,7 @@ final class MainViewModelImpl: MainViewModel {
         guard let addressToRename = storageManager.trackedAddresses[indexPath.row].address else { return }
         storageManager.renameAddress(addressToRename, newName: newName)
         
-        observableViewState.value = .message(text: "Address successfully renamed")
+        observableViewState.value = .message(text: "The address was successfully renamed")
     }
     
     func didTapSearchButton(text: String?) {

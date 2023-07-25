@@ -8,6 +8,8 @@
 import Foundation
 
 protocol TransactionInfoViewModel {
+    var observableViewState: Observable<TransactionInfoState> { get }
+    
     var numberOfSections: Int { get }
     
     func getNumberOfItems(in section: Int) -> Int
@@ -19,6 +21,8 @@ protocol TransactionInfoViewModel {
     func configureInputCell(at indexPath: IndexPath) -> (from: String, amount: String)
     
     func configureOutputCell(at indexPath: IndexPath) -> (to: String, amount: String)
+    
+    func didTapCell(at indexPath: IndexPath)
     
     func didTapSupportView() 
 }

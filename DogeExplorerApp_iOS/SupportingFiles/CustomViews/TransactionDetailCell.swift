@@ -46,6 +46,8 @@ final class TransactionDetailCell: UITableViewCell {
     // MARK: - Private Methods
     private func configureAppearance() {
         backgroundColor = R.Colors.elementBackground
+        selectionStyle = .none
+        
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.distribution = .equalSpacing

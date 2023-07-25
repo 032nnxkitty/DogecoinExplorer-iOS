@@ -11,13 +11,6 @@ final class AddressInfoViewController: UIViewController {
     private var viewModel: AddressInfoViewModel
     
     // MARK: - UI Elements
-    private lazy var backButton: UIBarButtonItem = UIBarButtonItem(
-        image: .init(systemName: "chevron.backward"),
-        style: .plain,
-        target: self,
-        action: #selector(popToPrevious)
-    )
-    
     private lazy var renameButton: UIBarButtonItem = UIBarButtonItem(
         image: .init(systemName: "square.and.pencil"),
         style: .plain,
@@ -78,7 +71,7 @@ private extension AddressInfoViewController {
     func configureAppearance() {
         title = "Address"
         view.backgroundColor = R.Colors.background
-        navigationItem.backBarButtonItem = backButton
+        navigationController?.navigationItem.backButtonDisplayMode = .minimal
         
         addressInformationView.address = viewModel.address
         addressInformationView.balance = viewModel.formattedBalance

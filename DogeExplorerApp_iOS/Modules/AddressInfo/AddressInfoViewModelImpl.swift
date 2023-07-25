@@ -64,7 +64,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         storageManager.addNewAddress(address: address, name: name)
         
         observableViewState.value = .becomeTracked(name: name)
-        observableViewState.value = .message(text: "Address added to tracked")
+        observableViewState.value = .message(text: "The address was successfully added to the tracked")
     }
     
     func rename(newName: String?) {
@@ -72,7 +72,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         storageManager.renameAddress(address, newName: newName)
         
         observableViewState.value = .becomeTracked(name: newName)
-        observableViewState.value = .message(text: "Address renamed")
+        observableViewState.value = .message(text: "The address was successfully renamed")
     }
     
     
@@ -134,7 +134,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
                 sortLoadedTransactions()
                 if difference <= 10 {
                     observableViewState.value = .allTransactionsLoaded
-                    observableViewState.value = .message(text: "All transactions loaded")
+                    observableViewState.value = .message(text: "All transactions are loaded")
                 }
             } catch let error as NetworkError {
                 observableViewState.value = .message(text: error.localizedDescription)
@@ -148,7 +148,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         if storageManager.trackedAddresses.contains(where: { $0.address == address }) {
             storageManager.deleteAddress(address)
             observableViewState.value = .becomeUntracked
-            observableViewState.value = .message(text: "Address deleted")
+            observableViewState.value = .message(text: "The address was successfully deleted")
         } else {
             observableViewState.value = .startTrackAlert
         }

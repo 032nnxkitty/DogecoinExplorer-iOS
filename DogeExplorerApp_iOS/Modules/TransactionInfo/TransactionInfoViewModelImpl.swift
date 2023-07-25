@@ -17,6 +17,8 @@ final class TransactionInfoViewModelImpl: TransactionInfoViewModel {
     }
     
     // MARK: - Protocol Methods & Properties
+    var observableViewState: Observable<TransactionInfoState> = .init(value: .initial)
+    
     var numberOfSections: Int {
         return TransactionListModel.allCases.count
     }
@@ -93,6 +95,26 @@ final class TransactionInfoViewModelImpl: TransactionInfoViewModel {
         let addressFrom = currentOutput?.address ?? "..."
         let amount = currentOutput?.value?.formatNumberString() ?? "..."
         return (addressFrom, amount)
+    }
+    
+    func didTapCell(at indexPath: IndexPath) {
+        guard let section = TransactionListModel(rawValue: indexPath.section) else {
+            return
+        }
+        
+        var addressToCopy: String? = nil
+        
+        switch section {
+        case .details:
+            break
+        case .inputs:
+            addressToCopy = transactionInfoModel.transaction.inputs?[indexPath.row].address
+        case .outputs:
+            addressToCopy = transactionInfoModel.transaction.outputs?[indexPath.row].address
+        }
+        
+        guard let addressToCopy else { return }
+        observableViewState.value = .copyAddress(address: addressToCopy)
     }
     
     func didTapSupportView() {

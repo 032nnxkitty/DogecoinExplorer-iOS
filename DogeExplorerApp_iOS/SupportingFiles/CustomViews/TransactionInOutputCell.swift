@@ -10,8 +10,8 @@ import UIKit
 final class TransactionInOutputCell: UITableViewCell {
     static let identifier = "transaction.inputoutput.cell"
     
-    private lazy var directionLabel = setupTitleLabel()
     private lazy var addressLabel = setupValueLabel()
+    private lazy var directionLabel = setupTitleLabel()
     private lazy var amountTitleLabel = setupTitleLabel()
     private lazy var amountValueLabel = setupValueLabel()
     
@@ -31,7 +31,7 @@ final class TransactionInOutputCell: UITableViewCell {
         amountTitleLabel.text = "Amount:"
         amountValueLabel.text = amount
         
-        let underlinedAddress = address.getUnderlinedString()
+        let underlinedAddress: NSAttributedString = address.getUnderlinedString()
         addressLabel.attributedText = underlinedAddress
         addressLabel.textColor = R.Colors.accent
     }
@@ -41,6 +41,7 @@ final class TransactionInOutputCell: UITableViewCell {
     // MARK: - Private Methods
     private func configureAppearance() {
         backgroundColor = R.Colors.elementBackground
+        selectionStyle = .none
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.distribution = .equalSpacing

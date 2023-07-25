@@ -76,6 +76,7 @@ private extension MainViewController {
     func configureAppearance() {
         title = "Dogeexplorer"
         view.backgroundColor = R.Colors.background
+        navigationController?.navigationItem.backButtonDisplayMode = .minimal
         
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.titleTextAttributes = [
@@ -194,7 +195,10 @@ extension MainViewController: UITableViewDataSource {
         let renameAction = UIContextualAction(style: .normal, title: "") { [weak self] _, _, completion in
             guard let self else { return }
             let oldName = viewModel.trackedAddresses[indexPath.row].name
-            presentTextFieldAlert(title: "Enter a new name", placeHolder: "New name", textFieldText: oldName) { text in
+            self.presentTextFieldAlert(
+                title: "Enter a new name",
+                placeHolder: "New name",
+                textFieldText: oldName) { text in
                 self.viewModel.renameAddress(at: indexPath, newName: text)
                 tableView.reloadData()
             }

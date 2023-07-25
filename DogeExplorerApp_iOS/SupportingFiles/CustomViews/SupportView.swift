@@ -63,7 +63,7 @@ final class SupportView: UIView {
         
         addSubview(label)
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            label.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
             label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
             label.bottomAnchor.constraint(equalTo: bottomAnchor)

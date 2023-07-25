@@ -10,7 +10,8 @@ import UIKit
 final class TransactionInfoViewController: UITableViewController {
     private let viewModel: TransactionInfoViewModel
     
-    let supportView = SupportView()
+    // MARK: - UI Elements
+    private let supportView = SupportView()
     
     // MARK: - Init
     init(viewModel: TransactionInfoViewModel) {
@@ -27,6 +28,7 @@ final class TransactionInfoViewController: UITableViewController {
         super.viewDidLoad()
         configureAppearance()
         configureTableView()
+        bindViewState()
     }
     
     // MARK: - Table View Methods
@@ -63,7 +65,7 @@ final class TransactionInfoViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel.getTitle(for: section)
     }
-
+    
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let view = view as? UITableViewHeaderFooterView else { return }
         var contentConfiguration = view.defaultContentConfiguration()
@@ -75,6 +77,10 @@ final class TransactionInfoViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return section == 2 ? supportView : nil
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.didTapCell(at: indexPath)
     }
 }
 
@@ -90,9 +96,28 @@ private extension TransactionInfoViewController {
         tableView = UITableView(frame: .zero, style: .grouped)
         tableView.backgroundColor = R.Colors.background
         tableView.showsVerticalScrollIndicator = false
-        tableView.allowsSelection = false
         tableView.register(TransactionDetailCell.self, forCellReuseIdentifier: TransactionDetailCell.identifier)
         tableView.register(TransactionInOutputCell.self, forCellReuseIdentifier: TransactionInOutputCell.identifier)
+    }
+    
+    func bindViewState() {
+        viewModel.observableViewState.bind { newState in
+            switch newState {
+            case .initial:
+                break
+            case .copyAddress(let address):
+                let generator = UIImpactFeedbackGenerator()
+                generator.impactOccurred()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    generator.impactOccurred(intensity: .greatestFiniteMagnitude)
+                }
+                
+                UIPasteboard.general.string = address
+                
+                let toastView = ToastView()
+                toastView.present(on: self.view, text: "The address was successfully copied")
+            }
+        }
     }
     
     @objc func didTapSupportLabel() {
