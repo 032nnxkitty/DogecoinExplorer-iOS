@@ -9,7 +9,6 @@ import UIKit
 
 final class EmptyView: UIStackView {
     // MARK: - UI Elements
-    
     private let textLabel: UILabel = {
         let label = UILabel()
         label.textColor = R.Colors.accent

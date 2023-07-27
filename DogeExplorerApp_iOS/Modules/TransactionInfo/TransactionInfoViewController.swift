@@ -30,8 +30,51 @@ final class TransactionInfoViewController: UITableViewController {
         configureTableView()
         bindViewState()
     }
+}
+
+// MARK: - Private Methods
+private extension TransactionInfoViewController {
+    func configureAppearance() {
+        title = "Transaction info"
+        
+        supportView.addTarget(self, action: #selector(didTapSupportLabel))
+    }
     
-    // MARK: - Table View Methods
+    func configureTableView() {
+        tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.backgroundColor = R.Colors.background
+        tableView.showsVerticalScrollIndicator = false
+        tableView.register(TransactionDetailCell.self, forCellReuseIdentifier: TransactionDetailCell.identifier)
+        tableView.register(TransactionInOutputCell.self, forCellReuseIdentifier: TransactionInOutputCell.identifier)
+    }
+    
+    func bindViewState() {
+        viewModel.observableViewState.bind { newState in
+            switch newState {
+            case .initial:
+                break
+            case .copyAddress(let address):
+                let generator = UIImpactFeedbackGenerator()
+                generator.impactOccurred()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    generator.impactOccurred(intensity: .greatestFiniteMagnitude)
+                }
+                
+                UIPasteboard.general.string = address
+                
+                let toastView = ToastView()
+                toastView.present(on: self.view, text: "The address was successfully copied")
+            }
+        }
+    }
+    
+    @objc func didTapSupportLabel() {
+        viewModel.didTapSupportView()
+    }
+}
+ 
+// MARK: - Table View Methods
+extension TransactionInfoViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.numberOfSections
     }
@@ -81,46 +124,5 @@ final class TransactionInfoViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.didTapCell(at: indexPath)
-    }
-}
-
-// MARK: - Private Methods
-private extension TransactionInfoViewController {
-    func configureAppearance() {
-        title = "Transaction info"
-        
-        supportView.addTarget(self, action: #selector(didTapSupportLabel))
-    }
-    
-    func configureTableView() {
-        tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.backgroundColor = R.Colors.background
-        tableView.showsVerticalScrollIndicator = false
-        tableView.register(TransactionDetailCell.self, forCellReuseIdentifier: TransactionDetailCell.identifier)
-        tableView.register(TransactionInOutputCell.self, forCellReuseIdentifier: TransactionInOutputCell.identifier)
-    }
-    
-    func bindViewState() {
-        viewModel.observableViewState.bind { newState in
-            switch newState {
-            case .initial:
-                break
-            case .copyAddress(let address):
-                let generator = UIImpactFeedbackGenerator()
-                generator.impactOccurred()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    generator.impactOccurred(intensity: .greatestFiniteMagnitude)
-                }
-                
-                UIPasteboard.general.string = address
-                
-                let toastView = ToastView()
-                toastView.present(on: self.view, text: "The address was successfully copied")
-            }
-        }
-    }
-    
-    @objc func didTapSupportLabel() {
-        viewModel.didTapSupportView()
     }
 }

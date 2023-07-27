@@ -73,8 +73,8 @@ final class TransactionInfoViewModelImpl: TransactionInfoViewModel {
             let size = transactionInfoModel.transaction.size ?? -1
             value = "\(size) bytes"
         case .fee:
-            let fee = transactionInfoModel.transaction.fee
-            value = "\(fee ?? "...") DOGE"
+            let fee = transactionInfoModel.transaction.fee?.formatNumberString()
+            value = fee ?? "..."
         case .confirmations:
             let confirmations = transactionInfoModel.transaction.confirmations ?? -1
             value = "\(confirmations)"

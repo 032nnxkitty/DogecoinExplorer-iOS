@@ -24,12 +24,14 @@ final class LoaderButton: UIButton {
     
     // MARK: - Public Methods
     func startLoading() {
+        isUserInteractionEnabled = false
         loader.startAnimating()
         titleLabel?.alpha = 0
         imageView?.alpha = 0
     }
     
     func stopLoading() {
+        isUserInteractionEnabled = true
         loader.stopAnimating()
         titleLabel?.alpha = 1
         imageView?.alpha = 1

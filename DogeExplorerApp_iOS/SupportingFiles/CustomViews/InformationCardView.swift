@@ -19,7 +19,6 @@ final class InformationCardView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureAppearance()
-        configureStack()
     }
     
     required init?(coder: NSCoder) {
@@ -52,9 +51,7 @@ private extension InformationCardView {
         backgroundColor =  R.Colors.accent
         layer.cornerRadius = 20
         layer.masksToBounds = true
-    }
-    
-    func configureStack() {
+        
         let containerStack = UIStackView()
         containerStack.translatesAutoresizingMaskIntoConstraints = false
         containerStack.axis = .vertical

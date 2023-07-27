@@ -7,44 +7,10 @@
 
 import UIKit
 
-
-struct TransactionCellViewModel {
-    let style: TransactionStyle
-    let value: String
-    let date: String
-    let hash: String
-    
-    enum TransactionStyle: String {
-        case sent
-        case received
-    }
-}
-
 final class TransactionCell: UITableViewCell {
     static let identifier = "transaction.cell.identifier"
     
     // MARK: - UI Elements
-    private let containerStack: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.distribution = .fillEqually
-        stack.axis = .vertical
-        stack.spacing = 4
-        return stack
-    }()
-    
-    private let topStack: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        return stack
-    }()
-    
-    private let bottomStack: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        return stack
-    }()
-    
     private let stateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -87,14 +53,8 @@ final class TransactionCell: UITableViewCell {
     
     // MARK: - Public Methods
     func configure(viewModel: TransactionCellViewModel) {
-        switch viewModel.style {
-        case .sent:
-            stateLabel.text = viewModel.style.rawValue.capitalized
-            sumLabel.textColor = .white
-        case .received:
-            stateLabel.text = viewModel.style.rawValue.capitalized
-            sumLabel.textColor = R.Colors.accent
-        }
+        stateLabel.text = viewModel.style.rawValue.capitalized
+        sumLabel.textColor = viewModel.style == .sent ? .white : R.Colors.accent
         sumLabel.text = viewModel.value
         dateLabel.text = viewModel.date
         destinationLabel.text = viewModel.hash
@@ -113,6 +73,19 @@ private extension TransactionCell {
         configuration.cornerRadius = 20
         backgroundConfiguration =  configuration
         
+        
+        let containerStack = UIStackView()
+        containerStack.translatesAutoresizingMaskIntoConstraints = false
+        containerStack.distribution = .fillEqually
+        containerStack.axis = .vertical
+        containerStack.spacing = 4
+        
+        let topStack = UIStackView()
+        topStack.axis = .horizontal
+    
+        let bottomStack = UIStackView()
+        bottomStack.axis = .horizontal
+    
         contentView.addSubview(containerStack)
         NSLayoutConstraint.activate([
             containerStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),

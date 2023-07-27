@@ -36,8 +36,6 @@ final class TransactionInOutputCell: UITableViewCell {
         addressLabel.textColor = R.Colors.accent
     }
     
-    // MARK: - Public Methods
-    
     // MARK: - Private Methods
     private func configureAppearance() {
         backgroundColor = R.Colors.elementBackground

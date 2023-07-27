@@ -10,11 +10,7 @@ import Foundation
 enum AddressInfoViewState {
     case initial
     
-    case startTrackAlert
-    
     case becomeTracked(name: String)
-    
-    case renameAlert(oldName: String?)
     
     case becomeUntracked
     

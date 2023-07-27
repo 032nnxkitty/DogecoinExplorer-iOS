@@ -18,19 +18,19 @@ protocol AddressInfoViewModel {
     
     var totalTransactionsCount: String { get }
     
-    func trackingButtonDidTap()
+    var isTracked: Bool { get }
     
     func startTracking(name: String?)
     
     func rename(newName: String?)
     
+    func deleteTracking()
+    
     var numberOfLoadedTransactions: Int { get }
     
     func getViewModelForTransaction(at indexPath: IndexPath) -> TransactionCellViewModel
     
-    func loadMoreTransactionsButtonDidTap()
-    
-    func renameButtonDidTap()
+    func loadMoreTransactions()
     
     func didSelectTransaction(at indexPath: IndexPath)
 }

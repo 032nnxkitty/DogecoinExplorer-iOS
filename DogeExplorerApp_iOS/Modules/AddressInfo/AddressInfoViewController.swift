@@ -106,42 +106,27 @@ private extension AddressInfoViewController {
             switch newState {
             case .initial:
                 break
-            case .startTrackAlert:
-                self.presentTextFieldAlert(
-                    title: "Add name to the address",
-                    placeHolder: "Enter name"
-                ) { text in
-                    self.viewModel.startTracking(name: text)
-                }
             case .becomeTracked(let name):
-                title = name
-                trackingStateButton.isTracked = true
-                navigationItem.rightBarButtonItem = renameButton
-            case .renameAlert(let oldName):
-                self.presentTextFieldAlert(
-                    title: "Enter a new name",
-                    placeHolder: "New name",
-                    textFieldText: oldName
-                ) { text in
-                    self.viewModel.rename(newName: text)
-                }
+                self.title = name
+                self.trackingStateButton.isTracked = true
+                self.navigationItem.rightBarButtonItem = renameButton
             case .becomeUntracked:
-                title = "Address"
-                trackingStateButton.isTracked = false
+                self.title = "Address"
+                self.trackingStateButton.isTracked = false
                 navigationItem.rightBarButtonItem = nil
             case .startLoadTransactions:
-                loadTransactionButton.startLoading()
+                self.loadTransactionButton.startLoading()
             case .finishLoadTransactions:
-                transactionsTableView.reloadData()
-                loadTransactionButton.stopLoading()
+                self.transactionsTableView.reloadData()
+                self.loadTransactionButton.stopLoading()
             case .allTransactionsLoaded:
-                loadTransactionButton.isHidden = true
+                self.loadTransactionButton.isHidden = true
             case .message(let text):
                 let toastView = ToastView()
                 toastView.present(on: self.view, text: text)
             case .push(let model):
                 let transactionInfoVC = Assembly.setupTransactionInfoModule(model: model)
-                navigationController?.pushViewController(transactionInfoVC, animated: true)
+                self.navigationController?.pushViewController(transactionInfoVC, animated: true)
             }
         }
     }
@@ -156,15 +141,23 @@ private extension AddressInfoViewController {
     }
     
     func trackingButtonDidTap() {
-        viewModel.trackingButtonDidTap()
+        if viewModel.isTracked {
+            viewModel.deleteTracking()
+        } else {
+            presentTextFieldAlert(title: "Add name to the address", placeHolder: "Enter name") { text in
+                self.viewModel.startTracking(name: text)
+            }
+        }
     }
     
     func loadTransactionsButtonDidTap() {
-        viewModel.loadMoreTransactionsButtonDidTap()
+        viewModel.loadMoreTransactions()
     }
     
     func renameButtonDidTap() {
-        viewModel.renameButtonDidTap()
+        presentTextFieldAlert(title: "Enter a new name", placeHolder: "New name", textFieldText: title) { text in
+            self.viewModel.rename(newName: text)
+        }
     }
     
     func popToPrevious() {

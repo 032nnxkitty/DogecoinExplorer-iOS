@@ -11,15 +11,6 @@ final class TrackedAddressCell: UITableViewCell {
     static let identifier = "tracked.cell.identifier"
     
     // MARK: - UI Elements
-    private let labelsStack: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.distribution = .fillEqually
-        stack.axis = .vertical
-        stack.spacing = 8
-        return stack
-    }()
-    
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "..."
@@ -65,16 +56,22 @@ private extension TrackedAddressCell {
         configuration.cornerRadius = 20
         backgroundConfiguration =  configuration
         
-        contentView.addSubview(labelsStack)
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.distribution = .fillEqually
+        stack.axis = .vertical
+        stack.spacing = 8
+        
+        contentView.addSubview(stack)
         NSLayoutConstraint.activate([
-            labelsStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),
-            labelsStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
-            labelsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
-            labelsStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25)
+            stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),
+            stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
+            stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
+            stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25)
         ])
         
         [nameLabel, addressLabel].forEach {
-            labelsStack.addArrangedSubview($0)
+            stack.addArrangedSubview($0)
         }
     }
 }

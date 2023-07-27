@@ -7,21 +7,17 @@ iOS application for viewing information about addresses and transactions in the 
 ![UIKit](https://img.shields.io/badge/-UIKit-purple.svg)
 ![Dogecoin](https://img.shields.io/badge/-Dogecoin-yellow.svg)
 
-<img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/1.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/2.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/3.png" width="200"> 
+<img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/1.PNG" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/2.PNG" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/3.PNG" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/4.PNG" width="200"> 
 
 ## Features
-- MVP (Model View Presenter) architecture
+- MVVM architecture
 - Concurrent Network Calls
 - CoreData
-- No storyboards
 - Without third-party libraries
+- No storyboards
 - UNIT tests
 
-#### TODO
-- Add conversion from DOGE to USD
-- ...
-
-###### Screenshots: [App Store Screenshots Generator](https://screenshots.pro), Font: [Doge Sans](https://github.com/sebastiangraz/dogesans)
+###### Font: [Doge Sans](https://github.com/sebastiangraz/dogesans)
 
 
 

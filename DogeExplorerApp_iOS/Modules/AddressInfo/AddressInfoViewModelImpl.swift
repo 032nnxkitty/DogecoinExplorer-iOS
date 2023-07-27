@@ -55,6 +55,12 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         return "\(addressInfoModel.transactionsCountModel.info.total)"
     }
     
+    var isTracked: Bool {
+        return storageManager.trackedAddresses.contains {
+            $0.address == address
+        }
+    }
+    
     func startTracking(name: String?) {
         guard var name else { return }
         if name.isEmpty {
@@ -111,7 +117,7 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         }
     }
     
-    func loadMoreTransactionsButtonDidTap() {
+    func loadMoreTransactions() {
         guard internetConnectionObserver.isReachable else {
             observableViewState.value = .message(text: "No internet connection")
             return
@@ -144,19 +150,10 @@ final class AddressInfoViewModelImpl: AddressInfoViewModel {
         }
     }
     
-    func trackingButtonDidTap() {
-        if storageManager.trackedAddresses.contains(where: { $0.address == address }) {
-            storageManager.deleteAddress(address)
-            observableViewState.value = .becomeUntracked
-            observableViewState.value = .message(text: "The address was successfully deleted")
-        } else {
-            observableViewState.value = .startTrackAlert
-        }
-    }
-    
-    func renameButtonDidTap() {
-        let oldName = storageManager.getName(for: address)
-        observableViewState.value = .renameAlert(oldName: oldName)
+    func deleteTracking() {
+        storageManager.deleteAddress(address)
+        observableViewState.value = .becomeUntracked
+        observableViewState.value = .message(text: "The address was successfully deleted")
     }
     
     func didSelectTransaction(at indexPath: IndexPath) {
