@@ -203,7 +203,7 @@
 		10529ECF29E87CC600E73212 = {
 			isa = PBXGroup;
 			children = (
-				10529EDA29E87CC600E73212 /* DogeExplorerApp_iOS */,
+				10529EDA29E87CC600E73212 /* DogecoinExplorer */,
 				1047F72F29F9897D00B46708 /* DogeExplorerAppUnitTests */,
 				10529ED929E87CC600E73212 /* Products */,
 			);
@@ -218,7 +218,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		10529EDA29E87CC600E73212 /* DogeExplorerApp_iOS */ = {
+		10529EDA29E87CC600E73212 /* DogecoinExplorer */ = {
 			isa = PBXGroup;
 			children = (
 				10529EF529E8A63B00E73212 /* App */,
@@ -226,7 +226,7 @@
 				10529EF629E8A64100E73212 /* Modules */,
 				10529EF829E8A65E00E73212 /* SupportingFiles */,
 			);
-			path = DogeExplorerApp_iOS;
+			path = DogecoinExplorer;
 			sourceTree = "<group>";
 		};
 		10529EF529E8A63B00E73212 /* App */ = {
@@ -422,7 +422,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 10529ED329E87CC600E73212 /* Build configuration list for PBXProject "DogeExplorerApp_iOS" */;
+			buildConfigurationList = 10529ED329E87CC600E73212 /* Build configuration list for PBXProject "DogecoinExplorer" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -716,7 +716,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RYP579LK57;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = DogeExplorerApp_iOS/SupportingFiles/Info.plist;
+				INFOPLIST_FILE = DogecoinExplorer/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DogeExplorer;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -750,7 +750,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RYP579LK57;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = DogeExplorerApp_iOS/SupportingFiles/Info.plist;
+				INFOPLIST_FILE = DogecoinExplorer/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DogeExplorer;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -786,7 +786,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		10529ED329E87CC600E73212 /* Build configuration list for PBXProject "DogeExplorerApp_iOS" */ = {
+		10529ED329E87CC600E73212 /* Build configuration list for PBXProject "DogecoinExplorer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				10529EEA29E87CC700E73212 /* Debug */,
