@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1047F73129F9897D00B46708 /* DogeExplorerAppUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1047F73029F9897D00B46708 /* DogeExplorerAppUnitTests.swift */; };
+		1047F73129F9897D00B46708 /* FormattingUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1047F73029F9897D00B46708 /* FormattingUnitTests.swift */; };
 		104F23D72A6935F500B6B303 /* AddressInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F23D62A6935F500B6B303 /* AddressInfoModel.swift */; };
 		104F23D92A69360900B6B303 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F23D82A69360900B6B303 /* NetworkError.swift */; };
 		104F23DB2A698BBF00B6B303 /* InformationSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F23DA2A698BBF00B6B303 /* InformationSectionView.swift */; };
-		104F23DD2A69E7C400B6B303 /* MainViewStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F23DC2A69E7C300B6B303 /* MainViewStates.swift */; };
+		104F23DD2A69E7C400B6B303 /* MainViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F23DC2A69E7C300B6B303 /* MainViewState.swift */; };
 		104F23DF2A69E7DC00B6B303 /* AddressInfoViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F23DE2A69E7DC00B6B303 /* AddressInfoViewState.swift */; };
 		104F23E12A69ED5000B6B303 /* MainViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F23E02A69ED5000B6B303 /* MainViewModelProtocol.swift */; };
 		104F23E32A69ED7500B6B303 /* AddressInfoViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F23E22A69ED7500B6B303 /* AddressInfoViewModelProtocol.swift */; };
@@ -22,7 +22,6 @@
 		104F23EE2A6AD6C400B6B303 /* TransactionDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F23ED2A6AD6C400B6B303 /* TransactionDetailCell.swift */; };
 		104F23F02A6AD70B00B6B303 /* TransactionInOutputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F23EF2A6AD70B00B6B303 /* TransactionInOutputCell.swift */; };
 		104F23F22A6AED1500B6B303 /* TransactionsListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F23F12A6AED1500B6B303 /* TransactionsListModel.swift */; };
-		104F24042A6F344C00B6B303 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F24032A6F344C00B6B303 /* OnboardingViewController.swift */; };
 		104F24062A6FE98E00B6B303 /* TransactionInfoState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F24052A6FE98E00B6B303 /* TransactionInfoState.swift */; };
 		10529EDC29E87CC600E73212 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10529EDB29E87CC600E73212 /* AppDelegate.swift */; };
 		10529EDE29E87CC600E73212 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10529EDD29E87CC600E73212 /* SceneDelegate.swift */; };
@@ -38,7 +37,6 @@
 		108CA9F629F5CB86003582B6 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108CA9F529F5CB86003582B6 /* TransactionCell.swift */; };
 		108CA9FC29F6B92B003582B6 /* InformationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108CA9FB29F6B92B003582B6 /* InformationCardView.swift */; };
 		108F6F2B2A68180E00E92AB8 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108F6F2A2A68180E00E92AB8 /* LoaderView.swift */; };
-		108F6F302A68273100E92AB8 /* UserDefaults+isOnboarded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108F6F2F2A68273100E92AB8 /* UserDefaults+isOnboarded.swift */; };
 		108F6F322A682A2200E92AB8 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108F6F312A682A2200E92AB8 /* Observable.swift */; };
 		109CD0A929FAED8A005B7CC7 /* CoreDataManagerUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109CD0A829FAED8A005B7CC7 /* CoreDataManagerUnitTests.swift */; };
 		10A42D5A29E9B18C00BE04B9 /* MainViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A42D5929E9B18C00BE04B9 /* MainViewModelImpl.swift */; };
@@ -79,12 +77,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1047F72E29F9897D00B46708 /* DogeExplorerAppUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DogeExplorerAppUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1047F73029F9897D00B46708 /* DogeExplorerAppUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogeExplorerAppUnitTests.swift; sourceTree = "<group>"; };
+		1047F72E29F9897D00B46708 /* DogecoinExplorerUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DogecoinExplorerUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1047F73029F9897D00B46708 /* FormattingUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattingUnitTests.swift; sourceTree = "<group>"; };
 		104F23D62A6935F500B6B303 /* AddressInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfoModel.swift; sourceTree = "<group>"; };
 		104F23D82A69360900B6B303 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		104F23DA2A698BBF00B6B303 /* InformationSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationSectionView.swift; sourceTree = "<group>"; };
-		104F23DC2A69E7C300B6B303 /* MainViewStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewStates.swift; sourceTree = "<group>"; };
+		104F23DC2A69E7C300B6B303 /* MainViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewState.swift; sourceTree = "<group>"; };
 		104F23DE2A69E7DC00B6B303 /* AddressInfoViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfoViewState.swift; sourceTree = "<group>"; };
 		104F23E02A69ED5000B6B303 /* MainViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelProtocol.swift; sourceTree = "<group>"; };
 		104F23E22A69ED7500B6B303 /* AddressInfoViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfoViewModelProtocol.swift; sourceTree = "<group>"; };
@@ -95,9 +93,8 @@
 		104F23ED2A6AD6C400B6B303 /* TransactionDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCell.swift; sourceTree = "<group>"; };
 		104F23EF2A6AD70B00B6B303 /* TransactionInOutputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionInOutputCell.swift; sourceTree = "<group>"; };
 		104F23F12A6AED1500B6B303 /* TransactionsListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsListModel.swift; sourceTree = "<group>"; };
-		104F24032A6F344C00B6B303 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		104F24052A6FE98E00B6B303 /* TransactionInfoState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionInfoState.swift; sourceTree = "<group>"; };
-		10529ED829E87CC600E73212 /* DogeExplorerApp_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DogeExplorerApp_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		10529ED829E87CC600E73212 /* DogecoinExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DogecoinExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10529EDB29E87CC600E73212 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		10529EDD29E87CC600E73212 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		10529EE429E87CC700E73212 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -113,7 +110,6 @@
 		108CA9F529F5CB86003582B6 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		108CA9FB29F6B92B003582B6 /* InformationCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationCardView.swift; sourceTree = "<group>"; };
 		108F6F2A2A68180E00E92AB8 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
-		108F6F2F2A68273100E92AB8 /* UserDefaults+isOnboarded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+isOnboarded.swift"; sourceTree = "<group>"; };
 		108F6F312A682A2200E92AB8 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		109CD0A829FAED8A005B7CC7 /* CoreDataManagerUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerUnitTests.swift; sourceTree = "<group>"; };
 		10A42D5929E9B18C00BE04B9 /* MainViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelImpl.swift; sourceTree = "<group>"; };
@@ -161,13 +157,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1047F72F29F9897D00B46708 /* DogeExplorerAppUnitTests */ = {
+		1047F72F29F9897D00B46708 /* DogecoinExplorerUnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				1047F73029F9897D00B46708 /* DogeExplorerAppUnitTests.swift */,
+				1047F73029F9897D00B46708 /* FormattingUnitTests.swift */,
 				109CD0A829FAED8A005B7CC7 /* CoreDataManagerUnitTests.swift */,
 			);
-			path = DogeExplorerAppUnitTests;
+			path = DogecoinExplorerUnitTests;
 			sourceTree = "<group>";
 		};
 		104F23D52A6935E000B6B303 /* Models */ = {
@@ -192,19 +188,11 @@
 			path = TransactionInfo;
 			sourceTree = "<group>";
 		};
-		104F24022A6F343F00B6B303 /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				104F24032A6F344C00B6B303 /* OnboardingViewController.swift */,
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
 		10529ECF29E87CC600E73212 = {
 			isa = PBXGroup;
 			children = (
 				10529EDA29E87CC600E73212 /* DogecoinExplorer */,
-				1047F72F29F9897D00B46708 /* DogeExplorerAppUnitTests */,
+				1047F72F29F9897D00B46708 /* DogecoinExplorerUnitTests */,
 				10529ED929E87CC600E73212 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -212,8 +200,8 @@
 		10529ED929E87CC600E73212 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				10529ED829E87CC600E73212 /* DogeExplorerApp_iOS.app */,
-				1047F72E29F9897D00B46708 /* DogeExplorerAppUnitTests.xctest */,
+				10529ED829E87CC600E73212 /* DogecoinExplorer.app */,
+				1047F72E29F9897D00B46708 /* DogecoinExplorerUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -242,7 +230,6 @@
 		10529EF629E8A64100E73212 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				104F24022A6F343F00B6B303 /* Onboarding */,
 				10A42D5729E9B16100BE04B9 /* Main */,
 				10A42D6329E9B2AB00BE04B9 /* AddressInfo */,
 				104F23E62A6AB13A00B6B303 /* TransactionInfo */,
@@ -301,7 +288,7 @@
 		10A42D5729E9B16100BE04B9 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				104F23DC2A69E7C300B6B303 /* MainViewStates.swift */,
+				104F23DC2A69E7C300B6B303 /* MainViewState.swift */,
 				104F23E02A69ED5000B6B303 /* MainViewModelProtocol.swift */,
 				10A42D5929E9B18C00BE04B9 /* MainViewModelImpl.swift */,
 				10A42D5B29E9B19F00BE04B9 /* MainViewController.swift */,
@@ -329,7 +316,6 @@
 				10BAD4112A14280700D4BAAF /* UIStackView+Separators.swift */,
 				10CF630E2A16415E003C124E /* UIColor+RGB.swift */,
 				108193462A66F03D0030259F /* UIViewController+TextFieldAlert.swift */,
-				108F6F2F2A68273100E92AB8 /* UserDefaults+isOnboarded.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -368,9 +354,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1047F72D29F9897D00B46708 /* DogeExplorerAppUnitTests */ = {
+		1047F72D29F9897D00B46708 /* DogecoinExplorerUnitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1047F73629F9897D00B46708 /* Build configuration list for PBXNativeTarget "DogeExplorerAppUnitTests" */;
+			buildConfigurationList = 1047F73629F9897D00B46708 /* Build configuration list for PBXNativeTarget "DogecoinExplorerUnitTests" */;
 			buildPhases = (
 				1047F72A29F9897D00B46708 /* Sources */,
 				1047F72B29F9897D00B46708 /* Frameworks */,
@@ -381,14 +367,14 @@
 			dependencies = (
 				1047F73329F9897D00B46708 /* PBXTargetDependency */,
 			);
-			name = DogeExplorerAppUnitTests;
+			name = DogecoinExplorerUnitTests;
 			productName = DogeExplorerAppUnitTests;
-			productReference = 1047F72E29F9897D00B46708 /* DogeExplorerAppUnitTests.xctest */;
+			productReference = 1047F72E29F9897D00B46708 /* DogecoinExplorerUnitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		10529ED729E87CC600E73212 /* DogeExplorerApp_iOS */ = {
+		10529ED729E87CC600E73212 /* DogecoinExplorer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 10529EEC29E87CC700E73212 /* Build configuration list for PBXNativeTarget "DogeExplorerApp_iOS" */;
+			buildConfigurationList = 10529EEC29E87CC700E73212 /* Build configuration list for PBXNativeTarget "DogecoinExplorer" */;
 			buildPhases = (
 				10529ED429E87CC600E73212 /* Sources */,
 				10529ED529E87CC600E73212 /* Frameworks */,
@@ -398,9 +384,9 @@
 			);
 			dependencies = (
 			);
-			name = DogeExplorerApp_iOS;
+			name = DogecoinExplorer;
 			productName = DogeExplorerApp_iOS;
-			productReference = 10529ED829E87CC600E73212 /* DogeExplorerApp_iOS.app */;
+			productReference = 10529ED829E87CC600E73212 /* DogecoinExplorer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -435,8 +421,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				10529ED729E87CC600E73212 /* DogeExplorerApp_iOS */,
-				1047F72D29F9897D00B46708 /* DogeExplorerAppUnitTests */,
+				10529ED729E87CC600E73212 /* DogecoinExplorer */,
+				1047F72D29F9897D00B46708 /* DogecoinExplorerUnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -467,7 +453,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				109CD0A929FAED8A005B7CC7 /* CoreDataManagerUnitTests.swift in Sources */,
-				1047F73129F9897D00B46708 /* DogeExplorerAppUnitTests.swift in Sources */,
+				1047F73129F9897D00B46708 /* FormattingUnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,7 +471,7 @@
 				10BAD4122A14280700D4BAAF /* UIStackView+Separators.swift in Sources */,
 				10A42D6C29E9B9E400BE04B9 /* Assembly.swift in Sources */,
 				10CF630D2A163C24003C124E /* TitleView.swift in Sources */,
-				104F23DD2A69E7C400B6B303 /* MainViewStates.swift in Sources */,
+				104F23DD2A69E7C400B6B303 /* MainViewState.swift in Sources */,
 				108F6F2B2A68180E00E92AB8 /* LoaderView.swift in Sources */,
 				10CF63072A155F91003C124E /* ScrollableStackView.swift in Sources */,
 				10ED211329F33270008302EA /* BalanceModel.swift in Sources */,
@@ -514,7 +500,6 @@
 				10529EDE29E87CC600E73212 /* SceneDelegate.swift in Sources */,
 				10A42D5C29E9B19F00BE04B9 /* MainViewController.swift in Sources */,
 				10A42D7829EB532A00BE04B9 /* NetworkManager.swift in Sources */,
-				104F24042A6F344C00B6B303 /* OnboardingViewController.swift in Sources */,
 				104F24062A6FE98E00B6B303 /* TransactionInfoState.swift in Sources */,
 				10ED216829F40A64008302EA /* TrackedAddressEntity.swift in Sources */,
 				10CF630B2A156A67003C124E /* SelfSizedTableView.swift in Sources */,
@@ -526,7 +511,6 @@
 				104F23D72A6935F500B6B303 /* AddressInfoModel.swift in Sources */,
 				10ED211729F332B3008302EA /* TransactionsCountModel.swift in Sources */,
 				10ED216C29F40AFF008302EA /* CoreDataStorageManager.swift in Sources */,
-				108F6F302A68273100E92AB8 /* UserDefaults+isOnboarded.swift in Sources */,
 				104F23E52A6A885000B6B303 /* InMemoryStorageManager.swift in Sources */,
 				104F23EE2A6AD6C400B6B303 /* TransactionDetailCell.swift in Sources */,
 			);
@@ -537,7 +521,7 @@
 /* Begin PBXTargetDependency section */
 		1047F73329F9897D00B46708 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 10529ED729E87CC600E73212 /* DogeExplorerApp_iOS */;
+			target = 10529ED729E87CC600E73212 /* DogecoinExplorer */;
 			targetProxy = 1047F73229F9897D00B46708 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -777,7 +761,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1047F73629F9897D00B46708 /* Build configuration list for PBXNativeTarget "DogeExplorerAppUnitTests" */ = {
+		1047F73629F9897D00B46708 /* Build configuration list for PBXNativeTarget "DogecoinExplorerUnitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1047F73429F9897D00B46708 /* Debug */,
@@ -795,7 +779,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		10529EEC29E87CC700E73212 /* Build configuration list for PBXNativeTarget "DogeExplorerApp_iOS" */ = {
+		10529EEC29E87CC700E73212 /* Build configuration list for PBXNativeTarget "DogecoinExplorer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				10529EED29E87CC700E73212 /* Debug */,
