@@ -23,6 +23,6 @@ extension TrackedAddressEntity {
     }
 }
 
-extension TrackedAddressEntity : Identifiable {
+extension TrackedAddressEntity: Identifiable {
 
 }

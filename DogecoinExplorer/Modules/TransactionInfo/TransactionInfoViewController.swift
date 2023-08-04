@@ -49,7 +49,8 @@ private extension TransactionInfoViewController {
     }
     
     func bindViewState() {
-        viewModel.observableViewState.bind { newState in
+        viewModel.observableViewState.bind { [weak self] newState in
+            guard let self else { return }
             switch newState {
             case .initial:
                 break
@@ -119,7 +120,7 @@ extension TransactionInfoViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return section == 2 ? supportView : nil
+        return section == viewModel.numberOfSections - 1 ? supportView : nil
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
